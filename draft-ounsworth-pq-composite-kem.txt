@@ -94,8 +94,8 @@ Table of Contents
      6.2.  APOP Attack on concatenated keys  . . . . . . . . . . . .  10
    7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.1.  Examples  . . . . . . . . . . . . . . . . . . . . . . . .  10
-     7.2.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  10
-     7.3.  Intellectual Property Considerations  . . . . . . . . . .  12
+     7.2.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  11
+     7.3.  Intellectual Property Considerations  . . . . . . . . . .  13
    8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  13
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  13
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
@@ -538,11 +538,29 @@ Internet-Draft              PQ Composite Keys                 March 2022
 +----------------------+---+----------+---+-----+---+------------------+
 +----------------------+---+----------+---+-----+---+------------------+
 
+   A possible fix, which aligns with draft-ietf-tls-hybrid-design, would
+   be to have all KEM algorithm definitions in CMS define a fixed output
+   length for the shared secret it produces, this would preclude
+   attackers at runtime from manipulating the length of a shared secret
+   so that the next one in the concatenation falls on a hash block
+   boundary.
+
 7.  Appendices
 
 7.1.  Examples
 
    TBD
+
+
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 10]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
 
 7.2.  ASN.1 Module
 
@@ -554,13 +572,6 @@ Composite-Keys-2022
   { TBD }
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 10]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
 
 EXPORTS ALL;
 
@@ -599,6 +610,14 @@ id-composite-key OBJECT IDENTIFIER ::= {
 pk-Composite PUBLIC-KEY ::= {
     id id-composite-key,
     KeyValue CompositePublicKey,
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 11]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
     Params CompositeParams ARE OPTIONAL,
     PrivateKey CompositePrivateKey,
 }
@@ -610,12 +629,6 @@ CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY 
 CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
 
 CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 11]
-
-Internet-Draft              PQ Composite Keys                 March 2022
 
 
 -- pk-explicitComposite - Composite public key information object
@@ -654,6 +667,13 @@ ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey, FirstPublicKeyType,
 
 END
 
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 12]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
 <CODE ENDS>
 
 
@@ -662,17 +682,6 @@ END
    The following IPR Disclosure relates to this draft:
 
    https://datatracker.ietf.org/ipr/3588/
-
-
-
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 12]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
 
 8.  Contributors and Acknowledgements
 
@@ -710,6 +719,17 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Keys For Use In Internet PKI", draft-ounsworth-pq-
               composite-keys-01 (work in progress), February 2022.
 
+
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 13]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
    [I-D.perret-prat-lamps-cms-pq-kem]
               Perret, L., Prat, J., and M. Ounsworth, "Use of Post-
               Quantum KEM in the Cryptographic Message Syntax (CMS)",
@@ -720,15 +740,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Mail: Part I: Message Encryption and Authentication
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
-
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 13]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -765,6 +776,16 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Format", RFC 5914, DOI 10.17487/RFC5914, June 2010,
               <https://www.rfc-editor.org/info/rfc5914>.
 
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 14]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
    [RFC5958]  Turner, S., "Asymmetric Key Packages", RFC 5958,
               DOI 10.17487/RFC5958, August 2010,
               <https://www.rfc-editor.org/info/rfc5958>.
@@ -776,15 +797,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
-
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 14]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
@@ -819,6 +831,17 @@ Authors' Addresses
    Email: mike.ounsworth@entrust.com
 
 
+
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 15]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
    John Gray
    Entrust Limited
 
@@ -837,4 +860,37 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray       Expires September 24, 2022              [Page 15]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 16]
