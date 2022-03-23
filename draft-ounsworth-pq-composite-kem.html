@@ -696,19 +696,8 @@ CompositeKofNParams ::= INTEGER
 <a href="#rfc.section.6.2">6.2.</a> <a href="#apop-attack-on-concatenated-keys" id="apop-attack-on-concatenated-keys">APOP Attack on concatenated keys</a>
 </h1>
 <p id="rfc.section.6.2.p.1">See the attack analysis described in <a href="#Avirom2021" class="xref">[Avirom2021]</a>.</p>
-<table cellpadding="3" cellspacing="0" class="tt full center">
-<thead><tr>
-<th class="left">This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: H(ss1</th>
-<th class="left"></th>
-<th class="left">ss2). This proposal instead uses KDF(ss1</th>
-<th class="left"></th>
-<th class="left">ss2</th>
-<th class="left"></th>
-<th class="left">...) where KDF are key derivation functions allowable in CMS which include PBKDF2 (and HMAC, HKDF??). This needs more security analysis.</th>
-</tr></thead>
-<tbody><tr></tr></tbody>
-</table>
-<p id="rfc.section.6.2.p.2">A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.</p>
+<p id="rfc.section.6.2.p.2">This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: <samp>H(ss1 || ss2)</samp>. This proposal instead uses <samp>KDF(ss1 || ss2 || ...)</samp> where KDF are key derivation functions allowable in CMS which include PBKDF2 (and HMAC, HKDF??). This needs more security analysis.</p>
+<p id="rfc.section.6.2.p.3">A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.</p>
 <h1 id="rfc.section.7">
 <a href="#rfc.section.7">7.</a> <a href="#appendices" id="appendices">Appendices</a>
 </h1>

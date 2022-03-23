@@ -421,7 +421,7 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 See the attack analysis described in [Avirom2021].
 
-This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: H(ss1 || ss2). This proposal instead uses KDF(ss1 || ss2 || ...) where KDF are key derivation functions allowable in CMS which include PBKDF2 (and HMAC, HKDF??). This needs more security analysis.
+This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: `H(ss1 || ss2)`. This proposal instead uses `KDF(ss1 || ss2 || ...)` where KDF are key derivation functions allowable in CMS which include PBKDF2 (and HMAC, HKDF??). This needs more security analysis.
 
 A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.
 
