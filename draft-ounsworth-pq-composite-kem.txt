@@ -96,7 +96,7 @@ Table of Contents
      7.1.  Examples  . . . . . . . . . . . . . . . . . . . . . . . .  10
      7.2.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  10
      7.3.  Intellectual Property Considerations  . . . . . . . . . .  12
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  13
+   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  12
      8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  13
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
@@ -523,13 +523,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
    See the attack analysis described in [Avirom2021].
 
-   This attack does not apply to the proposal in this document because
-   the attack relies on concatenating secrets using a collision-
-   vulnerable hash: "H(ss1 || ss2)".  This proposal instead uses
-   "KDF(ss1 || ss2 || ...)" where KDF are key derivation functions
-   allowable in CMS which include PBKDF2 (and HMAC, HKDF??).  This needs
-   more security analysis.
-
    A possible fix, which aligns with draft-ietf-tls-hybrid-design, would
    be to have all KEM algorithm definitions in CMS define a fixed output
    length for the shared secret it produces, this would preclude
@@ -554,6 +547,13 @@ Composite-Keys-2022
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
+EXPORTS ALL;
+
+IMPORTS
+  PUBLIC-KEY, SIGNATURE-ALGORITHM
+    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
 
 
 
@@ -562,13 +562,6 @@ Ounsworth & Gray       Expires September 24, 2022              [Page 10]
 Internet-Draft              PQ Composite Keys                 March 2022
 
 
-EXPORTS ALL;
-
-IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
         id-mod-algorithmInformation-02(58) }
 
   SubjectPublicKeyInfo
@@ -612,17 +605,19 @@ CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY de
 CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
 
+-- pk-explicitComposite - Composite public key information object
+
+pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
+  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
+  PUBLIC-KEY ::= {
+
+
 
 Ounsworth & Gray       Expires September 24, 2022              [Page 11]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
 
--- pk-explicitComposite - Composite public key information object
-
-pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
-  PUBLIC-KEY ::= {
     IDENTIFIER id
     KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
       secondPublicKey, SecondPublicKeyType}
@@ -663,17 +658,6 @@ END
 
    https://datatracker.ietf.org/ipr/3588/
 
-
-
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 12]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
 8.  Contributors and Acknowledgements
 
    This document incorporates contributions and comments from a large
@@ -682,6 +666,13 @@ Internet-Draft              PQ Composite Keys                 March 2022
    attended many long meetings and generated millions of bytes of
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 12]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
 
    Serge Mister (Entrust), Douglas Stebila (University of Waterloo).
 
@@ -721,15 +712,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
 
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 13]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
@@ -739,6 +721,14 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 13]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
 
    [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
               "Internet X.509 Public Key Infrastructure Certificate
@@ -777,15 +767,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 14]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
@@ -795,6 +776,15 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Specification of Basic Encoding Rules (BER), Canonical
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
+
+
+
+
+
+Ounsworth & Gray       Expires September 24, 2022              [Page 14]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
 
 9.2.  Informative References
 
@@ -823,6 +813,16 @@ Authors' Addresses
    Entrust Limited
 
    Email: john.gray@entrust.com
+
+
+
+
+
+
+
+
+
+
 
 
 
