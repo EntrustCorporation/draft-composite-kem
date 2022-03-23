@@ -523,19 +523,20 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
    See the attack analysis described in [Avirom2021].
 
-+--------------------+---+---------+---+-----+---+---------------------+
-| This attack does   |   | ss2).   |   | ss2 |   | ...) where KDF are  |
-| not apply to the   |   | This pr |   |     |   | key derivation      |
-| proposal in this   |   | oposal  |   |     |   | functions allowable |
-| document because   |   | instead |   |     |   | in CMS which        |
-| the attack relies  |   | uses    |   |     |   | include PBKDF2 and  |
-| on concatenating   |   | KDF(ss1 |   |     |   | HMAC, none of which |
-| secrets using a    |   |         |   |     |   | are collision-      |
-| collision-         |   |         |   |     |   | vulnerable due to   |
-| vulnerable hash:   |   |         |   |     |   | multiple internal   |
-| H(ss1              |   |         |   |     |   | rounds of hashing.  |
-+--------------------+---+---------+---+-----+---+---------------------+
-+--------------------+---+---------+---+-----+---+---------------------+
++----------------------+---+----------+---+-----+---+------------------+
+| This attack does not |   | ss2).    |   | ss2 |   | ...) where KDF   |
+| apply to the         |   | This     |   |     |   | are key          |
+| proposal in this     |   | proposal |   |     |   | derivation       |
+| document because the |   | instead  |   |     |   | functions        |
+| attack relies on     |   | uses     |   |     |   | allowable in CMS |
+| concatenating        |   | KDF(ss1  |   |     |   | which include    |
+| secrets using a      |   |          |   |     |   | PBKDF2 (and      |
+| collision-vulnerable |   |          |   |     |   | HMAC, HKDF??).   |
+| hash: H(ss1          |   |          |   |     |   | This needs more  |
+|                      |   |          |   |     |   | security         |
+|                      |   |          |   |     |   | analysis.        |
++----------------------+---+----------+---+-----+---+------------------+
++----------------------+---+----------+---+-----+---+------------------+
 
 7.  Appendices
 
@@ -553,7 +554,6 @@ Composite-Keys-2022
   { TBD }
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
 
 
 

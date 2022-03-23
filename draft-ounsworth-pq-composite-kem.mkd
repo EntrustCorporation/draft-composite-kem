@@ -421,7 +421,7 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 See the attack analysis described in [Avirom2021].
 
-This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: H(ss1 || ss2). This proposal instead uses KDF(ss1 || ss2 || ...) where KDF are key derivation functions allowable in CMS which include PBKDF2 and HMAC, none of which are collision-vulnerable due to multiple internal rounds of hashing.
+This attack does not apply to the proposal in this document because the attack relies on concatenating secrets using a collision-vulnerable hash: H(ss1 || ss2). This proposal instead uses KDF(ss1 || ss2 || ...) where KDF are key derivation functions allowable in CMS which include PBKDF2 (and HMAC, HKDF??). This needs more security analysis.
 
 <!-- End of Security Considerations section -->
 
