@@ -693,8 +693,8 @@ CompositeKofNParams ::= INTEGER
 <a href="#rfc.section.6.2">6.2.</a> <a href="#apop-attack-on-concatenated-keys" id="apop-attack-on-concatenated-keys">APOP Attack on concatenated keys</a>
 </h1>
 <p id="rfc.section.6.2.p.1">See the attack analysis described in <a href="#Avirom2021" class="xref">[Avirom2021]</a>.</p>
-<p id="rfc.section.6.2.p.2">A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.</p>
-<p id="rfc.section.6.2.p.3">A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates] where each KEM definition includes the required length of its shared secret output.</p>
+<p id="rfc.section.6.2.p.2">A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions for use in CMS specify a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary, which closes the attack mentioned above.</p>
+<p id="rfc.section.6.2.p.3">A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates].</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">7.</a> References</h1>
 <h1 id="rfc.references.1">

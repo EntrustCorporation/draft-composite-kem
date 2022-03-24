@@ -524,15 +524,14 @@ Internet-Draft              PQ Composite Keys                 March 2022
    See the attack analysis described in [Avirom2021].
 
    A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design],
-   would be to have all KEM algorithm definitions in CMS define a fixed
-   output length for the shared secret it produces, this would preclude
-   attackers at runtime from manipulating the length of a shared secret
-   so that the next one in the concatenation falls on a hash block
-   boundary.
+   would be to have all KEM algorithm definitions for use in CMS specify
+   a fixed output length for the shared secret it produces, this would
+   preclude attackers at runtime from manipulating the length of a
+   shared secret so that the next one in the concatenation falls on a
+   hash block boundary, which closes the attack mentioned above.
 
    A natural place to do this would be in [I-D.draft-turner-lamps-nist-
-   pqc-kem-certificates] where each KEM definition includes the required
-   length of its shared secret output.
+   pqc-kem-certificates].
 
 7.  References
 
@@ -553,6 +552,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Mail: Part I: Message Encryption and Authentication
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
+
 
 
 
