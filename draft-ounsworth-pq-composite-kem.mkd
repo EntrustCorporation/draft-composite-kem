@@ -421,7 +421,7 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 See the attack analysis described in [Avirom2021].
 
-A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.
+A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.
 
 A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates] where each KEM definition includes the required length of its shared secret output.
 
