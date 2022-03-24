@@ -694,6 +694,7 @@ CompositeKofNParams ::= INTEGER
 </h1>
 <p id="rfc.section.6.2.p.1">See the attack analysis described in <a href="#Avirom2021" class="xref">[Avirom2021]</a>.</p>
 <p id="rfc.section.6.2.p.2">A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have all KEM algorithm definitions in CMS define a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary.</p>
+<p id="rfc.section.6.2.p.3">A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates] where each KEM definition includes the required length of its shared secret output.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">7.</a> References</h1>
 <h1 id="rfc.references.1">
@@ -847,9 +848,11 @@ pk-Composite PUBLIC-KEY ::= {
 
 CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
-CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY der)
+CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey 
+                                            ENCODED BY der)
 
-CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
+CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey 
+                                            ENCODED BY der)
 
 CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 

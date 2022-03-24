@@ -530,6 +530,10 @@ Internet-Draft              PQ Composite Keys                 March 2022
    so that the next one in the concatenation falls on a hash block
    boundary.
 
+   A natural place to do this would be in [I-D.draft-turner-lamps-nist-
+   pqc-kem-certificates] where each KEM definition includes the required
+   length of its shared secret output.
+
 7.  References
 
 7.1.  Normative References
@@ -550,10 +554,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/info/rfc2119>.
 
 
 
@@ -561,6 +561,11 @@ Ounsworth & Gray       Expires September 25, 2022              [Page 10]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/info/rfc2119>.
 
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
@@ -604,11 +609,6 @@ Internet-Draft              PQ Composite Keys                 March 2022
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
-   [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
-              Cryptographic Algorithm Object Identifier Range",
-              RFC 8411, DOI 10.17487/RFC8411, August 2018,
-              <https://www.rfc-editor.org/info/rfc8411>.
-
 
 
 
@@ -617,6 +617,11 @@ Ounsworth & Gray       Expires September 25, 2022              [Page 11]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
+
+   [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
+              Cryptographic Algorithm Object Identifier Range",
+              RFC 8411, DOI 10.17487/RFC8411, August 2018,
+              <https://www.rfc-editor.org/info/rfc8411>.
 
    [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
               Specification of Basic Encoding Rules (BER), Canonical
@@ -661,11 +666,6 @@ IMPORTS
 
   SubjectPublicKeyInfo
     FROM PKIX1Explicit-2009
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-pkix1-explicit-02(51) }
-
-  OneAsymmetricKey
 
 
 
@@ -674,6 +674,11 @@ Ounsworth & Gray       Expires September 25, 2022              [Page 12]
 Internet-Draft              PQ Composite Keys                 March 2022
 
 
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-pkix1-explicit-02(51) }
+
+  OneAsymmetricKey
     FROM AsymmetricKeyPackageModuleV1
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
@@ -701,9 +706,11 @@ pk-Composite PUBLIC-KEY ::= {
 
 CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
 
-CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY der)
+CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey
+                                            ENCODED BY der)
 
-CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
+CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey
+                                            ENCODED BY der)
 
 CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
@@ -715,13 +722,6 @@ pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
   PUBLIC-KEY ::= {
     IDENTIFIER id
     KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
-      secondPublicKey, SecondPublicKeyType}
-    PARAMS ARE absent
-}
-
-   The following ASN.1 object class then automatically generates the
-   public key structure from the types defined in pk-explicitComposite.
-
 
 
 
@@ -729,6 +729,13 @@ Ounsworth & Gray       Expires September 25, 2022              [Page 13]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
+
+      secondPublicKey, SecondPublicKeyType}
+    PARAMS ARE absent
+}
+
+   The following ASN.1 object class then automatically generates the
+   public key structure from the types defined in pk-explicitComposite.
 
 -- ExplicitCompositePublicKey - The data structure for a composite
 -- public key sec-composite-pub-keys and SecondPublicKeyType are needed
@@ -772,13 +779,6 @@ Appendix D.  Contributors and Acknowledgements
 
    Serge Mister (Entrust), Douglas Stebila (University of Waterloo).
 
-   We are grateful to all, including any contributors who may have been
-   inadvertently omitted from this list.
-
-   This document borrows text from similar documents, including those
-   referenced below.  Thanks go to the authors of those documents.
-
-
 
 
 Ounsworth & Gray       Expires September 25, 2022              [Page 14]
@@ -786,6 +786,11 @@ Ounsworth & Gray       Expires September 25, 2022              [Page 14]
 Internet-Draft              PQ Composite Keys                 March 2022
 
 
+   We are grateful to all, including any contributors who may have been
+   inadvertently omitted from this list.
+
+   This document borrows text from similar documents, including those
+   referenced below.  Thanks go to the authors of those documents.
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
@@ -811,11 +816,6 @@ Authors' Addresses
    Entrust Limited
 
    Email: john.gray@entrust.com
-
-
-
-
-
 
 
 
