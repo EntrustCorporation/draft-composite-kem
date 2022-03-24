@@ -5,7 +5,7 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: September 24, 2022                               March 23, 2022
+Expires: September 25, 2022                               March 24, 2022
 
 
                  Composite KEM For Use In Internet PKI
@@ -45,7 +45,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 24, 2022.
+   This Internet-Draft will expire on September 25, 2022.
 
 
 
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 1]
+Ounsworth & Gray       Expires September 25, 2022               [Page 1]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -92,15 +92,14 @@ Table of Contents
    6.  Security Considerations . . . . . . . . . . . . . . . . . . .   9
      6.1.  Policy for Deprecated and Acceptable Algorithms . . . . .   9
      6.2.  APOP Attack on concatenated keys  . . . . . . . . . . . .  10
-   7.  Appendices  . . . . . . . . . . . . . . . . . . . . . . . . .  10
-     7.1.  Examples  . . . . . . . . . . . . . . . . . . . . . . . .  10
-     7.2.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . .  10
-     7.3.  Intellectual Property Considerations  . . . . . . . . . .  12
-   8.  Contributors and Acknowledgements . . . . . . . . . . . . . .  12
-     8.1.  Making contributions  . . . . . . . . . . . . . . . . . .  13
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  15
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  10
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  12
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  12
+   Appendix B.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  12
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  14
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  14
+     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  15
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  15
 
 
@@ -109,7 +108,8 @@ Table of Contents
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 2]
+
+Ounsworth & Gray       Expires September 25, 2022               [Page 2]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 3]
+Ounsworth & Gray       Expires September 25, 2022               [Page 3]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 4]
+Ounsworth & Gray       Expires September 25, 2022               [Page 4]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 5]
+Ounsworth & Gray       Expires September 25, 2022               [Page 5]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 6]
+Ounsworth & Gray       Expires September 25, 2022               [Page 6]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -389,7 +389,7 @@ id-composite-any OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 7]
+Ounsworth & Gray       Expires September 25, 2022               [Page 7]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -445,7 +445,7 @@ id-composite-k-of-n OBJECT IDENTIFIER ::= {
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 8]
+Ounsworth & Gray       Expires September 25, 2022               [Page 8]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Keys                 March 2022
 
 
 
-Ounsworth & Gray       Expires September 24, 2022               [Page 9]
+Ounsworth & Gray       Expires September 25, 2022               [Page 9]
 
 Internet-Draft              PQ Composite Keys                 March 2022
 
@@ -530,171 +530,9 @@ Internet-Draft              PQ Composite Keys                 March 2022
    so that the next one in the concatenation falls on a hash block
    boundary.
 
-7.  Appendices
+7.  References
 
-7.1.  Examples
-
-   TBD
-
-7.2.  ASN.1 Module
-
-   TBD -- UPDATE
-
-<CODE STARTS>
-
-Composite-Keys-2022
-  { TBD }
-
-DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-EXPORTS ALL;
-
-IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 10]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
-        id-mod-algorithmInformation-02(58) }
-
-  SubjectPublicKeyInfo
-    FROM PKIX1Explicit-2009
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-pkix1-explicit-02(51) }
-
-  OneAsymmetricKey
-    FROM AsymmetricKeyPackageModuleV1
-      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-        pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) } ;
-
---
--- Object Identifiers
---
-
--- To be replaced by IANA
-id-composite-key OBJECT IDENTIFIER ::= {
-  iso(1) identified-organization(3) dod(6) internet(1) private(4)
-  enterprise(1) OpenCA(18227) algorithms(2) id-pk-compositeCrypto(1) }
-
---
--- Public Key
---
-
-pk-Composite PUBLIC-KEY ::= {
-    id id-composite-key,
-    KeyValue CompositePublicKey,
-    Params CompositeParams ARE OPTIONAL,
-    PrivateKey CompositePrivateKey,
-}
-
-CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
-
-CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY der)
-
-CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
-
-CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
--- pk-explicitComposite - Composite public key information object
-
-pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
-  PUBLIC-KEY ::= {
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 11]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
-    IDENTIFIER id
-    KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
-      secondPublicKey, SecondPublicKeyType}
-    PARAMS ARE absent
-}
-
-   The following ASN.1 object class then automatically generates the
-   public key structure from the types defined in pk-explicitComposite.
-
--- ExplicitCompositePublicKey - The data structure for a composite
--- public key sec-composite-pub-keys and SecondPublicKeyType are needed
--- because PUBLIC-KEY contains a set of public key types, not a single
--- type.
--- TODO The parameters should be optional only if they are marked
--- optional in the PUBLIC-KEY
-
-
-ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey, FirstPublicKeyType,
-  PUBLIC-KEY:secondPublicKey, SecondPublicKeyType} ::= SEQUENCE {
-    firstPublicKey SEQUENCE {
-        params firstPublicKey.&Params OPTIONAL,
-        publicKey FirstPublicKeyType
-    },
-    secondPublicKey SEQUENCE {
-        params secondPublicKey.&Params OPTIONAL,
-        publicKey SecondPublicKeyType
-    }
-}
-
-END
-
-<CODE ENDS>
-
-
-7.3.  Intellectual Property Considerations
-
-   The following IPR Disclosure relates to this draft:
-
-   https://datatracker.ietf.org/ipr/3588/
-
-8.  Contributors and Acknowledgements
-
-   This document incorporates contributions and comments from a large
-   group of experts.  The Editors would especially like to acknowledge
-   the expertise and tireless dedication of the following people, who
-   attended many long meetings and generated millions of bytes of
-   electronic mail and VOIP traffic over the past year in pursuit of
-   this document:
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 12]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
-   Serge Mister (Entrust), Douglas Stebila (University of Waterloo).
-
-   We are grateful to all, including any contributors who may have been
-   inadvertently omitted from this list.
-
-   This document borrows text from similar documents, including those
-   referenced below.  Thanks go to the authors of those documents.
-   "Copying always makes things easier and less error prone" -
-   [RFC8411].
-
-8.1.  Making contributions
-
-   Additional contributions to this draft are weclome.  Please see the
-   working copy of this draft at, as well as open issues at:
-
-   https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-
-   keys
-
-9.  References
-
-9.1.  Normative References
+7.1.  Normative References
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
@@ -717,18 +555,17 @@ Internet-Draft              PQ Composite Keys                 March 2022
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
 
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 10]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
    [RFC2986]  Nystrom, M. and B. Kaliski, "PKCS #10: Certification
               Request Syntax Specification Version 1.7", RFC 2986,
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 13]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
 
    [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
               "Internet X.509 Public Key Infrastructure Certificate
@@ -772,21 +609,21 @@ Internet-Draft              PQ Composite Keys                 March 2022
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
               <https://www.rfc-editor.org/info/rfc8411>.
 
+
+
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 11]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
    [X.690]    ITU-T, "Information technology - ASN.1 encoding Rules:
               Specification of Basic Encoding Rules (BER), Canonical
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-
-
-
-
-Ounsworth & Gray       Expires September 24, 2022              [Page 14]
-
-Internet-Draft              PQ Composite Keys                 March 2022
-
-
-9.2.  Informative References
+7.2.  Informative References
 
    [Avirom2021]
               "Concatenating Secrets May Be Dangerous", n.d.,
@@ -797,6 +634,167 @@ Internet-Draft              PQ Composite Keys                 March 2022
               "Transitioning to a quantum-resistant public key
               infrastructure", 2017, <https://link.springer.com/
               chapter/10.1007/978-3-319-59879-6_22>.
+
+Appendix A.  Examples
+
+   TBD
+
+Appendix B.  ASN.1 Module
+
+   TBD -- UPDATE
+
+<CODE STARTS>
+
+Composite-Keys-2022
+  { TBD }
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+  PUBLIC-KEY, SIGNATURE-ALGORITHM
+    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-algorithmInformation-02(58) }
+
+  SubjectPublicKeyInfo
+    FROM PKIX1Explicit-2009
+      { iso(1) identified-organization(3) dod(6) internet(1)
+        security(5) mechanisms(5) pkix(7) id-mod(0)
+        id-mod-pkix1-explicit-02(51) }
+
+  OneAsymmetricKey
+
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 12]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
+    FROM AsymmetricKeyPackageModuleV1
+      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
+        pkcs-9(9) smime(16) modules(0)
+        id-mod-asymmetricKeyPkgV1(50) } ;
+
+--
+-- Object Identifiers
+--
+
+-- To be replaced by IANA
+id-composite-key OBJECT IDENTIFIER ::= {
+  iso(1) identified-organization(3) dod(6) internet(1) private(4)
+  enterprise(1) OpenCA(18227) algorithms(2) id-pk-compositeCrypto(1) }
+
+--
+-- Public Key
+--
+
+pk-Composite PUBLIC-KEY ::= {
+    id id-composite-key,
+    KeyValue CompositePublicKey,
+    Params CompositeParams ARE OPTIONAL,
+    PrivateKey CompositePrivateKey,
+}
+
+CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
+
+CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey ENCODED BY der)
+
+CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey ENCODED BY der)
+
+CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
+
+
+-- pk-explicitComposite - Composite public key information object
+
+pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
+  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
+  PUBLIC-KEY ::= {
+    IDENTIFIER id
+    KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
+      secondPublicKey, SecondPublicKeyType}
+    PARAMS ARE absent
+}
+
+   The following ASN.1 object class then automatically generates the
+   public key structure from the types defined in pk-explicitComposite.
+
+
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 13]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
+-- ExplicitCompositePublicKey - The data structure for a composite
+-- public key sec-composite-pub-keys and SecondPublicKeyType are needed
+-- because PUBLIC-KEY contains a set of public key types, not a single
+-- type.
+-- TODO The parameters should be optional only if they are marked
+-- optional in the PUBLIC-KEY
+
+
+ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey, FirstPublicKeyType,
+  PUBLIC-KEY:secondPublicKey, SecondPublicKeyType} ::= SEQUENCE {
+    firstPublicKey SEQUENCE {
+        params firstPublicKey.&Params OPTIONAL,
+        publicKey FirstPublicKeyType
+    },
+    secondPublicKey SEQUENCE {
+        params secondPublicKey.&Params OPTIONAL,
+        publicKey SecondPublicKeyType
+    }
+}
+
+END
+
+<CODE ENDS>
+
+
+Appendix C.  Intellectual Property Considerations
+
+   The following IPR Disclosure relates to this draft:
+
+   https://datatracker.ietf.org/ipr/3588/
+
+Appendix D.  Contributors and Acknowledgements
+
+   This document incorporates contributions and comments from a large
+   group of experts.  The Editors would especially like to acknowledge
+   the expertise and tireless dedication of the following people, who
+   attended many long meetings and generated millions of bytes of
+   electronic mail and VOIP traffic over the past year in pursuit of
+   this document:
+
+   Serge Mister (Entrust), Douglas Stebila (University of Waterloo).
+
+   We are grateful to all, including any contributors who may have been
+   inadvertently omitted from this list.
+
+   This document borrows text from similar documents, including those
+   referenced below.  Thanks go to the authors of those documents.
+
+
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 14]
+
+Internet-Draft              PQ Composite Keys                 March 2022
+
+
+   "Copying always makes things easier and less error prone" -
+   [RFC8411].
+
+D.1.  Making contributions
+
+   Additional contributions to this draft are weclome.  Please see the
+   working copy of this draft at, as well as open issues at:
+
+   https://github.com/EntrustCorporation/draft-composite-kem/
 
 Authors' Addresses
 
@@ -837,4 +835,6 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray       Expires September 24, 2022              [Page 15]
+
+
+Ounsworth & Gray       Expires September 25, 2022              [Page 15]

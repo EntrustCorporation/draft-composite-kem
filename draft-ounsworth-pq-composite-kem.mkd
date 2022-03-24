@@ -425,15 +425,13 @@ A possible fix, which aligns with draft-ietf-tls-hybrid-design, would be to have
 
 <!-- End of Security Considerations section -->
 
-# Appendices
+--- back
 
-
-
-## Examples {#appdx-examples}
+# Examples {#appdx-examples}
 
 TBD
 
-## ASN.1 Module
+# ASN.1 Module
 
 TBD -- UPDATE
 
@@ -537,7 +535,7 @@ END
 ~~~
 
 
-## Intellectual Property Considerations
+# Intellectual Property Considerations
 
 The following IPR Disclosure relates to this draft:
 
@@ -561,7 +559,7 @@ This document borrows text from similar documents, including those referenced be
 
 Additional contributions to this draft are weclome. Please see the working copy of this draft at, as well as open issues at:
 
-https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-keys
+https://github.com/EntrustCorporation/draft-composite-kem/
 
 
 <!-- End of Contributors section -->
