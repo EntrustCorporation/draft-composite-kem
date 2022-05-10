@@ -66,7 +66,8 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  
+  RFC5990:
+  I-D.draft-ietf-tls-hybrid-design-04:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
     target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
@@ -135,7 +136,7 @@ structure define in [draft-ounsworth-pq-composite-keys-01] and the CMS KEM-TRANS
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
 The deployment of composite public keys, and composite signatures and composite encryption using post-quantum algorithms will face two challenges
 
@@ -143,13 +144,11 @@ The deployment of composite public keys, and composite signatures and composite 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 
-This document provides a mechanism to address both algorithm strength uncertainty as well as migration concerns by providing formats for encoding multiple public keys and private keys values into existing public key and private key fields.
 
-This document is intended for general applicability anywhere that keys are used within PKIX or CMS structures.
+This document provides a mechanism to address algorithm strength uncertainty by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
 
 
-EDNOTE
-A previous version of this draft specified alternate algorithm identifiers for AND and OR modes. As well, a similar spec by D-Trust (now co-authors of this draft) also specified a "K of N" mode. In this version of this draft, we have moved those from being top-level OIDs to being algorithm parameters since we can then leverage the same mechanism for both generic and explicit composite modes.
+This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
 
 
 <!-- End of Introduction section -->
@@ -171,7 +170,6 @@ CLIENT:
           Any software that is making use of a key at runtime.
           This includes a signer, verifyir, encryptor, decryptor.
 
-
 COMBINER MODE:
           A combiner mode specifies how keys are to be combined
           together into a single cryptographic operation. 
@@ -191,16 +189,113 @@ COMPOSITE ALGORITHM:
 DER:
           Distinguished Encoding Rules as defined in [X.690].
 
-
 KEM:
-        --- borrow the brilliant defintion in tls-hybrid-design or authKEM drafts.
+        A key encapsulation mechanism as defined in {{sec-kems}}.
 
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
             key, making no assumptions about which algorithm.
 
+SHARED SECRET:
+        A value established between two communicating parties by means of a
+        cryptographic operation, but which cannot be learned by an active or 
+        passive adversary.
+
+# Composite KEM Structures
+
+## Key Encapsulation Mechanisms (KEMs) {#sec-kems}
+
+We borrow here the definition of a key encapsulation mecanism (KEM) from [I-D.draft-ietf-tls-hybrid-design], in which a KEM consists of three algorithms:
+
+   *  KeyGen() -> (pk, sk): A probabilistic key generation algorithm,
+      which generates a public key pk and a secret key sk.
+
+   *  Encaps(pk) -> (ct, ss): A probabilistic encapsulation algorithm,
+      which takes as input a public key pk and outputs a ciphertext ct
+      and shared secret ss.
+
+   *  Decaps(sk, ct) -> ss: A decapsulation algorithm, which takes as
+      input a secret key sk and ciphertext ct and outputs a shared
+      secret ss, or in some cases a distinguished error value.
 
 
+This document is not concerned with the KeyGen() algorithm of a KEM, but it is included for completeness.
+
+The KEM interface defined above differs from both tradational key transport mechanism (for example for use with KeyTransRecipientInfo defined in [RFC5652]), and key agreement (for example for use with KeyAgreeRecipientInfo defined in [RFC5652]). 
+
+The KEM interface was chosen as the interface for a composite key exchange because both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:
+
+A key transport mechanism can be promoted into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -P ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -> ss. This follows the pattern of RSA-KEM [RFC5990].
+
+A key agreement mechanism can be promoted into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -> (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -> ss.
+
+A composite KEM allows two or more underlying key transport, key agreement, or KEM alogrithms to be combined into a single cryptographic operations by performing each operation, promoted to a KEM as outline above, and concatenating all component shared secrets into a single shared secret.
+
+
+
+The main security property for KEMs is indistinguishability under
+adaptive chosen ciphertext attack (IND-CCA2), which means that shared
+secret values should be indistinguishable from random strings even
+given the ability to have other arbitrary ciphertexts decapsulated.
+
+A weaker security notion is indistinguishability under chosen
+plaintext attack (IND-CPA), which means that the shared secret values
+should be indistinguishable from random strings given a copy of the
+public key.  IND-CPA roughly corresponds to security against a
+passive attacker, and sometimes corresponds to one-time key exchange.
+
+
+The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.
+
+TODO: needs more formal analysis that the methods of promoting KeyTrans and KeyAgree meet this.
+
+TODO: QUESTION: If we return `SS = SS1 || .. || SSn`, does that make this mechanism fail IND-CCA2? Do we need to carry a KDF here too and do `SS = KDF(SS1 || .. || SSn)`? Also take another look at {{sec-apop-attack}} with regards to this question.
+
+
+## Composite Keys
+
+TODO
+
+### Key Usage Bits
+
+TODO
+
+
+## kem-CompositeKEM
+
+TODO
+
+
+## CompositeCiphertextValue
+
+TODO
+
+~~~
+CompositeCihpertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+~~~
+
+## Encoding Rules
+
+Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.
+
+When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.
+
+When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.
+
+In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
+
+# Algorithm Identifiers
+
+TODO
+
+## id-alg-composite
+
+TODO
+
+
+## Other Explicit Algorithms
+
+TODO
 
 # Composite Key Encapsulation
 
@@ -209,11 +304,7 @@ CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent
 an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that 
 contains encryption or decryption primitive.  For example (RSA).   
 
-This operation outputs a shared-secret and cipher text.   If the 
-CompositePublicKey is using an algorithm mode which does not require all keys 
-to be used (for example id-composite-or or id-composite-k-of-n), and the
-specific component algorithm is not required by the underlying application
-usage, then the ciphertext and shared secret for that component is empty.
+This operation outputs a shared-secret and cipher text.
 
 ~~~
 Input:  CompositePublicKey (PK1, PK2 .. PKn)
@@ -221,19 +312,20 @@ Input:  CompositePublicKey (PK1, PK2 .. PKn)
 Output:  SS, CT
 
 1.  for i := 1 to n
-    a. if PKi is to be skipped
-        CTi := emptyOctetString
-        SSi := emptyOctetString
-        continue to next i
+       if PKi is of type KEM:
+          SSi, CTi := encaps(PKi)
+       
+       else, if PKi is of type keyEncipherment:
+         SSi := random_bits(SIZE)
+         CTi := encrypt(SSi, PKi)
 
-    b. if Pki is of type KEM:
-          SSi,CTi := encaps(PKi)
+       else, if PKi is of type keyAgreement:
+          PKe, SKe := keyGen()
+          SSi := keyAgree(PKi, SKe)
+          CTi := PKe
 
-      Else:
-        SSi := random_bits(SIZE)
-        CTi := encrypt(SSi, PKi)   
 
-  2.   SS = SSi ||  SSn
+  2.  SS = SSi ||  SSn
       CT = CT1, CT2, .., CTn
 ~~~
 
@@ -248,10 +340,7 @@ or an algorithm that contains encryption or decryption primitive.  These keys
 MUST consist of the same component keys in the same order as the Composite Key 
 Encapsulation process that generated them.  
 
-This operation outputs a shared-secret.   If the CompositePrivateKey is using an
-algorithm mode which does not require all keys to be used the specific component 
-algorithm is not required by the underlying application usage, then the ciphertext
-and shared secret for that component is empty.  
+This operation outputs a shared-secret.
 
 
 ~~~
@@ -260,13 +349,17 @@ Input:   CompositePrivateKey = SK1, SK2 .. SKn
 
 Output:  SS
 
-1.    for i := 1 to n
-      if Ski is not required and cti = emptyOctetString         
-          SSi := emptyOctetString         
-      Else, if SKi is of type KEM:
+1. for i := 1 to n
+ 
+      if SKi is of type KEM:
           SSi := decaps(Cti, SKi)
-      Else:
+
+      else, if SKi is of type keyEncipherment:
           SSi := decrypt(Cti, SKi)
+
+       else, if PKi is of type keyAgreement:
+          PKe := decode(CTi)
+          SSi := keyAgree(PKe, SKi)
 
 2. Output SS = SSi ||  SSn
 ~~~
@@ -290,92 +383,6 @@ are available at time of decapsulation.
 
 TBD if we need to say anything, or if it's all covered already by the keys draft.
 
-
-## Combiner Modes {#sec-combiner-modes}
-
-TBD -- need to define alternate processes for each combiner mode. This text currently just copied from the keys draft.
-
-
-Once an end entity has been issued multiple public keys, it is easy to imagine different modes and policies for using these keys. For example a logical AND would provide the strictest security by requiring any usage of a composite key to always use all component keys. Meanwhile, a logical OR would provide the greatest migration flexibility by allowing any component key to be used by itself. There can also be modes in between the two extremes such as a "K of N" mode, or a policy explicitly listing acceptable combinations of algorithms.
-
-A combiner mode is represented in a composite public key by an OPTIONAL AlgorithmIdentifier where the semantics are defined in the following sections. Any signature or encryption processes that make use of these modes need to define the precise behaviour under each mode.
-
-
-### AND Mode {#sec-and-mode}
-
-Indicated by leaving the algorithm parameters ABSENT.
-
-The intention of this mode is that any cryptographic operation involving this composite key MUST use all component keys. This mode is intended to provide the strictest security and for that reason it is the default mode.
-
-
-### OR Mode {#sec-or-mode}
-
-Indicated by CompositeParams with and algorithm equal to:
-
-~~~ asn.1
-id-composite-or OBJECT IDENTIFIER ::= { 
-  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-  Algorithm(80) Composite(4) id-composite-or(3) }
-~~~
-
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
-
-The parameters of the CompositeParams MUST be ABSENT.
-
-The intention of this mode is that any one component MAY be used by itself; senders MAY use more than one component key but receivers only need to use one to verify or recover the plaintext message. This mode is intended to provide the greatest migration and transition flexibility.
-
-EDNOTE: Potential problem with this mode: logically, as long as the client understands at least one of the component OIDs, but with the structure SEQUENCE OF SubjectPublicKeyInfo it is likely that most ASN.1 parsers will fail on an unrecognized OID.
-For more discussion on this point, see: https://github.com/EntrustCorporation/draft-ounsworth-pq-composite-keys/issues/4
-
-
-### ANY Mode
-
-Indicated by CompositeParams with and algorithm equal to:
-
-~~~ asn.1
-id-composite-any OBJECT IDENTIFIER ::= { 
-  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-  Algorithm(80) Composite(4) id-composite-any(7) }
-~~~
-
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
-
-The parameters of the CompositeParams MUST be ABSENT.
-
-The intention of this mode is for use-cases where the combiner mode is explicitly not carried in the public key and applications need to retrieve the combiner mode from application context, for example from application policy.
-
-
-### K of N Mode
-
-Indicated by CompositeParams with and algorithm equal to:
-
-~~~ asn.1
-id-composite-k-of-n OBJECT IDENTIFIER ::= { 
-  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-  Algorithm(80) Composite(4) id-composite-k-of-n(2)  }
-~~~
-
-EDNOTE: this is a temporary OID for the purposes of prototyping. We are requesting IANA to assign a permanent OID, see {{sec-iana}}.
-
-The parameters of the CompositeParams MUST be CompositeKofNParams:
-
-~~~ asn.1
-CompositeKofNParams ::= INTEGER
-~~~
-
-
-The intention of this mode is for use-cases where a subset or threshold scheme is desired. The value in CompositeKofNParams is K, the number of component keys to be used in a single cryptographic operation. The total number of component keys, N, is not carried in the CompositeKofNParams and can be infered either by parsing the CompositePublicKey structure as defined in , or in the case of the explicit composite variant, N may be known based on the PUBLIC-KEY IDENTIFIER.
-
-
-Clients SHOULD NOT use K of N mode with K = N as it is semantically equivalent to the AND mode defined in .
-
-Clients SHOULD NOT use K of N mode with K = 1 as it is semantically equivanent to the OR mode defined in .
-
-The intention is to improve interoperability between clients that support K of N mode and those that only support AND or OR mode. The signature and encryption processes for K of N mode are more complex to implement than the respective AND and OR modes, and in most cases they would be a superset of the respective AND and OR modes, so it is assumed that any client that supports K of N mode will also support AND and OR modes. The converse is not true; for example a simple client may only support AND mode and would reject a K of N mode with K = N even though it is semantically equivalent to a mode that it supports. Therefore clients that support K of N mode SHOULD use AND mode () and OR mode () in place of K of N mode with K = N and K = 1 respectively.
-
-### Custom Modes
-
-Protocol designers and implementors are free to define other combiner modes.
 
 
 # In Practice {#sec-in-pract}
@@ -416,8 +423,11 @@ Specifying behaviour in these cases is beyond the scope of this document, but sh
 
 EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
+## OR Modes
 
-## APOP Attack on concatenated keys
+TODO
+
+## APOP Attack on concatenated keys {#sec-apop-attack}
 
 See the attack analysis described in [Avirom2021].
 
