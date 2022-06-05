@@ -103,23 +103,15 @@ informative:
       -
         ins: Yogev
 
-# <!--updates:
-  # RFC2986
-  # RFC5280
-  # RFC5652 -->
-# <!-- EDNOTE: does it update these anymore?? -->
 
 
 # <!-- EDNOTE: Add RFC 3279? -->
 
 --- abstract
-With the widespread adoption of post-quantum cryptography will come
-the need for an entity to possess multiple public keys on different
-cryptographic algorithms.  Since the trustworthiness of individual
-post-quantum algorithms is at question, a multi-key cryptographic
-operation will need to be performed in such a way that breaking it
-requires breaking each of the component algorithms individually.
-This requires defining new procedures for key encapsulation.
+
+The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, due to quantum cryptalanysis, and the incoming post-quantum algorithms since the underlying mathematics as well as hardware and software implementations have not had sufficient maturing time and so new cryptanalytic and bug-based attacks are expected in the short to medium term future.
+
+Cautious implementors will wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data. For digital signatures, this is referred to as "dual", and for encryption key establishment this as reffered to as "hybrid". This document, and its companions --LINKS-- defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as an integral object at the protocol level.
 
 This document defines a Composite key encapsulation mechanism (KEM)
 procedure, for use with Composite keys which consist of combinations 
