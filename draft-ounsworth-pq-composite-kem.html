@@ -397,7 +397,7 @@
 <link href="#rfc.section.8.2" rel="Chapter" title="8.2 OR Modes">
 <link href="#rfc.section.8.3" rel="Chapter" title="8.3 Cryptographic review of combiner">
 <link href="#rfc.section.8.3.1" rel="Chapter" title="8.3.1 APOP Attack on concatenated keys">
-<link href="#rfc.section.8.3.2" rel="Chapter" title="8.3.2 Avirom2022">
+<link href="#rfc.section.8.3.2" rel="Chapter" title="8.3.2 Aviram2022">
 <link href="#rfc.references" rel="Chapter" title="9 References">
 <link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
 <link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
@@ -515,7 +515,7 @@
 </li>
 <ul><li>8.3.1.   <a href="#rfc.section.8.3.1">APOP Attack on concatenated keys</a>
 </li>
-<li>8.3.2.   <a href="#rfc.section.8.3.2">Avirom2022</a>
+<li>8.3.2.   <a href="#rfc.section.8.3.2">Aviram2022</a>
 </li>
 </ul></ul><li>9.   <a href="#rfc.references">References</a>
 </li>
@@ -740,18 +740,18 @@ Output:  SS
 <h1 id="rfc.section.8.3.1">
 <a href="#rfc.section.8.3.1">8.3.1.</a> <a href="#sec-apop-attack" id="sec-apop-attack">APOP Attack on concatenated keys</a>
 </h1>
-<p id="rfc.section.8.3.1.p.1">See the attack analysis described in summary in <a href="#Avirom2021" class="xref">[Avirom2021]</a>.</p>
+<p id="rfc.section.8.3.1.p.1">See the attack analysis described in summary in <a href="#Aviram2021" class="xref">[Aviram2021]</a>.</p>
 <p id="rfc.section.8.3.1.p.2">A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions for use in CMS specify a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary, which closes the attack mentioned above.</p>
 <p id="rfc.section.8.3.1.p.3">A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates].</p>
 <p id="rfc.section.8.3.1.p.4">EDNOTE: in CMS we are allowing any KDF. Can we, by construction, require only weak security assumptions on the KDF? ~~~ END EDNOTE ~~~</p>
 <h1 id="rfc.section.8.3.2">
-<a href="#rfc.section.8.3.2">8.3.2.</a> <a href="#avirom2022" id="avirom2022">Avirom2022</a>
+<a href="#rfc.section.8.3.2">8.3.2.</a> <a href="#aviram2022" id="aviram2022">Aviram2022</a>
 </h1>
-<p><a href="#Avirom2022" class="xref">[Avirom2022]</a>.</p>
+<p><a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
 <p id="rfc.section.8.3.2.p.2">~~~ BEGIN EDNOTE ~~~ Quotes from Arivom2022:</p>
 <p id="rfc.section.8.3.2.p.3">This paper is largely critiquing the use of HKDF (HMAC) as a combiner for two secrets. This is not exactly what we are doing here.</p>
 <p id="rfc.section.8.3.2.p.4">"If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input. "</p>
-<p id="rfc.section.8.3.2.p.5">The construction offered in <a href="#Avirom2022" class="xref">[Avirom2022]</a> seems complex. I don't understand why the construction</p>
+<p id="rfc.section.8.3.2.p.5">The construction offered in <a href="#Aviram2022" class="xref">[Aviram2022]</a> seems complex. I don't understand why the construction</p>
 <table cellpadding="3" cellspacing="0" class="tt full center">
 <thead><tr>
 <th class="left">SS = KDF( KDF(SS1)</th>
@@ -764,7 +764,7 @@ Output:  SS
 </tr></thead>
 <tbody><tr></tr></tbody>
 </table>
-<p id="rfc.section.8.3.2.p.6">is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Avirom2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?</p>
+<p id="rfc.section.8.3.2.p.6">is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Aviram2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> References</h1>
 <h1 id="rfc.references.1">
@@ -850,11 +850,11 @@ Output:  SS
 <a href="#rfc.references.2">9.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
-<td class="reference"><b id="Avirom2021">[Avirom2021]</b></td>
+<td class="reference"><b id="Aviram2021">[Aviram2021]</b></td>
 <td class="top">"<a href="https://github.com/nimia/kdf_public">Concatenating Secrets May Be Dangerous</a>", 2022.</td>
 </tr>
 <tr>
-<td class="reference"><b id="Avirom2022">[Avirom2022]</b></td>
+<td class="reference"><b id="Aviram2022">[Aviram2022]</b></td>
 <td class="top">"<a href="https://eprint.iacr.org/2022/065">Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS.</a>", n.d..</td>
 </tr>
 <tr>

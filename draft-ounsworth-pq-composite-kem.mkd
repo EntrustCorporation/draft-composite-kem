@@ -86,13 +86,13 @@ informative:
         ins: D. Stebila
         name: Douglas Stebila
     date: 2017
-  Avirom2022:
+  Aviram2022:
     title: "Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS."
     target: "https://eprint.iacr.org/2022/065"
     author:
       -
         ins: 
-  Avirom2021:
+  Aviram2021:
     title: "Concatenating Secrets May Be Dangerous"
     target: "https://github.com/nimia/kdf_public"
     Author:
@@ -466,7 +466,7 @@ EDNOTE: LAMPS should probably request CFRF review of this draft to ensure that t
 
 ### APOP Attack on concatenated keys {#sec-apop-attack}
 
-See the attack analysis described in summary in [Avirom2021].
+See the attack analysis described in summary in [Aviram2021].
 
 A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions for use in CMS specify a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary, which closes the attack mentioned above.
 
@@ -477,9 +477,9 @@ EDNOTE: in CMS we are allowing any KDF. Can we, by construction, require only we
 ~~~ END EDNOTE ~~~
 
 
-### Avirom2022
+### Aviram2022
 
-[Avirom2022].
+[Aviram2022].
 
 
 ~~~ BEGIN EDNOTE ~~~
@@ -489,11 +489,11 @@ This paper is largely critiquing the use of HKDF (HMAC) as a combiner for two se
 
 "If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input. "
 
-The construction offered in [Avirom2022] seems complex. I don't understand why the construction
+The construction offered in [Aviram2022] seems complex. I don't understand why the construction
 
 SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
 
-is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Avirom2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?
+is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Aviram2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?
 
 <!-- End of Security Considerations section -->
 
