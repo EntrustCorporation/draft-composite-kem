@@ -66,6 +66,7 @@ normative:
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
+  RFC3279:
   RFC5990:
   I-D.draft-ietf-tls-hybrid-design-04:
   Bindel2017:
@@ -85,6 +86,12 @@ informative:
         ins: D. Stebila
         name: Douglas Stebila
     date: 2017
+  Avirom2022:
+    title: "Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS."
+    target: "https://eprint.iacr.org/2022/065"
+    author:
+      -
+        ins: 
   Avirom2021:
     title: "Concatenating Secrets May Be Dangerous"
     target: "https://github.com/nimia/kdf_public"
@@ -93,25 +100,32 @@ informative:
         ins: N. Aviram
         name: Nimrod Aviram
       - 
-        ins: Dowling
+        ins: B. Dowling
+        name: Benjamin Dowling
       - 
         ins: Komargodski
+        name: Ilan Komargodski
       - 
         ins: Paterson
+        name: Kenneth G Paterson
       - 
         ins: Ronen
+        name: Eyal Ronen
       -
         ins: Yogev
+        name: Eylon Yogev
+    date: 2022
 
 
 
-# <!-- EDNOTE: Add RFC 3279? -->
 
 --- abstract
 
-The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, due to quantum cryptalanysis, and the incoming post-quantum algorithms since the underlying mathematics as well as hardware and software implementations have not had sufficient maturing time and so new cryptanalytic and bug-based attacks are expected in the short to medium term future.
+The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptalanysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.
 
-Cautious implementors will wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data. For digital signatures, this is referred to as "dual", and for encryption key establishment this as reffered to as "hybrid". This document, and its companions --LINKS-- defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as an integral object at the protocol level.
+Cautious implementors may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as reffered to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.
+
+EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.
 
 This document defines a Composite key encapsulation mechanism (KEM)
 procedure, for use with Composite keys which consist of combinations 
@@ -128,7 +142,7 @@ structure define in [draft-ounsworth-pq-composite-keys-01] and the CMS KEM-TRANS
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, but we will also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while me may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
 The deployment of composite public keys, and composite signatures and composite encryption using post-quantum algorithms will face two challenges
 
@@ -183,6 +197,10 @@ DER:
 
 KEM:
         A key encapsulation mechanism as defined in {{sec-kems}}.
+        
+POST-QUANTUM AGLORITHM:
+          Any cryptographic algorithm which is believed to be resistant
+          to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.
 
 PUBLIC / PRIVATE KEY:
           The public and private portion of an asymmetric cryptographic
@@ -272,6 +290,8 @@ Many protocol specifications will require that composite KEM data structures be 
 
 When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.
 
+EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra uneccessary layer.
+
 When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
@@ -356,6 +376,27 @@ Output:  SS
 2. Output SS = SSi ||  SSn
 ~~~
 
+
+~~~ BEGIN EDNOTE ~~~
+EDNOTE: We need to add a KDF-based combiner here.
+Suggestions are:
+SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+or
+SS = KDF( KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn) )
+
+
+Note that the obvious simpler constructions don't work in cases where the attacker can control one or more inputs and gets, see the resulting shared secret, and submit multiple queries against the same SS2 (ie SS2 is derived from a static-key non-ephemeral protocol. Therefore should not be used:
+
+SS = KDF( SS1 || SS2 || .. || SSn)
+in vulnerable to the APOP attack, for example when the attacker chooses RSA-KEM as component 1 so that they can learn SS2
+
+Similarly,
+SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)
+under the same cirtumstances as above would allow the attacker to learn KDF(SS2), which is not as detrimental as learning SS2 directly, but can still be avoided cheaply be wrapping the entire construction in an outer KDF.
+
+
+~~~ END EDNOTE ~~~
+
 ## Composite KEM CipherText Encoding
 
 For ease of use when encoding and decoding, the following encoding is 
@@ -419,13 +460,40 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 TODO
 
-## APOP Attack on concatenated keys {#sec-apop-attack}
+## Cryptographic review of combiner
 
-See the attack analysis described in [Avirom2021].
+EDNOTE: LAMPS should probably request CFRF review of this draft to ensure that the combiner is resistant to all known cryptograhpic attacks.
+
+### APOP Attack on concatenated keys {#sec-apop-attack}
+
+See the attack analysis described in summary in [Avirom2021].
 
 A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions for use in CMS specify a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary, which closes the attack mentioned above.
 
 A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates].
+
+
+EDNOTE: in CMS we are allowing any KDF. Can we, by construction, require only weak security assumptions on the KDF?
+~~~ END EDNOTE ~~~
+
+
+### Avirom2022
+
+[Avirom2022].
+
+
+~~~ BEGIN EDNOTE ~~~
+Quotes from Arivom2022:
+
+This paper is largely critiquing the use of HKDF (HMAC) as a combiner for two secrets. This is not exactly what we are doing here.
+
+"If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input. "
+
+The construction offered in [Avirom2022] seems complex. I don't understand why the construction
+
+SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+
+is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Avirom2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?
 
 <!-- End of Security Considerations section -->
 
