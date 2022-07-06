@@ -121,17 +121,17 @@ Internet-Draft              PQ Composite Keys                  July 2022
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  11
      8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  11
      8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  11
-     8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  11
+     8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  12
        8.3.1.  Need for a KDF within the combiner  . . . . . . . . .  12
        8.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  12
-       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  12
+       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  13
    9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
      9.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  14
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  15
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  15
    Appendix B.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  15
    Appendix C.  Intellectual Property Considerations . . . . . . . .  17
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  17
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  18
      D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  18
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  18
 
@@ -518,6 +518,10 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    ~~~ END EDNOTE ~~~
 
+   EDNOTE: We we need domain separation in case other protocols use the
+   same shared secrets in the same construction?  Something like "KDF(
+   ASCII("compositeKEM") || KDF(input1) || KDF(input2) )" ?
+
 5.1.  Composite KEM CipherText Encoding
 
    For ease of use when encoding and decoding, the following encoding is
@@ -549,11 +553,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
    o  In particular, implications for (large) composite keys /
       signatures / certs on the handshake stages of TLS and IKEv2.
 
-   o  If a cert in the chain is a composite cert then does the whole
-      chain need to be of composite Certs?
 
-   o  We could also explain that the root CA cert does not have to be of
-      the same algorithms.  The root cert SHOULD NOT be transferred in
 
 
 
@@ -562,6 +562,11 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 10]
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
+   o  If a cert in the chain is a composite cert then does the whole
+      chain need to be of composite Certs?
+
+   o  We could also explain that the root CA cert does not have to be of
+      the same algorithms.  The root cert SHOULD NOT be transferred in
       the authentication exchange to save transport overhead and thus it
       can be different than the intermediate and leaf certs.
 
@@ -601,11 +606,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    TODO
 
-8.3.  Cryptographic review of combiner
-
-   EDNOTE: LAMPS should probably request CFRF review of this draft to
-   ensure that the combiner is resistant to all known cryptograhpic
-   attacks.
 
 
 
@@ -617,6 +617,12 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 11]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
+
+8.3.  Cryptographic review of combiner
+
+   EDNOTE: LAMPS should probably request CFRF review of this draft to
+   ensure that the combiner is resistant to all known cryptograhpic
+   attacks.
 
 8.3.1.  Need for a KDF within the combiner
 
@@ -656,6 +662,18 @@ Internet-Draft              PQ Composite Keys                  July 2022
    to provide additional collision resistance on top of that provided by
    the underlying KDF.
 
+
+
+
+
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 12]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
 8.3.3.  Aviram2022
 
    See the attack analysis described in summary in [Aviram2022].
@@ -666,22 +684,13 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    [Aviram2022] gives the following definition: "If we would like to
    combine two keys, either of which might be influenced by an attacker,
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 12]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    we need adual-PRF as the keycombiner: That is, a function which is a
    PRF when keyed by either input.
 
    We believe the construction offered in this document meets this
-   definition of a dual-PRF so long as the chosen KDF satisfies the
-   requirement of being a one-way function.  This holds even if the
-   chosen KDF is HKDF with the same key (salt) used in each KDF()
-   operation.
+   definition of a dual-PRF so long as the chosen KDF is itself a PRF.
+   This holds even if the chosen KDF is HKDF with the same key (salt)
+   used in each KDF() operation.
 
 9.  References
 
@@ -713,15 +722,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               DOI 10.17487/RFC2986, November 2000,
               <https://www.rfc-editor.org/info/rfc2986>.
 
-   [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
-              "Internet X.509 Public Key Infrastructure Certificate
-              Management Protocol (CMP)", RFC 4210,
-              DOI 10.17487/RFC4210, September 2005,
-              <https://www.rfc-editor.org/info/rfc4210>.
-
-
-
-
 
 
 
@@ -729,6 +729,12 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 13]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
+
+   [RFC4210]  Adams, C., Farrell, S., Kause, T., and T. Mononen,
+              "Internet X.509 Public Key Infrastructure Certificate
+              Management Protocol (CMP)", RFC 4210,
+              DOI 10.17487/RFC4210, September 2005,
+              <https://www.rfc-editor.org/info/rfc4210>.
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -771,12 +777,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-9.2.  Informative References
-
-   [Aviram2021]
-              "Concatenating Secrets May Be Dangerous", 2022,
-              <https://github.com/nimia/kdf_public>.
-
 
 
 
@@ -785,6 +785,12 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 14]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
+
+9.2.  Informative References
+
+   [Aviram2021]
+              "Concatenating Secrets May Be Dangerous", 2022,
+              <https://github.com/nimia/kdf_public>.
 
    [Aviram2022]
               "Practical (Post-Quantum) Key Combiners from One-Wayness
@@ -829,12 +835,6 @@ Composite-Keys-2022
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
-EXPORTS ALL;
-
-IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-
 
 
 Ounsworth & Gray         Expires January 7, 2023               [Page 15]
@@ -842,6 +842,11 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 15]
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
+EXPORTS ALL;
+
+IMPORTS
+  PUBLIC-KEY, SIGNATURE-ALGORITHM
+    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
       { iso(1) identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) id-mod(0)
         id-mod-algorithmInformation-02(58) }
@@ -886,17 +891,17 @@ CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey
 CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey
                                             ENCODED BY der)
 
-CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
--- pk-explicitComposite - Composite public key information object
-
 
 
 Ounsworth & Gray         Expires January 7, 2023               [Page 16]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
+
+CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
+
+
+-- pk-explicitComposite - Composite public key information object
 
 pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
   FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
@@ -941,11 +946,6 @@ Appendix C.  Intellectual Property Considerations
 
    https://datatracker.ietf.org/ipr/3588/
 
-Appendix D.  Contributors and Acknowledgements
-
-   This document incorporates contributions and comments from a large
-   group of experts.  The Editors would especially like to acknowledge
-   the expertise and tireless dedication of the following people, who
 
 
 
@@ -954,6 +954,11 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 17]
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
+Appendix D.  Contributors and Acknowledgements
+
+   This document incorporates contributions and comments from a large
+   group of experts.  The Editors would especially like to acknowledge
+   the expertise and tireless dedication of the following people, who
    attended many long meetings and generated millions of bytes of
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
@@ -990,11 +995,6 @@ Authors' Addresses
    Entrust Limited
 
    Email: john.gray@entrust.com
-
-
-
-
-
 
 
 

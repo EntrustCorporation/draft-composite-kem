@@ -425,6 +425,8 @@ QUESTION: Should the choice of combiner be assigned an OID and made agile? If no
 
 ~~~ END EDNOTE ~~~
 
+EDNOTE: We we need domain separation in case other protocols use the same shared secrets in the same construction? Something like `KDF( ASCII("compositeKEM") || KDF(input1) || KDF(input2) )` ?
+
 ## Composite KEM CipherText Encoding
 
 For ease of use when encoding and decoding, the following encoding is 
@@ -520,7 +522,7 @@ This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner f
 [Aviram2022] gives the following definition:
 "If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.
 
-We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.
+We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.
 
 <!-- End of Security Considerations section -->
 

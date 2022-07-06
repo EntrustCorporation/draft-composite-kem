@@ -721,6 +721,7 @@ Output:  SS
 <p id="rfc.section.5.p.14">At present we are opting for Option 2.</p>
 <p id="rfc.section.5.p.15">QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.</p>
 <p id="rfc.section.5.p.16">~~~ END EDNOTE ~~~</p>
+<p id="rfc.section.5.p.17">EDNOTE: We we need domain separation in case other protocols use the same shared secrets in the same construction? Something like <samp>KDF( ASCII("compositeKEM") || KDF(input1) || KDF(input2) )</samp> ?</p>
 <h1 id="rfc.section.5.1">
 <a href="#rfc.section.5.1">5.1.</a> <a href="#composite-kem-ciphertext-encoding" id="composite-kem-ciphertext-encoding">Composite KEM CipherText Encoding</a>
 </h1>
@@ -787,7 +788,7 @@ Output:  SS
 <p id="rfc.section.8.3.3.p.1">See the attack analysis described in summary in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
 <p id="rfc.section.8.3.3.p.2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
 <p><a href="#Aviram2022" class="xref">[Aviram2022]</a> gives the following definition: "If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.</p>
-<p id="rfc.section.8.3.3.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
+<p id="rfc.section.8.3.3.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> References</h1>
 <h1 id="rfc.references.1">
