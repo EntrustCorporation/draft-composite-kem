@@ -122,10 +122,11 @@ Internet-Draft              PQ Composite Keys                  July 2022
      8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  11
      8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  11
      8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  11
-       8.3.1.  APOP Attack on concatenated keys  . . . . . . . . . .  12
-       8.3.2.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  12
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  12
+       8.3.1.  Need for a KDF within the combiner  . . . . . . . . .  12
+       8.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  12
+       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  12
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
      9.2.  Informative References  . . . . . . . . . . . . . . . . .  14
    Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  15
    Appendix B.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  15
@@ -159,7 +160,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
       deployment that a public key algorithm has become untrustworthy,
       but in the interim, they may not know which algorithm an adversary
       has compromised.
-
 
 
 
@@ -316,7 +316,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
    TODO: QUESTION: If we return "SS = SS1 || .. || SSn", does that make
    this mechanism fail IND-CCA2?  Do we need to carry a KDF here too and
    do "SS = KDF(SS1 || .. || SSn)"?  Also take another look at
-   Section 8.3.1 with regards to this question.
+   Section 8.3.2 with regards to this question.
 
 2.2.  Composite Keys
 
@@ -618,7 +618,23 @@ Ounsworth & Gray         Expires January 7, 2023               [Page 11]
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-8.3.1.  APOP Attack on concatenated keys
+8.3.1.  Need for a KDF within the combiner
+
+   It is expected that the majority of uses of the KEM defined in this
+   document will be within a construct such as [I-D.draft-perret-prat-
+   lamps-cms-pq-kem] which supplies the KEM output to a KDF in order to
+   derive a wrapping key.  In these cases it is redundant for the
+   combiner within the composite KEM to also use a KDF.  However, it is
+   possible for protocol designers to want to use a KEM output -- or a
+   truncation of it -- directly as a symmetric key; for this purpose we
+   have included a KDF in the composite KEM construction.
+
+   In protocols where the KEM output will be supplied to a KDF, it
+   should be safe to use a NULL KDF within the composite KEM -- ie the
+   KDF where "KDF(m) = m" -- but we leave the details of any such
+   security analysis to the protocol designers who wish to implement it.
+
+8.3.2.  APOP Attack on concatenated keys
 
    See the attack analysis described in summary in [Aviram2021].
 
@@ -640,7 +656,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
    to provide additional collision resistance on top of that provided by
    the underlying KDF.
 
-8.3.2.  Aviram2022
+8.3.3.  Aviram2022
 
    See the attack analysis described in summary in [Aviram2022].
 
@@ -650,6 +666,14 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    [Aviram2022] gives the following definition: "If we would like to
    combine two keys, either of which might be influenced by an attacker,
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 12]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    we need adual-PRF as the keycombiner: That is, a function which is a
    PRF when keyed by either input.
 
@@ -662,17 +686,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
 9.  References
 
 9.1.  Normative References
-
-
-
-
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 12]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
@@ -706,6 +719,17 @@ Internet-Draft              PQ Composite Keys                  July 2022
               DOI 10.17487/RFC4210, September 2005,
               <https://www.rfc-editor.org/info/rfc4210>.
 
+
+
+
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 13]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
               Infrastructure Certificate and Certificate Revocation List
@@ -720,15 +744,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Public Key Infrastructure Using X.509 (PKIX)", RFC 5912,
               DOI 10.17487/RFC5912, June 2010,
               <https://www.rfc-editor.org/info/rfc5912>.
-
-
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 13]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
    [RFC5914]  Housley, R., Ashmore, S., and C. Wallace, "Trust Anchor
               Format", RFC 5914, DOI 10.17487/RFC5914, June 2010,
@@ -762,6 +777,15 @@ Internet-Draft              PQ Composite Keys                  July 2022
               "Concatenating Secrets May Be Dangerous", 2022,
               <https://github.com/nimia/kdf_public>.
 
+
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 14]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    [Aviram2022]
               "Practical (Post-Quantum) Key Combiners from One-Wayness
               and Applications to TLS.", n.d.,
@@ -777,14 +801,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
               exchange in TLS 1.3", draft-ietf-tls-hybrid-design-04
               (work in progress), January 2022.
-
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 14]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
    [RFC3279]  Bassham, L., Polk, W., and R. Housley, "Algorithms and
               Identifiers for the Internet X.509 Public Key
@@ -818,6 +834,14 @@ EXPORTS ALL;
 IMPORTS
   PUBLIC-KEY, SIGNATURE-ALGORITHM
     FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 15]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
       { iso(1) identified-organization(3) dod(6) internet(1)
         security(5) mechanisms(5) pkix(7) id-mod(0)
         id-mod-algorithmInformation-02(58) }
@@ -833,14 +857,6 @@ IMPORTS
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0)
         id-mod-asymmetricKeyPkgV1(50) } ;
-
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 15]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
 --
 -- Object Identifiers
@@ -875,6 +891,13 @@ CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
 
 -- pk-explicitComposite - Composite public key information object
 
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 16]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
 pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
   FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
   PUBLIC-KEY ::= {
@@ -890,14 +913,6 @@ pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
 -- ExplicitCompositePublicKey - The data structure for a composite
 -- public key sec-composite-pub-keys and SecondPublicKeyType are needed
 -- because PUBLIC-KEY contains a set of public key types, not a single
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 16]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
 -- type.
 -- TODO The parameters should be optional only if they are marked
 -- optional in the PUBLIC-KEY
@@ -931,6 +946,14 @@ Appendix D.  Contributors and Acknowledgements
    This document incorporates contributions and comments from a large
    group of experts.  The Editors would especially like to acknowledge
    the expertise and tireless dedication of the following people, who
+
+
+
+Ounsworth & Gray         Expires January 7, 2023               [Page 17]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    attended many long meetings and generated millions of bytes of
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
@@ -944,15 +967,6 @@ Appendix D.  Contributors and Acknowledgements
    referenced below.  Thanks go to the authors of those documents.
    "Copying always makes things easier and less error prone" -
    [RFC8411].
-
-
-
-
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 17]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
 D.1.  Making contributions
 
@@ -976,20 +990,6 @@ Authors' Addresses
    Entrust Limited
 
    Email: john.gray@entrust.com
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

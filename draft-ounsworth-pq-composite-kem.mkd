@@ -492,6 +492,12 @@ TODO
 
 EDNOTE: LAMPS should probably request CFRF review of this draft to ensure that the combiner is resistant to all known cryptograhpic attacks.
 
+### Need for a KDF within the combiner
+
+It is expected that the majority of uses of the KEM defined in this document will be within a construct such as [I-D.draft-perret-prat-lamps-cms-pq-kem] which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.
+
+In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where `KDF(m) = m` -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.
+
 ### APOP Attack on concatenated keys {#sec-apop-attack}
 
 See the attack analysis described in summary in [Aviram2021].
