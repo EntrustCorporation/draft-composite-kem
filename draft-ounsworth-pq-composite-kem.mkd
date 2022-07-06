@@ -380,19 +380,47 @@ Output:  SS
 ~~~ BEGIN EDNOTE ~~~
 EDNOTE: We need to add a KDF-based combiner here.
 Suggestions are:
+
+
+Option 0)
+
+SS = SS1 || SS2 || .. || SSn
+with fixed length KEM algs.
+
+
+
+Option 1) 
+
+SS = KDF( SS1 || SS2 || .. || SSn )
+with fixed length KEM algs.
+
+
+
+Option 1b)
+
+SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )
+
+
+
+Option 2)
+
 SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
-or
-SS = KDF( KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn) )
 
 
-Note that the obvious simpler constructions don't work in cases where the attacker can control one or more inputs and gets, see the resulting shared secret, and submit multiple queries against the same SS2 (ie SS2 is derived from a static-key non-ephemeral protocol. Therefore should not be used:
+Option 2b)
 
-SS = KDF( SS1 || SS2 || .. || SSn)
-in vulnerable to the APOP attack, for example when the attacker chooses RSA-KEM as component 1 so that they can learn SS2
-
-Similarly,
 SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)
-under the same cirtumstances as above would allow the attacker to learn KDF(SS2), which is not as detrimental as learning SS2 directly, but can still be avoided cheaply be wrapping the entire construction in an outer KDF.
+
+
+Option 3)
+
+The combiner suggested in [Aviram2022].
+
+
+
+At present we are opting for Option 2.
+
+QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.
 
 
 ~~~ END EDNOTE ~~~
@@ -468,12 +496,12 @@ EDNOTE: LAMPS should probably request CFRF review of this draft to ensure that t
 
 See the attack analysis described in summary in [Aviram2021].
 
-A possible fix, which aligns with [I-D.draft-ietf-tls-hybrid-design], would be to have all KEM algorithm definitions for use in CMS specify a fixed output length for the shared secret it produces, this would preclude attackers at runtime from manipulating the length of a shared secret so that the next one in the concatenation falls on a hash block boundary, which closes the attack mentioned above.
+The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.
 
-A natural place to do this would be in [I-D.draft-turner-lamps-nist-pqc-kem-certificates].
+We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for [I-D.draft-ietf-tls-hybrid-design]. Second, any non-depricated KDF will not allow collision attacks.
 
+In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.
 
-EDNOTE: in CMS we are allowing any KDF. Can we, by construction, require only weak security assumptions on the KDF?
 ~~~ END EDNOTE ~~~
 
 
@@ -485,15 +513,11 @@ EDNOTE: in CMS we are allowing any KDF. Can we, by construction, require only we
 ~~~ BEGIN EDNOTE ~~~
 Quotes from Arivom2022:
 
-This paper is largely critiquing the use of HKDF (HMAC) as a combiner for two secrets. This is not exactly what we are doing here.
+This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.
 
-"If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input. "
+"If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.
 
-The construction offered in [Aviram2022] seems complex. I don't understand why the construction
-
-SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
-
-is insufficient, even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation. Maybe the construction offered in Aviram2022 has better performance? If that's its only advantage, I would argue for the similicity of using a combination of only the supplied KDF. Although maybe this raises the question of whether the combiner should in fact be parametrized for future crypto agility?
+We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.
 
 <!-- End of Security Considerations section -->
 
