@@ -773,15 +773,13 @@ Output:  SS
 <p id="rfc.section.8.3.1.p.2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.</p>
 <p id="rfc.section.8.3.1.p.3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for [I-D.draft-ietf-tls-hybrid-design]. Second, any non-depricated KDF will not allow collision attacks.</p>
 <p id="rfc.section.8.3.1.p.4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.</p>
-<p id="rfc.section.8.3.1.p.5">~~~ END EDNOTE ~~~</p>
 <h1 id="rfc.section.8.3.2">
 <a href="#rfc.section.8.3.2">8.3.2.</a> <a href="#aviram2022" id="aviram2022">Aviram2022</a>
 </h1>
-<p><a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
-<p id="rfc.section.8.3.2.p.2">~~~ BEGIN EDNOTE ~~~ Quotes from Arivom2022:</p>
-<p id="rfc.section.8.3.2.p.3">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
-<p id="rfc.section.8.3.2.p.4">"If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.</p>
-<p id="rfc.section.8.3.2.p.5">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
+<p id="rfc.section.8.3.2.p.1">See the attack analysis described in summary in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
+<p id="rfc.section.8.3.2.p.2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
+<p><a href="#Aviram2022" class="xref">[Aviram2022]</a> gives the following definition: "If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.</p>
+<p id="rfc.section.8.3.2.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
 <h1 id="rfc.references">
 <a href="#rfc.references">9.</a> References</h1>
 <h1 id="rfc.references.1">

@@ -502,19 +502,16 @@ We believe that, in general, neither of these pre-conditions are met within PKIX
 
 In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.
 
-~~~ END EDNOTE ~~~
 
 
 ### Aviram2022
 
-[Aviram2022].
+See the attack analysis described in summary in [Aviram2022].
 
-
-~~~ BEGIN EDNOTE ~~~
-Quotes from Arivom2022:
 
 This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.
 
+[Aviram2022] gives the following definition:
 "If we would like to combine two keys, either of which might be influenced by an attacker, we need adual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.
 
 We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF satisfies the requirement of being a one-way function. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.
