@@ -5,7 +5,7 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: January 7, 2023                                   July 06, 2022
+Expires: January 9, 2023                                   July 08, 2022
 
 
                  Composite KEM For Use In Internet PKI
@@ -44,8 +44,8 @@ Abstract
    algorithm.
 
    This document is intended to be coupled with the composite keys
-   structure define in [draft-ounsworth-pq-composite-keys-01] and the
-   CMS KEM-TRANS mechanism in [draft-perret-prat-lamps-cms-pq-kem-00].
+   structure define in [I-D.ounsworth-pq-composite-keys] and the CMS
+   KEM-TRANS mechanism in [I-D.perret-prat-lamps-cms-pq-kem].
 
 
 
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 1]
+Ounsworth & Gray         Expires January 9, 2023                [Page 1]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 7, 2023.
+   This Internet-Draft will expire on January 9, 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 2]
+Ounsworth & Gray         Expires January 9, 2023                [Page 2]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 3]
+Ounsworth & Gray         Expires January 9, 2023                [Page 3]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -175,11 +175,11 @@ Internet-Draft              PQ Composite Keys                  July 2022
       to fully post-quantum-aware cryptography.
 
    This document provides a mechanism to address algorithm strength
-   uncertainty by building on [draft-ounsworth-pq-composite-keys-00]
-   (NOTE: need kramdown formatting help with this ref) by providing the
-   format and process for combining multiple cryptographic algorithms
-   into a single key encapsulation operation.  Backwards compatibility
-   is addressed via using composite in conjunction with a non-composite
+   uncertainty by building on [I-D.ounsworth-pq-composite-keys] (NOTE:
+   need kramdown formatting help with this ref) by providing the format
+   and process for combining multiple cryptographic algorithms into a
+   single key encapsulation operation.  Backwards compatibility is
+   addressed via using composite in conjunction with a non-composite
    hybrid mode such as that described in [draft-becker-guthrie-
    noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help
    with this ref).
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 4]
+Ounsworth & Gray         Expires January 9, 2023                [Page 4]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -244,8 +244,8 @@ Internet-Draft              PQ Composite Keys                  July 2022
 2.1.  Key Encapsulation Mechanisms (KEMs)
 
    We borrow here the definition of a key encapsulation mecanism (KEM)
-   from [I-D.draft-ietf-tls-hybrid-design], in which a KEM consists of
-   three algorithms:
+   from [I-D.ietf-tls-hybrid-design], in which a KEM consists of three
+   algorithms:
 
    o  KeyGen() -> (pk, sk): A probabilistic key generation algorithm,
       which generates a public key pk and a secret key sk.
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 5]
+Ounsworth & Gray         Expires January 9, 2023                [Page 5]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 6]
+Ounsworth & Gray         Expires January 9, 2023                [Page 6]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 7]
+Ounsworth & Gray         Expires January 9, 2023                [Page 7]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 8]
+Ounsworth & Gray         Expires January 9, 2023                [Page 8]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023                [Page 9]
+Ounsworth & Gray         Expires January 9, 2023                [Page 9]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -557,7 +557,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 10]
+Ounsworth & Gray         Expires January 9, 2023               [Page 10]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 11]
+Ounsworth & Gray         Expires January 9, 2023               [Page 11]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -627,13 +627,14 @@ Internet-Draft              PQ Composite Keys                  July 2022
 8.3.1.  Need for a KDF within the combiner
 
    It is expected that the majority of uses of the KEM defined in this
-   document will be within a construct such as [I-D.draft-perret-prat-
-   lamps-cms-pq-kem] which supplies the KEM output to a KDF in order to
-   derive a wrapping key.  In these cases it is redundant for the
-   combiner within the composite KEM to also use a KDF.  However, it is
-   possible for protocol designers to want to use a KEM output -- or a
-   truncation of it -- directly as a symmetric key; for this purpose we
-   have included a KDF in the composite KEM construction.
+   document will be within a construct such as
+   [I-D.perret-prat-lamps-cms-pq-kem] which supplies the KEM output to a
+   KDF in order to derive a wrapping key.  In these cases it is
+   redundant for the combiner within the composite KEM to also use a
+   KDF.  However, it is possible for protocol designers to want to use a
+   KEM output -- or a truncation of it -- directly as a symmetric key;
+   for this purpose we have included a KDF in the composite KEM
+   construction.
 
    In protocols where the KEM output will be supplied to a KDF, it
    should be safe to use a NULL KDF within the composite KEM -- ie the
@@ -668,8 +669,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-
-Ounsworth & Gray         Expires January 7, 2023               [Page 12]
+Ounsworth & Gray         Expires January 9, 2023               [Page 12]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 13]
+Ounsworth & Gray         Expires January 9, 2023               [Page 13]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 14]
+Ounsworth & Gray         Expires January 9, 2023               [Page 14]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -837,7 +837,7 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 15]
+Ounsworth & Gray         Expires January 9, 2023               [Page 15]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -893,7 +893,7 @@ CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 16]
+Ounsworth & Gray         Expires January 9, 2023               [Page 16]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -949,7 +949,7 @@ Appendix C.  Intellectual Property Considerations
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 17]
+Ounsworth & Gray         Expires January 9, 2023               [Page 17]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -1005,4 +1005,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray         Expires January 7, 2023               [Page 18]
+Ounsworth & Gray         Expires January 9, 2023               [Page 18]

@@ -133,7 +133,7 @@ of Encryption or KEM algorithms for each composite component
 algorithm.  
 
 This document is intended to be coupled with the composite keys
-structure define in [draft-ounsworth-pq-composite-keys-01] and the CMS KEM-TRANS mechanism in [draft-perret-prat-lamps-cms-pq-kem-00].
+structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEM-TRANS mechanism in {{I-D.perret-prat-lamps-cms-pq-kem}}.
 
 <!-- End of Abstract -->
 
@@ -151,7 +151,7 @@ The deployment of composite public keys, and composite signatures and composite 
 - Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 
 
-This document provides a mechanism to address algorithm strength uncertainty by building on [draft-ounsworth-pq-composite-keys-00] (NOTE: need kramdown formatting help with this ref) by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
+This document provides a mechanism to address algorithm strength uncertainty by building on {{I-D.ounsworth-pq-composite-keys}} (NOTE: need kramdown formatting help with this ref) by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
 
 
 This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
@@ -215,7 +215,7 @@ SHARED SECRET:
 
 ## Key Encapsulation Mechanisms (KEMs) {#sec-kems}
 
-We borrow here the definition of a key encapsulation mecanism (KEM) from [I-D.draft-ietf-tls-hybrid-design], in which a KEM consists of three algorithms:
+We borrow here the definition of a key encapsulation mecanism (KEM) from {{I-D.ietf-tls-hybrid-design}}, in which a KEM consists of three algorithms:
 
    *  KeyGen() -> (pk, sk): A probabilistic key generation algorithm,
       which generates a public key pk and a secret key sk.
@@ -496,7 +496,7 @@ EDNOTE: LAMPS should probably request CFRF review of this draft to ensure that t
 
 ### Need for a KDF within the combiner
 
-It is expected that the majority of uses of the KEM defined in this document will be within a construct such as [I-D.draft-perret-prat-lamps-cms-pq-kem] which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.
+It is expected that the majority of uses of the KEM defined in this document will be within a construct such as {{I-D.perret-prat-lamps-cms-pq-kem}} which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.
 
 In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where `KDF(m) = m` -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.
 
