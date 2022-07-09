@@ -68,7 +68,9 @@ normative:
 informative:
   RFC3279:
   RFC5990:
+  I-D.draft-ounsworth-pq-composite-sigs-07:
   I-D.draft-ietf-tls-hybrid-design-04:
+  I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   Bindel2017:
     title: "Transitioning to a quantum-resistant public key infrastructure"
     target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
@@ -151,7 +153,7 @@ The deployment of composite public keys, and composite signatures and composite 
 - Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 
 
-This document provides a mechanism to address algorithm strength uncertainty by building on {{I-D.ounsworth-pq-composite-keys}} (NOTE: need kramdown formatting help with this ref) by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in [draft-becker-guthrie-noncomposite-hybrid-auth-00] (NOTE: need kramdown formatting help with this ref).
+This document provides a mechanism to address algorithm strength uncertainty by building on {{I-D.ounsworth-pq-composite-keys}} (NOTE: need kramdown formatting help with this ref) by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}} (NOTE: need kramdown formatting help with this ref).
 
 
 This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
@@ -233,6 +235,8 @@ This document is not concerned with the KeyGen() algorithm of a KEM, but it is i
 
 The KEM interface defined above differs from both tradational key transport mechanism (for example for use with KeyTransRecipientInfo defined in {{RFC5652}}), and key agreement (for example for use with KeyAgreeRecipientInfo defined in {{RFC5652}}). 
 
+EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a defition of "KEM" that includes it as a requirement.
+
 The KEM interface was chosen as the interface for a composite key exchange because both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:
 
 A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -> ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -> ss. This follows the pattern of RSA-KEM [RFC5990].
@@ -262,8 +266,8 @@ The composite KEM mechanisms meets these security properties if and only if the 
 
 TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.
 
-TODO:  Discussed use of ASN.1 to combine the shared secrets.   ASN.1 is nice because it embedds the length values for
-us.  
+EDNOTE:  Discussed use of ASN.1 to combine the shared secrets.   ASN.1 is nice because it embedds the length values for
+us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.
 
 ## Composite Keys
 
@@ -348,8 +352,7 @@ EDNOTE: this is a temporary OID for the purposes of prototyping.  We
    Which yields an information object:
 
 
-TODO - Define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF is
-kema (for KEM algorithm) the right prefix?   
+TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?   
 
 ~~~
    kema-CompositeKEM KEM-ALGORITHM ::= {
@@ -386,6 +389,7 @@ The parameters in the compositeKemalgID are composite-kem-params
    }
 ~~~
 
+EDNOTE: does the (generic) params need to carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures to prevent the verifier from coming up with false validity by using the wrong verification algorithm. With encryption I think it's less important for encryption; either your private key works or it doesn't, no harm done.
 
 ~~~ BEGIN EDNOTE ~~~
 
@@ -434,9 +438,22 @@ See Ednote below for a discussion on some possible combiner modes
 
 ## Other Explicit Algorithms
 
-TODO
+This variant provides a rigid way of specifying supported combinations of algorithms.
 
-# Composite Key Encapsulation
+The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.
+
+
+Explicit algorithms must define a new signature algorithm which consists of:
+
+- A new algorithm identifier OID for the explicit algorithm.
+- The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.
+- Algorithm parameters either declared ABSENT, or defined with a type and encoding.
+
+<!-- See {{appdx-creatingExplicitCombinations}} for guidance on creating and registering OIDs for specific explicit combinations. -->
+
+TODO: lay out the details.
+
+# Composite Key Encapsulation process {#sec-encaps-proc}
 
 Composite key encapsulations takes a CompositePublicKey as its input.  The
 CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent 
@@ -472,7 +489,7 @@ Output:  SS, CT
 ~~~
 
 
-# Composite Key Decapsulation
+# Composite Key Decapsulation {#sec-decaps-proc}
 
 Composite key decapsulations takes a CompositePrivateKey as its input and the
 sequence of Cipher texts (ct1 .. ctn) computed by the composite key 
@@ -577,6 +594,44 @@ EDNOTE 10: Possible topics to address:
   - We could include a subsection about implementation considerations.
 
 
+
+## Backwards Compatibility
+
+As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.
+
+The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.
+
+These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS [RFC5652] encrypted structures.
+
+### K-of-N modes
+
+~~~ BEGIN EDNOTE ~~~
+In the context of encryption, K-of-N modes could mean one of two things:
+
+Type 1: sender uses a subset
+
+This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the {{sec-encaps-proc}} but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algoritms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.
+
+
+Type 2: receiver uses a subset
+
+This ould mean that the sender (encrypter) uses all N of the component keys within the receiver's public key in such a way that the receiver (decrypter) only needs to use K private keys to decrypt the message. This implies the need for some kind of Shamir's-like secret splitting scheme. This is a reasonably complex mechanism and it's currently unclear if there are any use-cases that require such a mechanism.
+
+~~~ END EDNOTE ~~~
+
+
+### Parallel PKIs
+
+We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).
+
+Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation. 
+
+For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms.
+
+For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS [RFC5652].
+
+EDNOTE: I copied and pruned this text from {{I-D.ounsworth-pq-composite-sigs}}. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.
+
 <!-- End of In Practice section -->
 
 # IANA Considerations {#sec-iana}
@@ -601,7 +656,16 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 ## OR Modes
 
-TODO
+TODO -- we'll need security consideration analysis of whatever OR modes we choose.
+
+~~~ BEGIN EDNOTE ~~~
+In the context of encryption, OR modes could mean one of two things:
+
+Type 1: sender uses a subset
+
+This would mean the sender (encrypter) uses a subset of the component keys within the receiver's public key. The obvious 
+
+~~~ END EDNOTE ~~~
 
 ## Cryptographic review of combiner
 
@@ -619,7 +683,7 @@ See the attack analysis described in summary in [Aviram2021].
 
 The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.
 
-We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for [I-D.draft-ietf-tls-hybrid-design]. Second, any non-depricated KDF will not allow collision attacks.
+We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for {{I-D.ietf-tls-hybrid-design}}. Second, any non-depricated KDF will not allow collision attacks.
 
 In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.
 
