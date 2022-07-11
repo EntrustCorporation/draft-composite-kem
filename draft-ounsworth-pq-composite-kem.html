@@ -382,27 +382,29 @@
 <link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Key Usage Bits">
 <link href="#rfc.section.2.3" rel="Chapter" title="2.3 CompositeCiphertextValue">
 <link href="#rfc.section.2.4" rel="Chapter" title="2.4 Encoding Rules">
-<link href="#rfc.section.2.4.1" rel="Chapter" title="2.4.1 Composite KEM Ciphertext Encoding">
-<link href="#rfc.section.3" rel="Chapter" title="3 Algorithm Identifiers">
+<link href="#rfc.section.3" rel="Chapter" title="3 KEM Algorithm Identifiers">
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 id-alg-composite-kem">
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Other Explicit Algorithms">
-<link href="#rfc.section.4" rel="Chapter" title="4 Composite Key Encapsulation process">
-<link href="#rfc.section.5" rel="Chapter" title="5 Composite Key Decapsulation">
-<link href="#rfc.section.6" rel="Chapter" title="6 In Practice">
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Backwards Compatibility">
-<link href="#rfc.section.6.1.1" rel="Chapter" title="6.1.1 K-of-N modes">
-<link href="#rfc.section.6.1.2" rel="Chapter" title="6.1.2 Parallel PKIs">
-<link href="#rfc.section.7" rel="Chapter" title="7 IANA Considerations">
-<link href="#rfc.section.8" rel="Chapter" title="8 Security Considerations">
-<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Policy for Deprecated and Acceptable Algorithms">
-<link href="#rfc.section.8.2" rel="Chapter" title="8.2 OR Modes">
-<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Cryptographic review of combiner">
-<link href="#rfc.section.8.3.1" rel="Chapter" title="8.3.1 Need for a KDF within the combiner">
-<link href="#rfc.section.8.3.2" rel="Chapter" title="8.3.2 APOP Attack on concatenated keys">
-<link href="#rfc.section.8.3.3" rel="Chapter" title="8.3.3 Aviram2022">
-<link href="#rfc.references" rel="Chapter" title="9 References">
-<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References">
+<link href="#rfc.section.4" rel="Chapter" title="4 Combiner Algorithm Identifiers">
+<link href="#rfc.section.4.1" rel="Chapter" title="4.1 NULL">
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 id-composite-kdf-combiner">
+<link href="#rfc.section.5" rel="Chapter" title="5 Composite Encapsulation process">
+<link href="#rfc.section.6" rel="Chapter" title="6 Composite Key Decapsulation">
+<link href="#rfc.section.7" rel="Chapter" title="7 In Practice">
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Backwards Compatibility">
+<link href="#rfc.section.7.1.1" rel="Chapter" title="7.1.1 K-of-N modes">
+<link href="#rfc.section.7.1.2" rel="Chapter" title="7.1.2 Parallel PKIs">
+<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations">
+<link href="#rfc.section.9.1" rel="Chapter" title="9.1 Policy for Deprecated and Acceptable Algorithms">
+<link href="#rfc.section.9.2" rel="Chapter" title="9.2 OR Modes">
+<link href="#rfc.section.9.3" rel="Chapter" title="9.3 Cryptographic review of combiner">
+<link href="#rfc.section.9.3.1" rel="Chapter" title="9.3.1 Need for a KDF within the combiner">
+<link href="#rfc.section.9.3.2" rel="Chapter" title="9.3.2 APOP Attack on concatenated keys">
+<link href="#rfc.section.9.3.3" rel="Chapter" title="9.3.3 Aviram2022">
+<link href="#rfc.references" rel="Chapter" title="10 References">
+<link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References">
+<link href="#rfc.references.2" rel="Chapter" title="10.2 Informative References">
 <link href="#rfc.appendix.A" rel="Chapter" title="A Examples">
 <link href="#rfc.appendix.B" rel="Chapter" title="B ASN.1 Module">
 <link href="#rfc.appendix.C" rel="Chapter" title="C Intellectual Property Considerations">
@@ -416,9 +418,9 @@
 
   <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-kem-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-07-09" />
-  <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
-  <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
+  <meta name="dct.issued" scheme="ISO8601" content="2022-07-11" />
+  <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
+  <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
 
 </head>
 
@@ -440,8 +442,8 @@
 <td class="right">Entrust</td>
 </tr>
 <tr>
-<td class="left">Expires: January 10, 2023</td>
-<td class="right">July 09, 2022</td>
+<td class="left">Expires: January 12, 2023</td>
+<td class="right">July 11, 2022</td>
 </tr>
 
     	
@@ -455,13 +457,13 @@
 <p>The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.</p>
 <p>Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.</p>
 <p>EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.</p>
-<p>This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component<br> algorithm.</p>
+<p>This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component<br> algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification.</p>
 <p>This document is intended to be coupled with the composite keys structure define in <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a> and the CMS KEM-TRANS mechanism in <a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">[I-D.perret-prat-lamps-cms-pq-kem]</a>.</p>
 <h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 10, 2023.</p>
+<p>This Internet-Draft will expire on January 12, 2023.</p>
 <h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
 <p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
 <p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
@@ -487,47 +489,51 @@
 </li>
 <li>2.4.   <a href="#rfc.section.2.4">Encoding Rules</a>
 </li>
-<ul><li>2.4.1.   <a href="#rfc.section.2.4.1">Composite KEM Ciphertext Encoding</a>
-</li>
-</ul></ul><li>3.   <a href="#rfc.section.3">Algorithm Identifiers</a>
+</ul><li>3.   <a href="#rfc.section.3">KEM Algorithm Identifiers</a>
 </li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">id-alg-composite-kem</a>
 </li>
 <li>3.2.   <a href="#rfc.section.3.2">Other Explicit Algorithms</a>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">Composite Key Encapsulation process</a>
+</ul><li>4.   <a href="#rfc.section.4">Combiner Algorithm Identifiers</a>
 </li>
-<li>5.   <a href="#rfc.section.5">Composite Key Decapsulation</a>
+<ul><li>4.1.   <a href="#rfc.section.4.1">NULL</a>
 </li>
-<li>6.   <a href="#rfc.section.6">In Practice</a>
+<li>4.2.   <a href="#rfc.section.4.2">id-composite-kdf-combiner</a>
 </li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Backwards Compatibility</a>
+</ul><li>5.   <a href="#rfc.section.5">Composite Encapsulation process</a>
 </li>
-<ul><li>6.1.1.   <a href="#rfc.section.6.1.1">K-of-N modes</a>
+<li>6.   <a href="#rfc.section.6">Composite Key Decapsulation</a>
 </li>
-<li>6.1.2.   <a href="#rfc.section.6.1.2">Parallel PKIs</a>
+<li>7.   <a href="#rfc.section.7">In Practice</a>
 </li>
-</ul></ul><li>7.   <a href="#rfc.section.7">IANA Considerations</a>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Backwards Compatibility</a>
 </li>
-<li>8.   <a href="#rfc.section.8">Security Considerations</a>
+<ul><li>7.1.1.   <a href="#rfc.section.7.1.1">K-of-N modes</a>
 </li>
-<ul><li>8.1.   <a href="#rfc.section.8.1">Policy for Deprecated and Acceptable Algorithms</a>
+<li>7.1.2.   <a href="#rfc.section.7.1.2">Parallel PKIs</a>
 </li>
-<li>8.2.   <a href="#rfc.section.8.2">OR Modes</a>
+</ul></ul><li>8.   <a href="#rfc.section.8">IANA Considerations</a>
 </li>
-<li>8.3.   <a href="#rfc.section.8.3">Cryptographic review of combiner</a>
+<li>9.   <a href="#rfc.section.9">Security Considerations</a>
 </li>
-<ul><li>8.3.1.   <a href="#rfc.section.8.3.1">Need for a KDF within the combiner</a>
+<ul><li>9.1.   <a href="#rfc.section.9.1">Policy for Deprecated and Acceptable Algorithms</a>
 </li>
-<li>8.3.2.   <a href="#rfc.section.8.3.2">APOP Attack on concatenated keys</a>
+<li>9.2.   <a href="#rfc.section.9.2">OR Modes</a>
 </li>
-<li>8.3.3.   <a href="#rfc.section.8.3.3">Aviram2022</a>
+<li>9.3.   <a href="#rfc.section.9.3">Cryptographic review of combiner</a>
 </li>
-</ul></ul><li>9.   <a href="#rfc.references">References</a>
+<ul><li>9.3.1.   <a href="#rfc.section.9.3.1">Need for a KDF within the combiner</a>
 </li>
-<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a>
+<li>9.3.2.   <a href="#rfc.section.9.3.2">APOP Attack on concatenated keys</a>
 </li>
-<li>9.2.   <a href="#rfc.references.2">Informative References</a>
+<li>9.3.3.   <a href="#rfc.section.9.3.3">Aviram2022</a>
+</li>
+</ul></ul><li>10.   <a href="#rfc.references">References</a>
+</li>
+<ul><li>10.1.   <a href="#rfc.references.1">Normative References</a>
+</li>
+<li>10.2.   <a href="#rfc.references.2">Informative References</a>
 </li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">Examples</a>
 </li>
@@ -548,15 +554,15 @@
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while me may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
-<p id="rfc.section.1.p.2">The deployment of composite public keys, and composite signatures and composite encryption using post-quantum algorithms will face two challenges</p>
+<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
+<p id="rfc.section.1.p.2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges</p>
 <p></p>
 
 <ul>
 <li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
 <li>Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.</li>
 </ul>
-<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by building on <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in <a href="#I-D.becker-guthrie-noncomposite-hybrid-auth" class="xref">[I-D.becker-guthrie-noncomposite-hybrid-auth]</a>.</p>
+<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by building on <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Section 7.1</a>.</p>
 <p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
@@ -566,14 +572,14 @@
 <p id="rfc.section.1.1.p.3">ALGORITHM: An information object class for identifying the type of cryptographic key being encapsulated.</p>
 <p id="rfc.section.1.1.p.4">BER: Basic Encoding Rules (BER) as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
 <p id="rfc.section.1.1.p.5">CLIENT: Any software that is making use of a key at runtime.  This includes a signer, verifier, encrypter, decrypter.</p>
-<p id="rfc.section.1.1.p.6">COMBINER MODE: A combiner mode specifies how keys are to be combined together into a single cryptographic operation.  Examples include AND, OR, K-of-N.  Specifications of composite signature or encryption procedures will need to specify the behaviour under each mode.</p>
+<p id="rfc.section.1.1.p.6">COMBINER: A combiner specifies how multiple shared secrets are combined into a single shared secret.  It is expected that combiners will need to evolve with discovery of cryptanalytic attacks, so this document takes the approach of assigning Object Identifiers (OIDs) to combiners so that stronger combiners can be implemented in the future.</p>
 <p id="rfc.section.1.1.p.7">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
 <p id="rfc.section.1.1.p.8">COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more component algorithms.</p>
 <p id="rfc.section.1.1.p.9">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
 <p id="rfc.section.1.1.p.10">KEM: A key encapsulation mechanism as defined in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
 <p id="rfc.section.1.1.p.11">POST-QUANTUM ALGORITHM: Any cryptographic algorithm which is believed to be resistant to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.</p>
 <p id="rfc.section.1.1.p.12">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.13">SHARED SECRET: A value established between two communicating parties by means of a cryptographic operation, but which cannot be learned by an active or passive adversary.</p>
+<p id="rfc.section.1.1.p.13">SHARED SECRET: A value established between two communicating parties for use as cryptographic key material, but which cannot be learned by an active or passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.</p>
 <h1 id="rfc.section.2">
 <a href="#rfc.section.2">2.</a> <a href="#composite-kem-structures" id="composite-kem-structures">Composite KEM Structures</a>
 </h1>
@@ -588,19 +594,18 @@
 <li>Encaps(pk) -&gt; (ct, ss): A probabilistic encapsulation algorithm, which takes as input a public key pk and outputs a ciphertext ct and shared secret ss.</li>
 <li>Decaps(sk, ct) -&gt; ss: A decapsulation algorithm, which takes as input a secret key sk and ciphertext ct and outputs a shared secret ss, or in some cases a distinguished error value.</li>
 </ul>
-<p id="rfc.section.2.1.p.3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included for completeness.</p>
+<p id="rfc.section.2.1.p.3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.</p>
 <p id="rfc.section.2.1.p.4">The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in <a href="#RFC5652" class="xref">[RFC5652]</a>), and key agreement (for example for use with KeyAgreeRecipientInfo defined in <a href="#RFC5652" class="xref">[RFC5652]</a>).</p>
-<p id="rfc.section.2.1.p.5">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.</p>
-<p id="rfc.section.2.1.p.6">The KEM interface was chosen as the interface for a composite key exchange because both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:</p>
-<p id="rfc.section.2.1.p.7">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <a href="#RFC5990" class="xref">[RFC5990]</a>.</p>
-<p id="rfc.section.2.1.p.8">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.</p>
-<p id="rfc.section.2.1.p.9">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, promoted to a KEM as outline above, and concatenating all component shared secrets into a single shared secret.</p>
-<p id="rfc.section.2.1.p.10">The main security property for KEMs is indistinguishability under adaptive chosen ciphertext attack (IND-CCA2), which means that shared secret values should be indistinguishable from random strings even given the ability to have other arbitrary ciphertexts decapsulated.</p>
+<p id="rfc.section.2.1.p.5">The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:</p>
+<p id="rfc.section.2.1.p.6">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <a href="#RFC5990" class="xref">[RFC5990]</a>.</p>
+<p id="rfc.section.2.1.p.7">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.</p>
+<p id="rfc.section.2.1.p.8">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.</p>
+<p id="rfc.section.2.1.p.9">The main security property for KEMs is indistinguishability under adaptive chosen ciphertext attack (IND-CCA2), which means that shared secret values should be indistinguishable from random strings even given the ability to have other arbitrary ciphertexts decapsulated.</p>
+<p id="rfc.section.2.1.p.10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.</p>
 <p id="rfc.section.2.1.p.11">A weaker security notion is indistinguishability under chosen plaintext attack (IND-CPA), which means that the shared secret values should be indistinguishable from random strings given a copy of the public key.  IND-CPA roughly corresponds to security against a passive attacker, and sometimes corresponds to one-time key exchange.</p>
-<p id="rfc.section.2.1.p.12">The shared secret MUST be indistinguishable under adaptive chosen ciphertext attacks (IND-CCA2), for example when it is the output of a KDF.</p>
-<p id="rfc.section.2.1.p.13">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.</p>
-<p id="rfc.section.2.1.p.14">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.</p>
-<p id="rfc.section.2.1.p.15">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets.   ASN.1 is nice because it embeds the length values for us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.</p>
+<p id="rfc.section.2.1.p.12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.</p>
+<p id="rfc.section.2.1.p.13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.</p>
+<p id="rfc.section.2.1.p.14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.</p>
 <h1 id="rfc.section.2.2">
 <a href="#rfc.section.2.2">2.2.</a> <a href="#composite-keys" id="composite-keys">Composite Keys</a>
 </h1>
@@ -610,9 +615,9 @@
 </h1>
 <p id="rfc.section.2.2.1.p.1">When using composite KEM keys in a structure which defines a key usage (such as in an X509Certificate as defined in RFC 5280), the following key usage MUST be used.</p>
 <p id="rfc.section.2.2.1.p.2">keyEncipherment</p>
-<p id="rfc.section.2.2.1.p.3">Other types of key usages SHOULD not be used.   The main intent for this keyEncipherment is to encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and composite-KEM does not deviate from this intent.</p>
+<p id="rfc.section.2.2.1.p.3">Additional key usages SHOULD not be used.   The main intent for this keyEncipherment is to encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and composite-KEM does not deviate from this intent.</p>
 <p id="rfc.section.2.2.1.p.4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple parties are required to contribute to a key agreement verses a single party in keyEncipherment.</p>
-<p id="rfc.section.2.2.1.p.5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and these need to make the same choice about the key usage of a KEM key.</p>
+<p id="rfc.section.2.2.1.p.5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.</p>
 <h1 id="rfc.section.2.3">
 <a href="#rfc.section.2.3">2.3.</a> <a href="#compositeciphertextvalue" id="compositeciphertextvalue">CompositeCiphertextValue</a>
 </h1>
@@ -628,83 +633,42 @@ CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 <p id="rfc.section.2.4.p.3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.</p>
 <p id="rfc.section.2.4.p.4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
 <p id="rfc.section.2.4.p.5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
-<h1 id="rfc.section.2.4.1">
-<a href="#rfc.section.2.4.1">2.4.1.</a> <a href="#composite-kem-ciphertext-encoding" id="composite-kem-ciphertext-encoding">Composite KEM Ciphertext Encoding</a>
-</h1>
-<p id="rfc.section.2.4.1.p.1">For ease of use when encoding and decoding, the following encoding is suggested for the Ciphertext.</p>
-<p id="rfc.section.2.4.1.p.2">CompositeKemCT :: SEQUENCE SIZE (2..MAX) of OCTET STRING</p>
-<p id="rfc.section.2.4.1.p.3">This will allow implementations a simple and uniform way to distribute the set of Cipher texts required for the decapsulation process.<br> It is not mandatory as an implementation could choose to store the set of Cipher texts produced in a different format, so long as they are available at time of decapsulation.</p>
-<p id="rfc.section.2.4.1.p.4">EDNOTE: is this section adding anything beyond what's already said in the section above?</p>
 <h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#algorithm-identifiers" id="algorithm-identifiers">Algorithm Identifiers</a>
+<a href="#rfc.section.3">3.</a> <a href="#kem-algorithm-identifiers" id="kem-algorithm-identifiers">KEM Algorithm Identifiers</a>
 </h1>
 <p id="rfc.section.3.p.1">The following algorithm Identifiers and their associated parameters are used with composite KEM.</p>
 <h1 id="rfc.section.3.1">
 <a href="#rfc.section.3.1">3.1.</a> <a href="#id-alg-composite-kem" id="id-alg-composite-kem">id-alg-composite-kem</a>
 </h1>
-<p id="rfc.section.3.1.p.1">The id-alg-composite-kem object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or pre-agreed.</p>
+<p id="rfc.section.3.1.p.1">The id-alg-composite-kem object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized.</p>
 <pre>
-   id-alg-composite-kem OBJECT IDENTIFIER ::= {
-    joint-iso-itu-t(2) country(16) us(840) organization(1) 
-    entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 </pre>
 <p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping.  We are requesting IANA to assign a permanent OID, see Section 6.</p>
 <p id="rfc.section.3.1.p.3">Which yields an information object:</p>
 <p id="rfc.section.3.1.p.4">TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?</p>
 <pre>
-   kema-CompositeKEM KEM-ALGORITHM ::= {
-       IDENTIFIER id-alg-composite-kem
-       VALUE CompositeCiphertextValue
-       PARAMS composite-kem-params  
-       PUBLIC-KEYS { pk-Composite }
-       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-   }
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
 </pre>
-<p id="rfc.section.3.1.p.5">Composite KEM carries its algorithm parameters in the Parameters field of the AlgorithmIdentifier:</p>
+<p id="rfc.section.3.1.p.5">For Composite KEM, we define a composite KEM Algorithm ID as:</p>
+<p id="rfc.section.3.1.p.6">The following algorithm parameters MUST be included:</p>
 <pre>
-    AlgorithmIdentifier  ::=  SEQUENCE  {
-        algorithm               OBJECT IDENTIFIER,
-        parameters              ANY DEFINED BY algorithm OPTIONAL  }
+composite-kem-params  ::=  SEQUENCE {
+    combiner     AlgorithmIdentifier
+}
 </pre>
-<p id="rfc.section.3.1.p.6">For Composite KEM, we define a composite KEM Algorithm ID as:</p>
-<pre>
-   id-composite-kem-algid AlgorithmIdentifier  ::=  {
-        algorithm       id-alg-composite-kem,
-        parameters      composite-kem-params }   
-</pre>
-<p id="rfc.section.3.1.p.7">The parameters in the id-composite-kem-algid are composite-kem-params</p>
-<pre>
-   composite-kem-params  ::=  SEQUENCE {
-        kdf                  AlgorithmIdentifier,
-   }
-</pre>
-<p id="rfc.section.3.1.p.8">EDNOTE: does the (generic) params need to carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures to prevent the verifier from coming up with false validity by using the wrong verification algorithm. With encryption I think it's less important for encryption; either your private key works or it doesn't, no harm done.</p>
-<p id="rfc.section.3.1.p.9">~~~ BEGIN EDNOTE ~~~</p>
-<p id="rfc.section.3.1.p.10">If we want to allow for additional combiner modes, these combiner modes could be defined by an algorithm identifier containing the combiner mode, we would instead define composite-kem-params as:</p>
-<pre>
-   composite-kem-params  ::=  SEQUENCE {
-        combiner     AlgorithmIdentifier,
-   }
-</pre>
-<p id="rfc.section.3.1.p.11">We would then define the following combiner:</p>
-<p id="rfc.section.3.1.p.12">Example:</p>
-<pre>
-   combiner AlgorithmIdentifier  ::=  {
-        algorithm       id-Composite-KDF-Combiner,
-        parameters      alg-Composite-KDF-Combiner-Params }   
-</pre>
-<p id="rfc.section.3.1.p.13">id-Composite-KDF-Combiner ::==  OBJECT_IDENTIFIER</p>
-<p id="rfc.section.3.1.p.14">alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier</p>
-<p id="rfc.section.3.1.p.15">where:</p>
-<p id="rfc.section.3.1.p.16">id-Composite-KDF-Combiner is the OBJECT IDENTIFIER for the combiner</p>
-<p id="rfc.section.3.1.p.17">alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier</p>
-<p id="rfc.section.3.1.p.18">to specify the KDF (Option 2 below ednote) to use in the construction <samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp>.</p>
-<p id="rfc.section.3.1.p.19">If no parameters are supplied, then the default combiner mode could be simple concatenation as per NIST SP 800-56Cr2</p>
-<pre>
-SS =  SS1 || SS2 || .. || SSn
-</pre>
-<p id="rfc.section.3.1.p.20">See Ednote below for a discussion on some possible combiner modes</p>
-<p id="rfc.section.3.1.p.21">~~~ END EDNOTE ~~~</p>
+<p id="rfc.section.3.1.p.7">EDNOTE: this ASN.1 could be simplified to <samp>composite-kem-params ::= AlgorithmIdentifier</samp> to save a couple bytes on the wire, but we're presenting it this way for now for readability.</p>
+<p id="rfc.section.3.1.p.8">EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg.</p>
+<p id="rfc.section.3.1.p.9">If no, or a NULL, combiner is specified, then {#sect-null-combiner} applies.</p>
+<p id="rfc.section.3.1.p.10">See Ednote below for a discussion on some possible combiner modes</p>
 <h1 id="rfc.section.3.2">
 <a href="#rfc.section.3.2">3.2.</a> <a href="#other-explicit-algorithms" id="other-explicit-algorithms">Other Explicit Algorithms</a>
 </h1>
@@ -720,85 +684,150 @@ SS =  SS1 || SS2 || .. || SSn
 </ul>
 <p id="rfc.section.3.2.p.5">TODO: lay out the details.</p>
 <h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#sec-encaps-proc" id="sec-encaps-proc">Composite Key Encapsulation process</a>
+<a href="#rfc.section.4">4.</a> <a href="#sect-combiners" id="sect-combiners">Combiner Algorithm Identifiers</a>
 </h1>
-<p id="rfc.section.4.p.1">Composite key encapsulations takes a CompositePublicKey as its input.  The CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  For example (RSA).</p>
-<p id="rfc.section.4.p.2">This operation outputs a shared-secret and cipher text.</p>
-<p id="rfc.section.4.p.3">COMBINER is a function used to combine multiple shared secrets</p>
+<p id="rfc.section.4.p.1">This section defines concrete shared secret combiners that may be used with composite KEM.</p>
+<p id="rfc.section.4.p.2">~~~ BEGIN EDNOTE ~~~</p>
+<p id="rfc.section.4.p.3">EDNOTE: We need to add a KDF-based combiner here.  Suggestions are:</p>
+<p id="rfc.section.4.p.4">Option 0)</p>
+<p><samp>SS = SS1 || SS2 || .. || SSn</samp> with fixed length KEM algs.</p>
+<p id="rfc.section.4.p.6">Option 1)</p>
+<p><samp>SS = KDF( SS1 || SS2 || .. || SSn )</samp> with fixed length KEM algs.</p>
+<p id="rfc.section.4.p.8">Option 1b)</p>
+<p><samp>SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )</samp></p>
+<p id="rfc.section.4.p.10">Option 2)</p>
+<p><samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp></p>
+<p id="rfc.section.4.p.12">Option 2b)</p>
+<p><samp>SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)</samp></p>
+<p id="rfc.section.4.p.14">Option 3)</p>
+<p id="rfc.section.4.p.15">The combiner suggested in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
+<p id="rfc.section.4.p.16">At present we are opting for Option 2.</p>
+<p id="rfc.section.4.p.17">QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.  Answer: for -00 of this document we have decided YES, but we can revisit this.</p>
+<p id="rfc.section.4.p.18">~~~ END EDNOTE ~~~</p>
+<h1 id="rfc.section.4.1">
+<a href="#rfc.section.4.1">4.1.</a> <a href="#sect-null-combiner" id="sect-null-combiner">NULL</a>
+</h1>
+<p id="rfc.section.4.1.p.1">If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.</p>
 <pre>
-Input:  CompositePublicKey (PK1, PK2 .. PKn)
-        COMBINER
+SS =  SS1 || SS2 || .. || SSn
+</pre>
+<p id="rfc.section.4.1.p.2">This mode is often appropriate, and complies with NIST SP-56Cr2, when the protocol making use of this composite KEM will use the shared secret output to derive a cryptographic key via a KDF, making it uncessessary to use a combiner within composite KEM.</p>
+<p id="rfc.section.4.1.p.3">Security consideration: protocols that allow the NULL combiner MUST ensure either that none of the component shared secrets are directly controllable by an attacker (which allows for attacks similar to those discussed in <a href="#sec-apop-attack" class="xref">Section 9.3.2</a>), or that appropriate mitigations have been put into place.</p>
+<h1 id="rfc.section.4.2">
+<a href="#rfc.section.4.2">4.2.</a> <a href="#id-composite-kdf-combiner" id="id-composite-kdf-combiner">id-composite-kdf-combiner</a>
+</h1>
+<p id="rfc.section.4.2.p.1">This section defines a KDF-based shared secret combiner.</p>
+<pre>
+id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+</pre>
+<p id="rfc.section.4.2.p.2">It MUST carry parameters</p>
+<pre>
+alg-composite-kdf-combiner-params ::=  SEQUENCE {
+        kdf     AlgorithmIdentifier
+}
+</pre>
+<p id="rfc.section.4.2.p.3">to specify the KDF to be used.</p>
+<p id="rfc.section.4.2.p.4">EDNOTE: this ASN.1 could be simplified to <samp>alg-composite-kdf-combiner-params ::=  AlgorithmIdentifier</samp> to save a couple bytes on the wire, but we're presenting it this way for now for readability.</p>
+<p id="rfc.section.4.2.p.5">The behaviour of this combiner is: <samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp> where <samp>||</samp> denotes contatenation.</p>
+<p id="rfc.section.4.2.p.6">Formally:</p>
+<pre>
+Input:
+   SS1, SS2, .., SSn   Shared secrets to combine
+
+Output:
+   SS                  Combined shared secret.
+
+1.  SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+</pre>
+<p id="rfc.section.4.2.p.7">The intent of this combiner is to frustrate known cryptanalytic attacks by normalizing the component shared secrets to a common fixed length (dictated by the output length of the supplied KDF), as well as attacks that exploit known weaknesses in the underlying hash function since, short of a full pre-image attack, an attacker who is able to control SSi will still not be able to control KDF(SSi).</p>
+<p id="rfc.section.4.2.p.8">EDNOTE: this combiner needs cryptographic review.</p>
+<p id="rfc.section.4.2.p.9">EDNOTE: Do we need domain separation in case other protocols use the same shared secrets in the same construction? Something like <samp>KDF( ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp> ?</p>
+<h1 id="rfc.section.5">
+<a href="#rfc.section.5">5.</a> <a href="#sec-encaps-proc" id="sec-encaps-proc">Composite Encapsulation process</a>
+</h1>
+<p id="rfc.section.5.p.1">Composite key encapsulations takes a CompositePublicKey as its input.  The CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  For example (RSA).</p>
+<p id="rfc.section.5.p.2">This operation outputs a shared-secret and cipher text.</p>
+<p id="rfc.section.5.p.3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.</p>
+<p id="rfc.section.5.p.4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
+<pre>
+Input:  
+   PK1, PK2 .. PKn   Encryption public keys. See note below on 
+                     composite inputs.
+
+   A1, A2, ... An     Component keyTransport, keyAgreement, or
+                      KEM algorithms. See note below on composite 
+                      inputs.
+
+   COMBINER          A combiner function.
+
+   SIZE              The length of shared secret to generate
+                    when transforming a keyTransport into a KEM.
 
 Output:  SS, CT
 
 1.  for i := 1 to n
-       if PKi is of type KEM:
+       if Ai is of type KEM:
           SSi, CTi := encaps(PKi)
        
-       else, if PKi is of type keyEncipherment:
+       else, if Ai is of type keyTransport:
          SSi := random_bits(SIZE)
          CTi := encrypt(SSi, PKi)
 
-       else, if PKi is of type keyAgreement:
+       else, if Ai is of type keyAgreement:
           PKe, SKe := keyGen()
           SSi := keyAgree(PKi, SKe)
           CTi := PKe
 
 
-  2.  SS = COMBINER(SSi..SSn)
+  2.  SS = COMBINER(SS1, SS2, .., SSn)
       CT = CT1, CT2, .., CTn
 </pre>
-<h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#sec-decaps-proc" id="sec-decaps-proc">Composite Key Decapsulation</a>
+<p id="rfc.section.5.p.5">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
+<p id="rfc.section.5.p.6">Since recursive composite public keys are disallowed in [I-D.ounsworth-pq-composite-keys], no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
+<h1 id="rfc.section.6">
+<a href="#rfc.section.6">6.</a> <a href="#sec-decaps-proc" id="sec-decaps-proc">Composite Key Decapsulation</a>
 </h1>
-<p id="rfc.section.5.p.1">Composite key decapsulations takes a CompositePrivateKey as its input and the sequence of Cipher texts (ct1 .. ctn) computed by the composite key encapsulation method.  The CompositePrivateKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  These keys MUST consist of the same component keys in the same order as the Composite Key Encapsulation process that generated them.</p>
-<p id="rfc.section.5.p.2">This operation outputs a shared-secret.</p>
-<p id="rfc.section.5.p.3">COMBINER is a function used to combine multiple shared secrets</p>
+<p id="rfc.section.6.p.1">Composite key decapsulations takes a CompositePrivateKey as its input and the sequence of Cipher texts (ct1 .. ctn) computed by the composite key encapsulation method.  The CompositePrivateKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  These keys MUST consist of the same component keys in the same order as the Composite Key Encapsulation process that generated them.</p>
+<p id="rfc.section.6.p.2">This operation outputs a shared-secret.</p>
+<p id="rfc.section.6.p.3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.</p>
+<p id="rfc.section.6.p.4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
 <pre>
 Input:   CompositePrivateKey = SK1, SK2 .. SKn
-         CT = CT1, CT2, .., CTn
-         COMBINER
+
+   SK1, SK2 .. SKn    Decryption private keys. See note below on 
+                      composite inputs.
+
+   A1, A2, ... An     Component keyTransport, keyAgreement, or
+                      KEM algorithms. See note below on composite 
+                      inputs.
+
+   CT1, CT2, .., CTn  Ciphertexts. see note below on composite inputs.
+   
+   COMBINER          A combiner function.
 
 
 Output:  SS
 
 1. for i := 1 to n
  
-      if SKi is of type KEM:
+      if Ai is of type KEM:
           SSi := decaps(Cti, SKi)
 
-      else, if SKi is of type keyEncipherment:
+      else, if Ai is of type keyEncipherment:
           SSi := decrypt(Cti, SKi)
 
-       else, if PKi is of type keyAgreement:
+       else, if Ai is of type keyAgreement:
           PKe := decode(CTi)
           SSi := keyAgree(PKe, SKi)
 
-2. Output SS =  SS = COMBINER(SSi..SSn)
+2. Output SS = COMBINER(SS1, SS2, .., SSn)
 </pre>
-<p id="rfc.section.5.p.4">~~~ BEGIN EDNOTE ~~~</p>
-<p id="rfc.section.5.p.5">EDNOTE: We need to add a KDF-based combiner here.  Suggestions are:</p>
-<p id="rfc.section.5.p.6">Option 0)</p>
-<p><samp>SS = SS1 || SS2 || .. || SSn</samp> with fixed length KEM algs.</p>
-<p id="rfc.section.5.p.8">Option 1)</p>
-<p><samp>SS = KDF( SS1 || SS2 || .. || SSn )</samp> with fixed length KEM algs.</p>
-<p id="rfc.section.5.p.10">Option 1b)</p>
-<p><samp>SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )</samp></p>
-<p id="rfc.section.5.p.12">Option 2)</p>
-<p><samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp></p>
-<p id="rfc.section.5.p.14">Option 2b)</p>
-<p><samp>SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)</samp></p>
-<p id="rfc.section.5.p.16">Option 3)</p>
-<p id="rfc.section.5.p.17">The combiner suggested in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
-<p id="rfc.section.5.p.18">At present we are opting for Option 2.</p>
-<p id="rfc.section.5.p.19">QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.</p>
-<p id="rfc.section.5.p.20">~~~ END EDNOTE ~~~</p>
-<p id="rfc.section.5.p.21">EDNOTE: We we need domain separation in case other protocols use the same shared secrets in the same construction? Something like <samp>KDF( ASCII("compositeKEM") || KDF(input1) || KDF(input2) )</samp> ?</p>
-<h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
+<p id="rfc.section.6.p.5">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
+<h1 id="rfc.section.7">
+<a href="#rfc.section.7">7.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
 </h1>
-<p id="rfc.section.6.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
-<p id="rfc.section.6.p.2">EDNOTE 10: Possible topics to address:</p>
+<p id="rfc.section.7.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
+<p id="rfc.section.7.p.2">EDNOTE 10: Possible topics to address:</p>
 <p></p>
 
 <ul>
@@ -810,78 +839,74 @@ Output:  SS
 <li>We could also discuss backwards compatibility.</li>
 <li>We could include a subsection about implementation considerations.</li>
 </ul>
-<h1 id="rfc.section.6.1">
-<a href="#rfc.section.6.1">6.1.</a> <a href="#backwards-compatibility" id="backwards-compatibility">Backwards Compatibility</a>
+<h1 id="rfc.section.7.1">
+<a href="#rfc.section.7.1">7.1.</a> <a href="#sec-backwards-compat" id="sec-backwards-compat">Backwards Compatibility</a>
 </h1>
-<p id="rfc.section.6.1.p.1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.</p>
-<p id="rfc.section.6.1.p.2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.</p>
-<p id="rfc.section.6.1.p.3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S&#8288;/&#8288;MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <a href="#RFC5652" class="xref">[RFC5652]</a> encrypted structures.</p>
-<h1 id="rfc.section.6.1.1">
-<a href="#rfc.section.6.1.1">6.1.1.</a> <a href="#k-of-n-modes" id="k-of-n-modes">K-of-N modes</a>
+<p id="rfc.section.7.1.p.1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.</p>
+<p id="rfc.section.7.1.p.2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.</p>
+<p id="rfc.section.7.1.p.3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S&#8288;/&#8288;MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <a href="#RFC5652" class="xref">[RFC5652]</a> encrypted structures.</p>
+<h1 id="rfc.section.7.1.1">
+<a href="#rfc.section.7.1.1">7.1.1.</a> <a href="#k-of-n-modes" id="k-of-n-modes">K-of-N modes</a>
 </h1>
-<p id="rfc.section.6.1.1.p.1">~~~ BEGIN EDNOTE ~~~ In the context of encryption, K-of-N modes could mean one of two things:</p>
-<p id="rfc.section.6.1.1.p.2">Type 1: sender uses a subset</p>
-<p id="rfc.section.6.1.1.p.3">This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the <a href="#sec-encaps-proc" class="xref">Section 4</a> but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.</p>
-<p id="rfc.section.6.1.1.p.4">Type 2: receiver uses a subset</p>
-<p id="rfc.section.6.1.1.p.5">This would mean that the sender (encrypter) uses all N of the component keys within the receiver's public key in such a way that the receiver (decrypter) only needs to use K private keys to decrypt the message. This implies the need for some kind of Shamir's-like secret splitting scheme. This is a reasonably complex mechanism and it's currently unclear if there are any use-cases that require such a mechanism.</p>
-<p id="rfc.section.6.1.1.p.6">~~~ END EDNOTE ~~~</p>
-<h1 id="rfc.section.6.1.2">
-<a href="#rfc.section.6.1.2">6.1.2.</a> <a href="#parallel-pkis" id="parallel-pkis">Parallel PKIs</a>
+<p id="rfc.section.7.1.1.p.1">~~~ BEGIN EDNOTE ~~~ In the context of encryption, K-of-N modes could mean one of two things:</p>
+<p id="rfc.section.7.1.1.p.2">Type 1: sender uses a subset</p>
+<p id="rfc.section.7.1.1.p.3">This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the <a href="#sec-encaps-proc" class="xref">Section 5</a> but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.</p>
+<p id="rfc.section.7.1.1.p.4">Type 2: receiver uses a subset</p>
+<p id="rfc.section.7.1.1.p.5">This would mean that the sender (encrypter) uses all N of the component keys within the receiver's public key in such a way that the receiver (decrypter) only needs to use K private keys to decrypt the message. This implies the need for some kind of Shamir's-like secret splitting scheme. This is a reasonably complex mechanism and it's currently unclear if there are any use-cases that require such a mechanism.</p>
+<p id="rfc.section.7.1.1.p.6">~~~ END EDNOTE ~~~</p>
+<h1 id="rfc.section.7.1.2">
+<a href="#rfc.section.7.1.2">7.1.2.</a> <a href="#parallel-pkis" id="parallel-pkis">Parallel PKIs</a>
 </h1>
-<p id="rfc.section.6.1.2.p.1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).</p>
-<p id="rfc.section.6.1.2.p.2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.</p>
-<p id="rfc.section.6.1.2.p.3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms.</p>
-<p id="rfc.section.6.1.2.p.4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.6.1.2.p.5">EDNOTE: I copied and pruned this text from <a href="#I-D.ounsworth-pq-composite-sigs" class="xref">[I-D.ounsworth-pq-composite-sigs]</a>. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
-</h1>
-<p id="rfc.section.7.p.1">The ASN.1 module OID is TBD.</p>
+<p id="rfc.section.7.1.2.p.1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).</p>
+<p id="rfc.section.7.1.2.p.2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.</p>
+<p id="rfc.section.7.1.2.p.3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms.</p>
+<p id="rfc.section.7.1.2.p.4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
+<p id="rfc.section.7.1.2.p.5">EDNOTE: I copied and pruned this text from <a href="#I-D.ounsworth-pq-composite-sigs" class="xref">[I-D.ounsworth-pq-composite-sigs]</a>. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.</p>
 <h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
+<a href="#rfc.section.8">8.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
 </h1>
-<h1 id="rfc.section.8.1">
-<a href="#rfc.section.8.1">8.1.</a> <a href="#policy-for-deprecated-and-acceptable-algorithms" id="policy-for-deprecated-and-acceptable-algorithms">Policy for Deprecated and Acceptable Algorithms</a>
+<p id="rfc.section.8.p.1">The ASN.1 module OID is TBD.</p>
+<h1 id="rfc.section.9">
+<a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
 </h1>
-<p id="rfc.section.8.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.</p>
-<p id="rfc.section.8.1.p.2">In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms.</p>
-<p id="rfc.section.8.1.p.3">Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.</p>
-<p id="rfc.section.8.1.p.4">EDNOTE: Max is working on a CRL mechanism to accomplish this.</p>
-<h1 id="rfc.section.8.2">
-<a href="#rfc.section.8.2">8.2.</a> <a href="#or-modes" id="or-modes">OR Modes</a>
+<h1 id="rfc.section.9.1">
+<a href="#rfc.section.9.1">9.1.</a> <a href="#policy-for-deprecated-and-acceptable-algorithms" id="policy-for-deprecated-and-acceptable-algorithms">Policy for Deprecated and Acceptable Algorithms</a>
 </h1>
-<p id="rfc.section.8.2.p.1">TODO -- we'll need security consideration analysis of whatever OR modes we choose.</p>
-<p id="rfc.section.8.2.p.2">~~~ BEGIN EDNOTE ~~~ In the context of encryption, OR modes could mean one of two things:</p>
-<p id="rfc.section.8.2.p.3">Type 1: sender uses a subset</p>
-<p id="rfc.section.8.2.p.4">This would mean the sender (encrypter) uses a subset of the component keys within the receiver's public key. The obvious</p>
-<p id="rfc.section.8.2.p.5">~~~ END EDNOTE ~~~</p>
-<h1 id="rfc.section.8.3">
-<a href="#rfc.section.8.3">8.3.</a> <a href="#cryptographic-review-of-combiner" id="cryptographic-review-of-combiner">Cryptographic review of combiner</a>
+<p id="rfc.section.9.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.</p>
+<p id="rfc.section.9.1.p.2">In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms.</p>
+<p id="rfc.section.9.1.p.3">Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.</p>
+<p id="rfc.section.9.1.p.4">EDNOTE: Max is working on a CRL mechanism to accomplish this.</p>
+<h1 id="rfc.section.9.2">
+<a href="#rfc.section.9.2">9.2.</a> <a href="#or-modes" id="or-modes">OR Modes</a>
 </h1>
-<p id="rfc.section.8.3.p.1">EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that the combiner is resistant to all known cryptographic attacks.</p>
-<h1 id="rfc.section.8.3.1">
-<a href="#rfc.section.8.3.1">8.3.1.</a> <a href="#need-for-a-kdf-within-the-combiner" id="need-for-a-kdf-within-the-combiner">Need for a KDF within the combiner</a>
+<p id="rfc.section.9.2.p.1">TODO -- we'll need security consideration analysis of whatever OR modes we choose.</p>
+<h1 id="rfc.section.9.3">
+<a href="#rfc.section.9.3">9.3.</a> <a href="#cryptographic-review-of-combiner" id="cryptographic-review-of-combiner">Cryptographic review of combiner</a>
 </h1>
-<p id="rfc.section.8.3.1.p.1">It is expected that the majority of uses of the KEM defined in this document will be within a construct such as <a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">[I-D.perret-prat-lamps-cms-pq-kem]</a> which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.</p>
-<p id="rfc.section.8.3.1.p.2">In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where <samp>KDF(m) = m</samp> -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.</p>
-<h1 id="rfc.section.8.3.2">
-<a href="#rfc.section.8.3.2">8.3.2.</a> <a href="#sec-apop-attack" id="sec-apop-attack">APOP Attack on concatenated keys</a>
+<p id="rfc.section.9.3.p.1">EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that the combiner is resistant to all known cryptographic attacks.</p>
+<h1 id="rfc.section.9.3.1">
+<a href="#rfc.section.9.3.1">9.3.1.</a> <a href="#need-for-a-kdf-within-the-combiner" id="need-for-a-kdf-within-the-combiner">Need for a KDF within the combiner</a>
 </h1>
-<p id="rfc.section.8.3.2.p.1">See the attack analysis described in summary in <a href="#Aviram2021" class="xref">[Aviram2021]</a>.</p>
-<p id="rfc.section.8.3.2.p.2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.</p>
-<p id="rfc.section.8.3.2.p.3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for <a href="#I-D.ietf-tls-hybrid-design" class="xref">[I-D.ietf-tls-hybrid-design]</a>. Second, any non-deprecated KDF will not allow collision attacks.</p>
-<p id="rfc.section.8.3.2.p.4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.</p>
-<h1 id="rfc.section.8.3.3">
-<a href="#rfc.section.8.3.3">8.3.3.</a> <a href="#aviram2022" id="aviram2022">Aviram2022</a>
+<p id="rfc.section.9.3.1.p.1">It is expected that the majority of uses of the KEM defined in this document will be within a construct such as <a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">[I-D.perret-prat-lamps-cms-pq-kem]</a> which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.</p>
+<p id="rfc.section.9.3.1.p.2">In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where <samp>KDF(m) = m</samp> -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.</p>
+<h1 id="rfc.section.9.3.2">
+<a href="#rfc.section.9.3.2">9.3.2.</a> <a href="#sec-apop-attack" id="sec-apop-attack">APOP Attack on concatenated keys</a>
 </h1>
-<p id="rfc.section.8.3.3.p.1">See the attack analysis described in summary in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
-<p id="rfc.section.8.3.3.p.2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
+<p id="rfc.section.9.3.2.p.1">See the attack analysis described in summary in <a href="#Aviram2021" class="xref">[Aviram2021]</a>.</p>
+<p id="rfc.section.9.3.2.p.2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.</p>
+<p id="rfc.section.9.3.2.p.3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for <a href="#I-D.ietf-tls-hybrid-design" class="xref">[I-D.ietf-tls-hybrid-design]</a>. Second, any non-deprecated KDF will not allow collision attacks.</p>
+<p id="rfc.section.9.3.2.p.4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.</p>
+<h1 id="rfc.section.9.3.3">
+<a href="#rfc.section.9.3.3">9.3.3.</a> <a href="#aviram2022" id="aviram2022">Aviram2022</a>
+</h1>
+<p id="rfc.section.9.3.3.p.1">See the attack analysis described in summary in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
+<p id="rfc.section.9.3.3.p.2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
 <p><a href="#Aviram2022" class="xref">[Aviram2022]</a> gives the following definition: "If we would like to combine two keys, either of which might be influenced by an attacker, we need a dual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.</p>
-<p id="rfc.section.8.3.3.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
+<p id="rfc.section.9.3.3.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
 <h1 id="rfc.references">
-<a href="#rfc.references">9.</a> References</h1>
+<a href="#rfc.references">10.</a> References</h1>
 <h1 id="rfc.references.1">
-<a href="#rfc.references.1">9.1.</a> Normative References</h1>
+<a href="#rfc.references.1">10.1.</a> Normative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</b></td>
@@ -960,7 +985,7 @@ Output:  SS
 </tr>
 </tbody></table>
 <h1 id="rfc.references.2">
-<a href="#rfc.references.2">9.2.</a> Informative References</h1>
+<a href="#rfc.references.2">10.2.</a> Informative References</h1>
 <table><tbody>
 <tr>
 <td class="reference"><b id="Aviram2021">[Aviram2021]</b></td>
@@ -1020,89 +1045,43 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 EXPORTS ALL;
 
 IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-algorithmInformation-02(58) }
-
-  SubjectPublicKeyInfo
-    FROM PKIX1Explicit-2009
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-pkix1-explicit-02(51) }
-
-  OneAsymmetricKey
-    FROM AsymmetricKeyPackageModuleV1
-      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-        pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) } ;
+-- any?
 
 --
 -- Object Identifiers
 --
 
 -- To be replaced by IANA
-id-composite-key OBJECT IDENTIFIER ::= {
-  iso(1) identified-organization(3) dod(6) internet(1) private(4) 
-  enterprise(1) OpenCA(18227) algorithms(2) id-pk-compositeCrypto(1) }
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1) 
+entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+
+id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+
 
 --
--- Public Key
+-- Composite structures
 --
 
-pk-Composite PUBLIC-KEY ::= {
-    id id-composite-key,
-    KeyValue CompositePublicKey,
-    Params CompositeParams ARE OPTIONAL,
-    PrivateKey CompositePrivateKey,
+CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 
-CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
+TODO: this assumes that KEM-ALGORITHM is defined, which it currently is not.
 
-CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey 
-                                            ENCODED BY der)
-
-CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey 
-                                            ENCODED BY der)
-
-CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
--- pk-explicitComposite - Composite public key information object
-
-pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType} 
-  PUBLIC-KEY ::= {
-    IDENTIFIER id
-    KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
-      secondPublicKey, SecondPublicKeyType}
-    PARAMS ARE absent
+composite-kem-params  ::=  SEQUENCE {
+    combiner     AlgorithmIdentifier
 }
 
-   The following ASN.1 object class then automatically generates the
-   public key structure from the types defined in pk-explicitComposite.
-
--- ExplicitCompositePublicKey - The data structure for a composite 
--- public key sec-composite-pub-keys and SecondPublicKeyType are needed 
--- because PUBLIC-KEY contains a set of public key types, not a single
--- type.
--- TODO The parameters should be optional only if they are marked 
--- optional in the PUBLIC-KEY
-
-
-ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey, 
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, 
-    SecondPublicKeyType} ::= SEQUENCE {
-      firstPublicKey SEQUENCE {
-        params firstPublicKey.&amp;Params OPTIONAL,
-        publicKey FirstPublicKeyType
-      },
-      secondPublicKey SEQUENCE {
-        params secondPublicKey.&amp;Params OPTIONAL,
-        publicKey SecondPublicKeyType
-      }
-  }
+alg-composite-kdf-combiner-params ::=  SEQUENCE {
+        kdf     AlgorithmIdentifier
+}
 
 END
 

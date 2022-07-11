@@ -132,7 +132,7 @@ EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an In
 This document defines a Composite key encapsulation mechanism (KEM)
 procedure, for use with Composite keys which consist of combinations 
 of Encryption or KEM algorithms for each composite component  
-algorithm.  
+algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification.
 
 This document is intended to be coupled with the composite keys
 structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEM-TRANS mechanism in {{I-D.perret-prat-lamps-cms-pq-kem}}.
@@ -144,16 +144,16 @@ structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEM-TRANS me
 
 # Introduction {#sec-intro}
 
-During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while me may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
+During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.
 
-The deployment of composite public keys, and composite signatures and composite encryption using post-quantum algorithms will face two challenges
+The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges
 
 
 - Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.
 - Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.
 
 
-This document provides a mechanism to address algorithm strength uncertainty by building on {{I-D.ounsworth-pq-composite-keys}} by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is addressed via using composite in conjunction with a non-composite hybrid mode such as that described in {{I-D.becker-guthrie-noncomposite-hybrid-auth}}.
+This document provides a mechanism to address algorithm strength uncertainty by building on {{I-D.ounsworth-pq-composite-keys}} by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of {{sec-backwards-compat}}.
 
 
 This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
@@ -178,14 +178,15 @@ CLIENT:
           Any software that is making use of a key at runtime.
           This includes a signer, verifier, encrypter, decrypter.
 
-COMBINER MODE:
-          A combiner mode specifies how keys are to be combined
-          together into a single cryptographic operation. 
-          Examples include AND, OR, K-of-N.
-          Specifications of composite signature or encryption 
-          procedures will need to specify the behaviour under 
-          each mode.            
-
+COMBINER:
+          A combiner specifies how multiple shared secrets
+          are combined into a single shared secret.
+          It is expected that combiners will need to evolve 
+          with discovery of cryptanalytic attacks, so this
+          document takes the approach of assigning
+          Object Identifiers (OIDs) to combiners so that
+          stronger combiners can be implemented in the future.
+          
 COMPONENT ALGORITHM:
           A single basic algorithm which is contained within a
             composite algorithm.
@@ -209,9 +210,8 @@ PUBLIC / PRIVATE KEY:
             key, making no assumptions about which algorithm.
 
 SHARED SECRET:
-        A value established between two communicating parties by means of a
-        cryptographic operation, but which cannot be learned by an active or 
-        passive adversary.
+        A value established between two communicating parties for use as cryptographic key material, but which cannot be learned by an active or 
+        passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.
 
 # Composite KEM Structures
 
@@ -231,19 +231,17 @@ We borrow here the definition of a key encapsulation mechanism (KEM) from {{I-D.
       secret ss, or in some cases a distinguished error value.
 
 
-This document is not concerned with the KeyGen() algorithm of a KEM, but it is included for completeness.
+This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.
 
 The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in {{RFC5652}}), and key agreement (for example for use with KeyAgreeRecipientInfo defined in {{RFC5652}}). 
 
-EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.
-
-The KEM interface was chosen as the interface for a composite key exchange because both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:
+The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:
 
 A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -> ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -> ss. This follows the pattern of RSA-KEM [RFC5990].
 
 A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -> (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -> ss.
 
-A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, promoted to a KEM as outline above, and concatenating all component shared secrets into a single shared secret.
+A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.
 
 
 
@@ -252,21 +250,20 @@ adaptive chosen ciphertext attack (IND-CCA2), which means that shared
 secret values should be indistinguishable from random strings even
 given the ability to have other arbitrary ciphertexts decapsulated.
 
+EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.
+
+
 A weaker security notion is indistinguishability under chosen
 plaintext attack (IND-CPA), which means that the shared secret values
 should be indistinguishable from random strings given a copy of the
 public key.  IND-CPA roughly corresponds to security against a
 passive attacker, and sometimes corresponds to one-time key exchange.
 
-The shared secret MUST be indistinguishable under adaptive chosen 
-ciphertext attacks (IND-CCA2), for example when it is the output of a
-KDF.
-
 The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.
 
 TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.
 
-EDNOTE:  Discussed use of ASN.1 to combine the shared secrets.   ASN.1 is nice because it embeds the length values for
+EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
 us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.
 
 ## Composite Keys
@@ -281,15 +278,14 @@ X509Certificate as defined in RFC 5280), the following key usage MUST be used.
 
   keyEncipherment
    
-Other types of key usages SHOULD not be used.   The main intent for this keyEncipherment is to
+Additional key usages SHOULD not be used.   The main intent for this keyEncipherment is to
 encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and
 composite-KEM does not deviate from this intent.
 
 EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
 parties are required to contribute to a key agreement verses a single party in keyEncipherment. 
 
-EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and these
-need to make the same choice about the key usage of a KEM key. 
+EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key. 
 
 
 
@@ -314,22 +310,8 @@ When a bit string is required, the octets of the DER encoded composite data stru
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
 
-### Composite KEM Ciphertext Encoding
 
-For ease of use when encoding and decoding, the following encoding is 
-suggested for the Ciphertext.   
-
-CompositeKemCT :: SEQUENCE SIZE (2..MAX) of OCTET STRING
-
-This will allow implementations a simple and uniform way to distribute
-the set of Cipher texts required for the decapsulation process.  
-It is not mandatory as an implementation could choose to store the
-set of Cipher texts produced in a different format, so long as they
-are available at time of decapsulation.
-
-EDNOTE: is this section adding anything beyond what's already said in the section above?
-
-# Algorithm Identifiers
+# KEM Algorithm Identifiers
 
 The following algorithm Identifiers and their associated parameters are used with composite KEM.
 
@@ -338,12 +320,12 @@ The following algorithm Identifiers and their associated parameters are used wit
   The id-alg-composite-kem object identifier is used for identifying a
    generic composite KEM algorithm. This allows arbitrary combinations 
    of component key transport, key agreement and KEM algorithms without 
-   needing the combination to be pre-registered or pre-agreed. 
+   needing the combination to be pre-registered or standardized. 
 
 ~~~
-   id-alg-composite-kem OBJECT IDENTIFIER ::= {
-    joint-iso-itu-t(2) country(16) us(840) organization(1) 
-    entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 ~~~    
 
 EDNOTE: this is a temporary OID for the purposes of prototyping.  We
@@ -355,85 +337,33 @@ EDNOTE: this is a temporary OID for the purposes of prototyping.  We
 TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?   
 
 ~~~
-   kema-CompositeKEM KEM-ALGORITHM ::= {
-       IDENTIFIER id-alg-composite-kem
-       VALUE CompositeCiphertextValue
-       PARAMS composite-kem-params  
-       PUBLIC-KEYS { pk-Composite }
-       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-   }
-~~~
-
-Composite KEM carries its algorithm parameters in the Parameters field of
-the AlgorithmIdentifier:
-
-~~~
-    AlgorithmIdentifier  ::=  SEQUENCE  {
-        algorithm               OBJECT IDENTIFIER,
-        parameters              ANY DEFINED BY algorithm OPTIONAL  }
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
 ~~~
 
 For Composite KEM, we define a composite KEM Algorithm ID as:
 
-~~~
-   id-composite-kem-algid AlgorithmIdentifier  ::=  {
-        algorithm       id-alg-composite-kem,
-        parameters      composite-kem-params }   
-~~~
-
-The parameters in the id-composite-kem-algid are composite-kem-params
+The following algorithm parameters MUST be included:
 
 ~~~
-   composite-kem-params  ::=  SEQUENCE {
-        kdf                  AlgorithmIdentifier,
-   }
+composite-kem-params  ::=  SEQUENCE {
+    combiner     AlgorithmIdentifier
+}
 ~~~
 
-EDNOTE: does the (generic) params need to carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures to prevent the verifier from coming up with false validity by using the wrong verification algorithm. With encryption I think it's less important for encryption; either your private key works or it doesn't, no harm done.
+EDNOTE: this ASN.1 could be simplified to `composite-kem-params ::= AlgorithmIdentifier` to save a couple bytes on the wire, but we're presenting it this way for now for readability.
 
-~~~ BEGIN EDNOTE ~~~
+EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg.
 
-  If we want to allow for additional combiner modes, these combiner modes could be defined by
-an algorithm identifier containing the combiner mode, we would instead define composite-kem-params
-as:
-
-
-~~~
-   composite-kem-params  ::=  SEQUENCE {
-        combiner     AlgorithmIdentifier,
-   }
-~~~
-
-We would then define the following combiner:
-
-Example:
-
-~~~
-   combiner AlgorithmIdentifier  ::=  {
-        algorithm       id-Composite-KDF-Combiner,
-        parameters      alg-Composite-KDF-Combiner-Params }   
-~~~
-
-id-Composite-KDF-Combiner ::==  OBJECT_IDENTIFIER
-
-alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier 
-
-where:
-
-id-Composite-KDF-Combiner is the OBJECT IDENTIFIER for the combiner
-   
-alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier 
-   
-to specify the KDF (Option 2 below ednote) to use in the construction 
-`SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )`.
-
-If no parameters are supplied, then the default combiner mode could be simple concatenation as per NIST SP 800-56Cr2
-
-    SS =  SS1 || SS2 || .. || SSn
+If no, or a NULL, combiner is specified, then {#sect-null-combiner} applies.
 
 See Ednote below for a discussion on some possible combiner modes   
 
-~~~ END EDNOTE ~~~
 
 
 ## Other Explicit Algorithms
@@ -453,80 +383,9 @@ Explicit algorithms must define a new signature algorithm which consists of:
 
 TODO: lay out the details.
 
-# Composite Key Encapsulation process {#sec-encaps-proc}
+# Combiner Algorithm Identifiers {#sect-combiners}
 
-Composite key encapsulations takes a CompositePublicKey as its input.  The
-CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent 
-an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that 
-contains encryption or decryption primitive.  For example (RSA).   
-
-This operation outputs a shared-secret and cipher text.
-
-COMBINER is a function used to combine multiple shared secrets
-
-~~~
-Input:  CompositePublicKey (PK1, PK2 .. PKn)
-        COMBINER
-
-Output:  SS, CT
-
-1.  for i := 1 to n
-       if PKi is of type KEM:
-          SSi, CTi := encaps(PKi)
-       
-       else, if PKi is of type keyEncipherment:
-         SSi := random_bits(SIZE)
-         CTi := encrypt(SSi, PKi)
-
-       else, if PKi is of type keyAgreement:
-          PKe, SKe := keyGen()
-          SSi := keyAgree(PKi, SKe)
-          CTi := PKe
-
-
-  2.  SS = COMBINER(SSi..SSn)
-      CT = CT1, CT2, .., CTn
-~~~
-
-
-# Composite Key Decapsulation {#sec-decaps-proc}
-
-Composite key decapsulations takes a CompositePrivateKey as its input and the
-sequence of Cipher texts (ct1 .. ctn) computed by the composite key 
-encapsulation method.  The CompositePrivateKey MUST contain composite keys 
-(Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method),
-or an algorithm that contains encryption or decryption primitive.  These keys 
-MUST consist of the same component keys in the same order as the Composite Key 
-Encapsulation process that generated them.  
-
-This operation outputs a shared-secret.
-
-COMBINER is a function used to combine multiple shared secrets
-
-
-~~~
-Input:   CompositePrivateKey = SK1, SK2 .. SKn
-         CT = CT1, CT2, .., CTn
-         COMBINER
-
-
-Output:  SS
-
-1. for i := 1 to n
- 
-      if SKi is of type KEM:
-          SSi := decaps(Cti, SKi)
-
-      else, if SKi is of type keyEncipherment:
-          SSi := decrypt(Cti, SKi)
-
-       else, if PKi is of type keyAgreement:
-          PKe := decode(CTi)
-          SSi := keyAgree(PKe, SKi)
-
-2. Output SS =  SS = COMBINER(SSi..SSn)
-~~~
-
+This section defines concrete shared secret combiners that may be used with composite KEM.
 
 ~~~ BEGIN EDNOTE ~~~
 
@@ -570,12 +429,167 @@ The combiner suggested in [Aviram2022].
 At present we are opting for Option 2.
 
 QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.
+Answer: for -00 of this document we have decided YES, but we can revisit this.
 
 
 ~~~ END EDNOTE ~~~
 
-EDNOTE: We we need domain separation in case other protocols use the same shared secrets in the same construction? Something like `KDF( ASCII("compositeKEM") || KDF(input1) || KDF(input2) )` ?
+## NULL {#sect-null-combiner}
 
+If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.
+
+~~~
+SS =  SS1 || SS2 || .. || SSn
+~~~
+
+
+This mode is often appropriate, and complies with NIST SP-56Cr2, when the protocol making use of this composite KEM will use the shared secret output to derive a cryptographic key via a KDF, making it uncessessary to use a combiner within composite KEM. 
+
+Security consideration: protocols that allow the NULL combiner MUST ensure either that none of the component shared secrets are directly controllable by an attacker (which allows for attacks similar to those discussed in {{sec-apop-attack}}), or that appropriate mitigations have been put into place.
+
+
+## id-composite-kdf-combiner
+
+This section defines a KDF-based shared secret combiner.
+
+~~~
+id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+~~~
+
+It MUST carry parameters
+
+~~~
+alg-composite-kdf-combiner-params ::=  SEQUENCE {
+        kdf     AlgorithmIdentifier
+}
+~~~
+
+to specify the KDF to be used.
+
+EDNOTE: this ASN.1 could be simplified to `alg-composite-kdf-combiner-params ::=  AlgorithmIdentifier` to save a couple bytes on the wire, but we're presenting it this way for now for readability.
+
+The behaviour of this combiner is: `SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )` where `||` denotes contatenation.
+
+Formally:
+
+~~~
+Input:
+   SS1, SS2, .., SSn   Shared secrets to combine
+
+Output:
+   SS                  Combined shared secret.
+
+1.  SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+~~~
+
+The intent of this combiner is to frustrate known cryptanalytic attacks by normalizing the component shared secrets to a common fixed length (dictated by the output length of the supplied KDF), as well as attacks that exploit known weaknesses in the underlying hash function since, short of a full pre-image attack, an attacker who is able to control SSi will still not be able to control KDF(SSi).
+
+EDNOTE: this combiner needs cryptographic review.
+
+EDNOTE: Do we need domain separation in case other protocols use the same shared secrets in the same construction? Something like `KDF( ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )` ?
+
+
+# Composite Encapsulation process {#sec-encaps-proc}
+
+Composite key encapsulations takes a CompositePublicKey as its input.  The
+CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent 
+an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that 
+contains encryption or decryption primitive.  For example (RSA).   
+
+This operation outputs a shared-secret and cipher text.
+
+COMBINER is a function used to combine multiple shared secrets as defined in {{sect-combiners}}.
+
+This process employs the transformations from KeyTransport or keyAgreement to KEM as described in {{sec-kems}}.
+
+~~~
+Input:  
+   PK1, PK2 .. PKn   Encryption public keys. See note below on 
+                     composite inputs.
+
+   A1, A2, ... An     Component keyTransport, keyAgreement, or
+                      KEM algorithms. See note below on composite 
+                      inputs.
+
+   COMBINER          A combiner function.
+
+   SIZE              The length of shared secret to generate
+                    when transforming a keyTransport into a KEM.
+
+Output:  SS, CT
+
+1.  for i := 1 to n
+       if Ai is of type KEM:
+          SSi, CTi := encaps(PKi)
+       
+       else, if Ai is of type keyTransport:
+         SSi := random_bits(SIZE)
+         CTi := encrypt(SSi, PKi)
+
+       else, if Ai is of type keyAgreement:
+          PKe, SKe := keyGen()
+          SSi := keyAgree(PKi, SKe)
+          CTi := PKe
+
+
+  2.  SS = COMBINER(SS1, SS2, .., SSn)
+      CT = CT1, CT2, .., CTn
+~~~
+
+Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+
+Since recursive composite public keys are disallowed in [I-D.ounsworth-pq-composite-keys], no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
+
+# Composite Key Decapsulation {#sec-decaps-proc}
+
+Composite key decapsulations takes a CompositePrivateKey as its input and the
+sequence of Cipher texts (ct1 .. ctn) computed by the composite key 
+encapsulation method.  The CompositePrivateKey MUST contain composite keys 
+(Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method),
+or an algorithm that contains encryption or decryption primitive.  These keys 
+MUST consist of the same component keys in the same order as the Composite Key 
+Encapsulation process that generated them.  
+
+This operation outputs a shared-secret.
+
+COMBINER is a function used to combine multiple shared secrets as defined in {{sect-combiners}}.
+
+This process employs the transformations from KeyTransport or keyAgreement to KEM as described in {{sec-kems}}.
+
+
+~~~
+Input:   CompositePrivateKey = SK1, SK2 .. SKn
+
+   SK1, SK2 .. SKn    Decryption private keys. See note below on 
+                      composite inputs.
+
+   A1, A2, ... An     Component keyTransport, keyAgreement, or
+                      KEM algorithms. See note below on composite 
+                      inputs.
+
+   CT1, CT2, .., CTn  Ciphertexts. see note below on composite inputs.
+   
+   COMBINER          A combiner function.
+
+
+Output:  SS
+
+1. for i := 1 to n
+ 
+      if Ai is of type KEM:
+          SSi := decaps(Cti, SKi)
+
+      else, if Ai is of type keyEncipherment:
+          SSi := decrypt(Cti, SKi)
+
+       else, if Ai is of type keyAgreement:
+          PKe := decode(CTi)
+          SSi := keyAgree(PKe, SKi)
+
+2. Output SS = COMBINER(SS1, SS2, .., SSn)
+~~~
+
+Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.
 
 
 # In Practice {#sec-in-pract}
@@ -595,7 +609,7 @@ EDNOTE 10: Possible topics to address:
 
 
 
-## Backwards Compatibility
+## Backwards Compatibility {#sec-backwards-compat}
 
 As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.
 
@@ -658,14 +672,6 @@ EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
 TODO -- we'll need security consideration analysis of whatever OR modes we choose.
 
-~~~ BEGIN EDNOTE ~~~
-In the context of encryption, OR modes could mean one of two things:
-
-Type 1: sender uses a subset
-
-This would mean the sender (encrypter) uses a subset of the component keys within the receiver's public key. The obvious 
-
-~~~ END EDNOTE ~~~
 
 ## Cryptographic review of combiner
 
@@ -725,89 +731,43 @@ DEFINITIONS IMPLICIT TAGS ::= BEGIN
 EXPORTS ALL;
 
 IMPORTS
-  PUBLIC-KEY, SIGNATURE-ALGORITHM
-    FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-algorithmInformation-02(58) }
-
-  SubjectPublicKeyInfo
-    FROM PKIX1Explicit-2009
-      { iso(1) identified-organization(3) dod(6) internet(1)
-        security(5) mechanisms(5) pkix(7) id-mod(0)
-        id-mod-pkix1-explicit-02(51) }
-
-  OneAsymmetricKey
-    FROM AsymmetricKeyPackageModuleV1
-      { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-        pkcs-9(9) smime(16) modules(0)
-        id-mod-asymmetricKeyPkgV1(50) } ;
+-- any?
 
 --
 -- Object Identifiers
 --
 
 -- To be replaced by IANA
-id-composite-key OBJECT IDENTIFIER ::= {
-  iso(1) identified-organization(3) dod(6) internet(1) private(4) 
-  enterprise(1) OpenCA(18227) algorithms(2) id-pk-compositeCrypto(1) }
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1) 
+entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+
+id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+
 
 --
--- Public Key
+-- Composite structures
 --
 
-pk-Composite PUBLIC-KEY ::= {
-    id id-composite-key,
-    KeyValue CompositePublicKey,
-    Params CompositeParams ARE OPTIONAL,
-    PrivateKey CompositePrivateKey,
+CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 
-CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
+TODO: this assumes that KEM-ALGORITHM is defined, which it currently is not.
 
-CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey 
-                                            ENCODED BY der)
-
-CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey 
-                                            ENCODED BY der)
-
-CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
--- pk-explicitComposite - Composite public key information object
-
-pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType} 
-  PUBLIC-KEY ::= {
-    IDENTIFIER id
-    KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
-      secondPublicKey, SecondPublicKeyType}
-    PARAMS ARE absent
+composite-kem-params  ::=  SEQUENCE {
+    combiner     AlgorithmIdentifier
 }
 
-   The following ASN.1 object class then automatically generates the
-   public key structure from the types defined in pk-explicitComposite.
-
--- ExplicitCompositePublicKey - The data structure for a composite 
--- public key sec-composite-pub-keys and SecondPublicKeyType are needed 
--- because PUBLIC-KEY contains a set of public key types, not a single
--- type.
--- TODO The parameters should be optional only if they are marked 
--- optional in the PUBLIC-KEY
-
-
-ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey, 
-  FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, 
-    SecondPublicKeyType} ::= SEQUENCE {
-      firstPublicKey SEQUENCE {
-        params firstPublicKey.&Params OPTIONAL,
-        publicKey FirstPublicKeyType
-      },
-      secondPublicKey SEQUENCE {
-        params secondPublicKey.&Params OPTIONAL,
-        publicKey SecondPublicKeyType
-      }
-  }
+alg-composite-kdf-combiner-params ::=  SEQUENCE {
+        kdf     AlgorithmIdentifier
+}
 
 END
 

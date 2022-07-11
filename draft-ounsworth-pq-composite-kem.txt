@@ -5,7 +5,7 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: January 10, 2023                                  July 09, 2022
+Expires: January 12, 2023                                  July 11, 2022
 
 
                  Composite KEM For Use In Internet PKI
@@ -41,7 +41,10 @@ Abstract
    This document defines a Composite key encapsulation mechanism (KEM)
    procedure, for use with Composite keys which consist of combinations
    of Encryption or KEM algorithms for each composite component
-   algorithm.
+   algorithm.  This document also introduces the idea of assigning an
+   Object Identifier (OID) to a shared secret combiner so that stronger
+   combiners can be implemented in the future without needing to re-
+   issue this specification.
 
    This document is intended to be coupled with the composite keys
    structure define in [I-D.ounsworth-pq-composite-keys] and the CMS
@@ -50,10 +53,7 @@ Abstract
 
 
 
-
-
-
-Ounsworth & Gray        Expires January 10, 2023                [Page 1]
+Ounsworth & Gray        Expires January 12, 2023                [Page 1]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on January 10, 2023.
+   This Internet-Draft will expire on January 12, 2023.
 
 Copyright Notice
 
@@ -96,52 +96,54 @@ Table of Contents
      1.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Composite KEM Structures  . . . . . . . . . . . . . . . . . .   5
      2.1.  Key Encapsulation Mechanisms (KEMs) . . . . . . . . . . .   5
-     2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   6
+     2.2.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   7
        2.2.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   7
      2.3.  CompositeCiphertextValue  . . . . . . . . . . . . . . . .   7
      2.4.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   7
-       2.4.1.  Composite KEM Ciphertext Encoding . . . . . . . . . .   8
-   3.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   8
+   3.  KEM Algorithm Identifiers . . . . . . . . . . . . . . . . . .   8
      3.1.  id-alg-composite-kem  . . . . . . . . . . . . . . . . . .   8
-     3.2.  Other Explicit Algorithms . . . . . . . . . . . . . . . .  10
-   4.  Composite Key Encapsulation process . . . . . . . . . . . . .  11
-   5.  Composite Key Decapsulation . . . . . . . . . . . . . . . . .  11
+     3.2.  Other Explicit Algorithms . . . . . . . . . . . . . . . .   9
+   4.  Combiner Algorithm Identifiers  . . . . . . . . . . . . . . .  10
+     4.1.  NULL  . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+     4.2.  id-composite-kdf-combiner . . . . . . . . . . . . . . . .  11
 
 
 
-Ounsworth & Gray        Expires January 10, 2023                [Page 2]
+Ounsworth & Gray        Expires January 12, 2023                [Page 2]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-   6.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     6.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  14
-       6.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  14
-       6.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  15
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  15
-     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  16
-     8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  16
-       8.3.1.  Need for a KDF within the combiner  . . . . . . . . .  16
-       8.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  17
-       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  17
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  19
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  20
-   Appendix B.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  20
-   Appendix C.  Intellectual Property Considerations . . . . . . . .  22
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  22
-     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  23
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  23
+   5.  Composite Encapsulation process . . . . . . . . . . . . . . .  12
+   6.  Composite Key Decapsulation . . . . . . . . . . . . . . . . .  14
+   7.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  15
+     7.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  15
+       7.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  16
+       7.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  17
+   8.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
+   9.  Security Considerations . . . . . . . . . . . . . . . . . . .  17
+     9.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  17
+     9.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  18
+     9.3.  Cryptographic review of combiner  . . . . . . . . . . . .  18
+       9.3.1.  Need for a KDF within the combiner  . . . . . . . . .  18
+       9.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  18
+       9.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  19
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  19
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  21
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  22
+   Appendix B.  ASN.1 Module . . . . . . . . . . . . . . . . . . . .  22
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  23
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  23
+     D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  24
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
 
 1.  Introduction
 
    During the transition to post-quantum cryptography, there will be
    uncertainty as to the strength of cryptographic algorithms; we will
    no longer fully trust traditional cryptography such as RSA, Diffie-
-   Hellman, DSA and their elliptic curve variants, while me may also not
+   Hellman, DSA and their elliptic curve variants, while we may also not
    fully trust their post-quantum replacements until they have had
    sufficient scrutiny and time to discover and fix implementation bugs.
    Unlike previous cryptographic algorithm migrations, the choice of
@@ -150,9 +152,8 @@ Internet-Draft              PQ Composite Keys                  July 2022
    entity's cryptographic identity to be composed of multiple public-key
    algorithms.
 
-   The deployment of composite public keys, and composite signatures and
-   composite encryption using post-quantum algorithms will face two
-   challenges
+   The deployment of composite public keys and composite encryption
+   using post-quantum algorithms will face two challenges
 
    o  Algorithm strength uncertainty: During the transition period, some
       post-quantum signature and encryption algorithms will not be fully
@@ -164,8 +165,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
 
 
-
-Ounsworth & Gray        Expires January 10, 2023                [Page 3]
+Ounsworth & Gray        Expires January 12, 2023                [Page 3]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
@@ -178,9 +178,8 @@ Internet-Draft              PQ Composite Keys                  July 2022
    uncertainty by building on [I-D.ounsworth-pq-composite-keys] by
    providing the format and process for combining multiple cryptographic
    algorithms into a single key encapsulation operation.  Backwards
-   compatibility is addressed via using composite in conjunction with a
-   non-composite hybrid mode such as that described in
-   [I-D.becker-guthrie-noncomposite-hybrid-auth].
+   compatibility is not directly covered in this document, but is the
+   subject of Section 7.1.
 
    This document is intended for general applicability anywhere that key
    establishment or enveloped content encryption is used within PKIX or
@@ -204,10 +203,12 @@ Internet-Draft              PQ Composite Keys                  July 2022
    CLIENT: Any software that is making use of a key at runtime.  This
    includes a signer, verifier, encrypter, decrypter.
 
-   COMBINER MODE: A combiner mode specifies how keys are to be combined
-   together into a single cryptographic operation.  Examples include
-   AND, OR, K-of-N.  Specifications of composite signature or encryption
-   procedures will need to specify the behaviour under each mode.
+   COMBINER: A combiner specifies how multiple shared secrets are
+   combined into a single shared secret.  It is expected that combiners
+   will need to evolve with discovery of cryptanalytic attacks, so this
+   document takes the approach of assigning Object Identifiers (OIDs) to
+   combiners so that stronger combiners can be implemented in the
+   future.
 
    COMPONENT ALGORITHM: A single basic algorithm which is contained
    within a composite algorithm.
@@ -217,14 +218,15 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    DER: Distinguished Encoding Rules as defined in [X.690].
 
-   KEM: A key encapsulation mechanism as defined in Section 2.1.
 
 
 
-Ounsworth & Gray        Expires January 10, 2023                [Page 4]
+Ounsworth & Gray        Expires January 12, 2023                [Page 4]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
+
+   KEM: A key encapsulation mechanism as defined in Section 2.1.
 
    POST-QUANTUM ALGORITHM: Any cryptographic algorithm which is believed
    to be resistant to classical and quantum cryptanalysis, such as the
@@ -234,8 +236,9 @@ Internet-Draft              PQ Composite Keys                  July 2022
    cryptographic key, making no assumptions about which algorithm.
 
    SHARED SECRET: A value established between two communicating parties
-   by means of a cryptographic operation, but which cannot be learned by
-   an active or passive adversary.
+   for use as cryptographic key material, but which cannot be learned by
+   an active or passive adversary.  This document is concerned with
+   shared secrets established via public key cryptagraphic operations.
 
 2.  Composite KEM Structures
 
@@ -257,33 +260,28 @@ Internet-Draft              PQ Composite Keys                  July 2022
       secret ss, or in some cases a distinguished error value.
 
    This document is not concerned with the KeyGen() algorithm of a KEM,
-   but it is included for completeness.
+   but it is included above for completeness.
 
    The KEM interface defined above differs from both traditional key
    transport mechanism (for example for use with KeyTransRecipientInfo
    defined in [RFC5652]), and key agreement (for example for use with
    KeyAgreeRecipientInfo defined in [RFC5652]).
 
-   EDNOTE: it would be really nice for security proofs if definition of
-   KEM included that the bits of the shared secret output need to be
-   uniformly distributed (ie IND-CCA), because for example it would then
-   be safe to XOR or truncate them.  While the NIST PQC candidates all
-   seem to do this, we could not find a definition of "KEM" that
-   includes it as a requirement.
-
    The KEM interface was chosen as the interface for a composite key
-   exchange because both key transport and key agreement mechanisms can
-   be promoted into KEMs in the following ways:
+   exchange because it allows for arbitrary combinations of component
+   algorithm types since both key transport and key agreement mechanisms
+   can be promoted into KEMs in the following ways:
+
+   A key transport mechanism can be transformed into a KEM.Encaps(pk) by
+   generating a random shared secret ss and performing
 
 
 
-Ounsworth & Gray        Expires January 10, 2023                [Page 5]
+Ounsworth & Gray        Expires January 12, 2023                [Page 5]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-   A key transport mechanism can be transformed into a KEM.Encaps(pk) by
-   generating a random shared secret ss and performing
    KeyTrans.Encrypt(pk, ss) -> ct; and into a KEM.Decaps(sk, ct) by
    KeyTrans.Decrypt(sk, ct) -> ss.  This follows the pattern of RSA-KEM
    [RFC5990].
@@ -295,24 +293,28 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    A composite KEM allows two or more underlying key transport, key
    agreement, or KEM algorithms to be combined into a single
-   cryptographic operations by performing each operation, promoted to a
-   KEM as outline above, and concatenating all component shared secrets
-   into a single shared secret.
+   cryptographic operations by performing each operation, transformed to
+   a KEM as outline above, and using a specified combiner function to
+   combine the two or more component shared secrets into a single shared
+   secret.
 
    The main security property for KEMs is indistinguishability under
    adaptive chosen ciphertext attack (IND-CCA2), which means that shared
    secret values should be indistinguishable from random strings even
    given the ability to have other arbitrary ciphertexts decapsulated.
 
+   EDNOTE: it would be really nice for security proofs if definition of
+   KEM included that the bits of the shared secret output need to be
+   uniformly distributed (ie IND-CCA), because for example it would then
+   be safe to XOR or truncate them.  While the NIST PQC candidates all
+   seem to do this, we could not find a definition of "KEM" that
+   includes it as a requirement.
+
    A weaker security notion is indistinguishability under chosen
    plaintext attack (IND-CPA), which means that the shared secret values
    should be indistinguishable from random strings given a copy of the
    public key.  IND-CPA roughly corresponds to security against a
    passive attacker, and sometimes corresponds to one-time key exchange.
-
-   The shared secret MUST be indistinguishable under adaptive chosen
-   ciphertext attacks (IND-CCA2), for example when it is the output of a
-   KDF.
 
    The composite KEM mechanisms meets these security properties if and
    only if the component primitives meet them.
@@ -325,18 +327,22 @@ Internet-Draft              PQ Composite Keys                  July 2022
    to run each component shared secret through the supplied KDF which
    will normalize all the lengths.
 
+
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023                [Page 6]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
 2.2.  Composite Keys
 
    A composite key is a single key object that performs an atomic
    cryptographic operation as defined in
    [I-D.ounsworth-pq-composite-keys].
-
-
-
-Ounsworth & Gray        Expires January 10, 2023                [Page 6]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
 2.2.1.  Key Usage Bits
 
@@ -346,18 +352,18 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    keyEncipherment
 
-   Other types of key usages SHOULD not be used.  The main intent for
-   this keyEncipherment is to encapsulate (encrypt) another key.  This
-   is the main purpose of a KEM algorithm, and composite-KEM does not
-   deviate from this intent.
+   Additional key usages SHOULD not be used.  The main intent for this
+   keyEncipherment is to encapsulate (encrypt) another key.  This is the
+   main purpose of a KEM algorithm, and composite-KEM does not deviate
+   from this intent.
 
    EDNOTE: The main argument for using keyEncipherment verses
    keyAgreement is that multiple parties are required to contribute to a
    key agreement verses a single party in keyEncipherment.
 
    EDNOTE: It is recognized that KEMS will be added into other PKIX and
-   X509 standards and these need to make the same choice about the key
-   usage of a KEM key.
+   X509 standards and LAMPS needs to make sure they all make the same
+   choice about the key usage of a KEM key.
 
 2.3.  CompositeCiphertextValue
 
@@ -379,43 +385,26 @@ Internet-Draft              PQ Composite Keys                  July 2022
    inside the OCTET STRING object?  If so, that's probably an extra
    unnecessary layer.
 
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023                [Page 7]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    When a bit string is required, the octets of the DER encoded
    composite data structure SHALL be used as the bits of the bit string,
    with the most significant bit of the first octet becoming the first
    bit, and so on, ending with the least significant bit of the last
    octet becoming the last bit of the bit string.
 
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023                [Page 7]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    In the interests of simplicity and avoiding compatibility issues,
    implementations that parse these structures MAY accept both BER and
    DER.
 
-2.4.1.  Composite KEM Ciphertext Encoding
-
-   For ease of use when encoding and decoding, the following encoding is
-   suggested for the Ciphertext.
-
-   CompositeKemCT :: SEQUENCE SIZE (2..MAX) of OCTET STRING
-
-   This will allow implementations a simple and uniform way to
-   distribute the set of Cipher texts required for the decapsulation
-   process.
-   It is not mandatory as an implementation could choose to store the
-   set of Cipher texts produced in a different format, so long as they
-   are available at time of decapsulation.
-
-   EDNOTE: is this section adding anything beyond what's already said in
-   the section above?
-
-3.  Algorithm Identifiers
+3.  KEM Algorithm Identifiers
 
    The following algorithm Identifiers and their associated parameters
    are used with composite KEM.
@@ -425,11 +414,11 @@ Internet-Draft              PQ Composite Keys                  July 2022
    The id-alg-composite-kem object identifier is used for identifying a
    generic composite KEM algorithm.  This allows arbitrary combinations
    of component key transport, key agreement and KEM algorithms without
-   needing the combination to be pre-registered or pre-agreed.
+   needing the combination to be pre-registered or standardized.
 
-      id-alg-composite-kem OBJECT IDENTIFIER ::= {
-       joint-iso-itu-t(2) country(16) us(840) organization(1)
-       entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+   id-alg-composite-kem OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1)
+     entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 
    EDNOTE: this is a temporary OID for the purposes of prototyping.  We
    are requesting IANA to assign a permanent OID, see Section 6.
@@ -440,97 +429,47 @@ Internet-Draft              PQ Composite Keys                  July 2022
    - Bring to IETF.  We just made up the prefix "kema" (for "KEM
    algorithm") is that the right prefix?
 
-
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023                [Page 8]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
-      kema-CompositeKEM KEM-ALGORITHM ::= {
-          IDENTIFIER id-alg-composite-kem
-          VALUE CompositeCiphertextValue
-          PARAMS composite-kem-params
-          PUBLIC-KEYS { pk-Composite }
-          SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-      }
-
-   Composite KEM carries its algorithm parameters in the Parameters
-   field of the AlgorithmIdentifier:
-
-       AlgorithmIdentifier  ::=  SEQUENCE  {
-           algorithm               OBJECT IDENTIFIER,
-           parameters              ANY DEFINED BY algorithm OPTIONAL  }
+   kema-CompositeKEM KEM-ALGORITHM ::= {
+       IDENTIFIER id-alg-composite-kem
+       VALUE CompositeCiphertextValue
+       PARAMS composite-kem-params
+       PUBLIC-KEYS { pk-Composite }
+       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+   }
 
    For Composite KEM, we define a composite KEM Algorithm ID as:
 
-      id-composite-kem-algid AlgorithmIdentifier  ::=  {
-           algorithm       id-alg-composite-kem,
-           parameters      composite-kem-params }
-
-   The parameters in the id-composite-kem-algid are composite-kem-params
-
-      composite-kem-params  ::=  SEQUENCE {
-           kdf                  AlgorithmIdentifier,
-      }
-
-   EDNOTE: does the (generic) params need to carry a list of
-   AlgorithmIdentifiers that were used in the encryption?  With
-   signatures to prevent the verifier from coming up with false validity
-   by using the wrong verification algorithm.  With encryption I think
-   it's less important for encryption; either your private key works or
-   it doesn't, no harm done.
-
-   ~~~ BEGIN EDNOTE ~~~
-
-   If we want to allow for additional combiner modes, these combiner
-   modes could be defined by an algorithm identifier containing the
-   combiner mode, we would instead define composite-kem-params as:
-
-      composite-kem-params  ::=  SEQUENCE {
-           combiner     AlgorithmIdentifier,
-      }
-
-   We would then define the following combiner:
-
-   Example:
+   The following algorithm parameters MUST be included:
 
 
 
 
-Ounsworth & Gray        Expires January 10, 2023                [Page 9]
+
+Ounsworth & Gray        Expires January 12, 2023                [Page 8]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-      combiner AlgorithmIdentifier  ::=  {
-           algorithm       id-Composite-KDF-Combiner,
-           parameters      alg-Composite-KDF-Combiner-Params }
+   composite-kem-params  ::=  SEQUENCE {
+       combiner     AlgorithmIdentifier
+   }
 
-   id-Composite-KDF-Combiner ::== OBJECT_IDENTIFIER
+   EDNOTE: this ASN.1 could be simplified to "composite-kem-params ::=
+   AlgorithmIdentifier" to save a couple bytes on the wire, but we're
+   presenting it this way for now for readability.
 
-   alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier
+   EDNOTE: does the (generic) params need to also carry a list of
+   AlgorithmIdentifiers that were used in the encryption?  With
+   signatures we need this to prevent the verifier from coming up with
+   false validity by using the wrong verification algorithm(s).  With
+   encryption I think it's less important because either your private
+   key works or it doesn't, no harm done by trying to decrypt with the
+   wrong alg.
 
-   where:
-
-   id-Composite-KDF-Combiner is the OBJECT IDENTIFIER for the combiner
-
-   alg-Composite-KDF-Combiner-Params ::= AlgorithmIdentifier
-
-   to specify the KDF (Option 2 below ednote) to use in the construction
-   "SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )".
-
-   If no parameters are supplied, then the default combiner mode could
-   be simple concatenation as per NIST SP 800-56Cr2
-
-   SS =  SS1 || SS2 || .. || SSn
+   If no, or a NULL, combiner is specified, then {#sect-null-combiner}
+   applies.
 
    See Ednote below for a discussion on some possible combiner modes
-
-   ~~~ END EDNOTE ~~~
 
 3.2.  Other Explicit Algorithms
 
@@ -553,98 +492,24 @@ Internet-Draft              PQ Composite Keys                  July 2022
    o  The algorithm identifier OID and PUBLIC-KEY type of each component
       algorithm.
 
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 10]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    o  Algorithm parameters either declared ABSENT, or defined with a
       type and encoding.
 
    TODO: lay out the details.
 
-4.  Composite Key Encapsulation process
-
-   Composite key encapsulations takes a CompositePublicKey as its input.
-   The CompositePublicKey MUST contain composite keys (Pi .. Pn) which
-   represent an algorithm which is a KEM (Key Encapsulation Method), or
-   an algorithm that contains encryption or decryption primitive.  For
-   example (RSA).
-
-   This operation outputs a shared-secret and cipher text.
-
-   COMBINER is a function used to combine multiple shared secrets
-
-   Input:  CompositePublicKey (PK1, PK2 .. PKn)
-           COMBINER
-
-   Output:  SS, CT
-
-   1.  for i := 1 to n
-          if PKi is of type KEM:
-             SSi, CTi := encaps(PKi)
-
-          else, if PKi is of type keyEncipherment:
-            SSi := random_bits(SIZE)
-            CTi := encrypt(SSi, PKi)
-
-          else, if PKi is of type keyAgreement:
-             PKe, SKe := keyGen()
-             SSi := keyAgree(PKi, SKe)
-             CTi := PKe
-
-
-     2.  SS = COMBINER(SSi..SSn)
-         CT = CT1, CT2, .., CTn
-
-5.  Composite Key Decapsulation
-
-   Composite key decapsulations takes a CompositePrivateKey as its input
-   and the sequence of Cipher texts (ct1 .. ctn) computed by the
-   composite key encapsulation method.  The CompositePrivateKey MUST
-   contain composite keys (Pi .. Pn) which represent an algorithm which
-   is a KEM (Key Encapsulation Method), or an algorithm that contains
-   encryption or decryption primitive.  These keys MUST consist of the
 
 
 
 
-Ounsworth & Gray        Expires January 10, 2023               [Page 11]
+Ounsworth & Gray        Expires January 12, 2023                [Page 9]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-   same component keys in the same order as the Composite Key
-   Encapsulation process that generated them.
+4.  Combiner Algorithm Identifiers
 
-   This operation outputs a shared-secret.
-
-   COMBINER is a function used to combine multiple shared secrets
-
-   Input:   CompositePrivateKey = SK1, SK2 .. SKn
-            CT = CT1, CT2, .., CTn
-            COMBINER
-
-
-   Output:  SS
-
-   1. for i := 1 to n
-
-         if SKi is of type KEM:
-             SSi := decaps(Cti, SKi)
-
-         else, if SKi is of type keyEncipherment:
-             SSi := decrypt(Cti, SKi)
-
-          else, if PKi is of type keyAgreement:
-             PKe := decode(CTi)
-             SSi := keyAgree(PKe, SKi)
-
-   2. Output SS =  SS = COMBINER(SSi..SSn)
+   This section defines concrete shared secret combiners that may be
+   used with composite KEM.
 
    ~~~ BEGIN EDNOTE ~~~
 
@@ -666,14 +531,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    "SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )"
 
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 12]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    Option 2b)
 
    "SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)"
@@ -686,15 +543,261 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    QUESTION: Should the choice of combiner be assigned an OID and made
    agile?  If not, then we perhaps we need a version field within the
-   composite kem structure to allow for future agility.
+   composite kem structure to allow for future agility.  Answer: for -00
+   of this document we have decided YES, but we can revisit this.
 
    ~~~ END EDNOTE ~~~
 
-   EDNOTE: We we need domain separation in case other protocols use the
-   same shared secrets in the same construction?  Something like "KDF(
-   ASCII("compositeKEM") || KDF(input1) || KDF(input2) )" ?
+4.1.  NULL
 
-6.  In Practice
+   If no, or NULL, parameters are supplied, then the default combiner
+   mode SHOULD be simple concatenation.
+
+   SS =  SS1 || SS2 || .. || SSn
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 10]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+   This mode is often appropriate, and complies with NIST SP-56Cr2, when
+   the protocol making use of this composite KEM will use the shared
+   secret output to derive a cryptographic key via a KDF, making it
+   uncessessary to use a combiner within composite KEM.
+
+   Security consideration: protocols that allow the NULL combiner MUST
+   ensure either that none of the component shared secrets are directly
+   controllable by an attacker (which allows for attacks similar to
+   those discussed in Section 9.3.2), or that appropriate mitigations
+   have been put into place.
+
+4.2.  id-composite-kdf-combiner
+
+   This section defines a KDF-based shared secret combiner.
+
+   id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+
+   It MUST carry parameters
+
+   alg-composite-kdf-combiner-params ::=  SEQUENCE {
+           kdf     AlgorithmIdentifier
+   }
+
+   to specify the KDF to be used.
+
+   EDNOTE: this ASN.1 could be simplified to "alg-composite-kdf-
+   combiner-params ::= AlgorithmIdentifier" to save a couple bytes on
+   the wire, but we're presenting it this way for now for readability.
+
+   The behaviour of this combiner is: "SS = KDF( KDF(SS1) || KDF(SS2) ||
+   .. || KDF(SSn) )" where "||" denotes contatenation.
+
+   Formally:
+
+   Input:
+      SS1, SS2, .., SSn   Shared secrets to combine
+
+   Output:
+      SS                  Combined shared secret.
+
+   1.  SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+
+   The intent of this combiner is to frustrate known cryptanalytic
+   attacks by normalizing the component shared secrets to a common fixed
+   length (dictated by the output length of the supplied KDF), as well
+   as attacks that exploit known weaknesses in the underlying hash
+   function since, short of a full pre-image attack, an attacker who is
+   able to control SSi will still not be able to control KDF(SSi).
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 11]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+   EDNOTE: this combiner needs cryptographic review.
+
+   EDNOTE: Do we need domain separation in case other protocols use the
+   same shared secrets in the same construction?  Something like "KDF(
+   ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )" ?
+
+5.  Composite Encapsulation process
+
+   Composite key encapsulations takes a CompositePublicKey as its input.
+   The CompositePublicKey MUST contain composite keys (Pi .. Pn) which
+   represent an algorithm which is a KEM (Key Encapsulation Method), or
+   an algorithm that contains encryption or decryption primitive.  For
+   example (RSA).
+
+   This operation outputs a shared-secret and cipher text.
+
+   COMBINER is a function used to combine multiple shared secrets as
+   defined in Section 4.
+
+   This process employs the transformations from KeyTransport or
+   keyAgreement to KEM as described in Section 2.1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 12]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+   Input:
+      PK1, PK2 .. PKn   Encryption public keys. See note below on
+                        composite inputs.
+
+      A1, A2, ... An     Component keyTransport, keyAgreement, or
+                         KEM algorithms. See note below on composite
+                         inputs.
+
+      COMBINER          A combiner function.
+
+      SIZE              The length of shared secret to generate
+                       when transforming a keyTransport into a KEM.
+
+   Output:  SS, CT
+
+   1.  for i := 1 to n
+          if Ai is of type KEM:
+             SSi, CTi := encaps(PKi)
+
+          else, if Ai is of type keyTransport:
+            SSi := random_bits(SIZE)
+            CTi := encrypt(SSi, PKi)
+
+          else, if Ai is of type keyAgreement:
+             PKe, SKe := keyGen()
+             SSi := keyAgree(PKi, SKe)
+             CTi := PKe
+
+
+     2.  SS = COMBINER(SS1, SS2, .., SSn)
+         CT = CT1, CT2, .., CTn
+
+   Note on composite inputs: the method of providing the list of
+   component keys and algorithms is flexible and beyond the scope of
+   this pseudo-code, for example they may be carried in
+   CompositePublicKey structure.  It is also possible to perform a
+   composite KEM that combines ciphertexts for distinct recipient keys
+   stored, for example, in separate X.509 certificates.  Variations in
+   the process to accommodate particular private key storage mechanisms,
+   for example when distinct keys stored in separate software or
+   hardware keystores, are considered to be conformant to this document
+   so long as it produces the same output as the process sketched above.
+
+   Since recursive composite public keys are disallowed in [I-
+   D.ounsworth-pq-composite-keys], no component ciphertext may itself be
+   composite; ie the encopsulation process MUST fail if any of the
+   public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An
+   are composite with the OID id-alg-composite.
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 13]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+6.  Composite Key Decapsulation
+
+   Composite key decapsulations takes a CompositePrivateKey as its input
+   and the sequence of Cipher texts (ct1 .. ctn) computed by the
+   composite key encapsulation method.  The CompositePrivateKey MUST
+   contain composite keys (Pi .. Pn) which represent an algorithm which
+   is a KEM (Key Encapsulation Method), or an algorithm that contains
+   encryption or decryption primitive.  These keys MUST consist of the
+   same component keys in the same order as the Composite Key
+   Encapsulation process that generated them.
+
+   This operation outputs a shared-secret.
+
+   COMBINER is a function used to combine multiple shared secrets as
+   defined in Section 4.
+
+   This process employs the transformations from KeyTransport or
+   keyAgreement to KEM as described in Section 2.1.
+
+  Input:   CompositePrivateKey = SK1, SK2 .. SKn
+
+     SK1, SK2 .. SKn    Decryption private keys. See note below on
+                        composite inputs.
+
+     A1, A2, ... An     Component keyTransport, keyAgreement, or
+                        KEM algorithms. See note below on composite
+                        inputs.
+
+     CT1, CT2, .., CTn  Ciphertexts. see note below on composite inputs.
+
+     COMBINER          A combiner function.
+
+
+  Output:  SS
+
+  1. for i := 1 to n
+
+        if Ai is of type KEM:
+            SSi := decaps(Cti, SKi)
+
+        else, if Ai is of type keyEncipherment:
+            SSi := decrypt(Cti, SKi)
+
+         else, if Ai is of type keyAgreement:
+            PKe := decode(CTi)
+            SSi := keyAgree(PKe, SKi)
+
+  2. Output SS = COMBINER(SS1, SS2, .., SSn)
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 14]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+   Note on composite inputs: the method of providing the list of
+   component keys and algorithms is flexible and beyond the scope of
+   this pseudo-code, for example they may be carried in
+   CompositePublicKey structure.  It is also possible to perform a
+   composite KEM that combines ciphertexts for distinct recipient keys
+   stored, for example, in separate X.509 certificates.  Variations in
+   the process to accommodate particular private key storage mechanisms,
+   for example when distinct keys stored in separate software or
+   hardware keystores, are considered to be conformant to this document
+   so long as it produces the same output as the process sketched above.
+
+7.  In Practice
 
    This section addresses practical issues of how this draft affects
    other protocols and standards.
@@ -720,17 +823,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    o  We could include a subsection about implementation considerations.
 
-
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 13]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
-6.1.  Backwards Compatibility
+7.1.  Backwards Compatibility
 
    As noted in the introduction, the post-quantum cryptographic
    migration will face challenges in both ensuring cryptographic
@@ -739,6 +832,15 @@ Internet-Draft              PQ Composite Keys                  July 2022
    this document primarily address cryptographic strength, however this
    section contains notes on how backwards compatibility may be
    obtained.
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 15]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
 
    The term "ease of migration" is used here to mean that existing
    systems can be gracefully transitioned to the new technology without
@@ -756,7 +858,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
    other standardized and proprietary protocols and applications that
    leverage CMS [RFC5652] encrypted structures.
 
-6.1.1.  K-of-N modes
+7.1.1.  K-of-N modes
 
    ~~~ BEGIN EDNOTE ~~~ In the context of encryption, K-of-N modes could
    mean one of two things:
@@ -765,7 +867,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    This would mean the sender (encrypter) uses a subset of K the N
    component keys within the receiver's public key.  The obvious way to
-   combine them is with the Section 4 but skipping the unused keys /
+   combine them is with the Section 5 but skipping the unused keys /
    algorithms and emitting a NULL ciphertext in their place.  This
    mechanism is straight-forward and allows ease of migration where a
    sender encounters a composite encryption public key where it does not
@@ -778,14 +880,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    This would mean that the sender (encrypter) uses all N of the
    component keys within the receiver's public key in such a way that
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 14]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    the receiver (decrypter) only needs to use K private keys to decrypt
    the message.  This implies the need for some kind of Shamir's-like
    secret splitting scheme.  This is a reasonably complex mechanism and
@@ -794,7 +888,17 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    ~~~ END EDNOTE ~~~
 
-6.1.2.  Parallel PKIs
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 16]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
+7.1.2.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
    end entity possesses two or more distinct public keys or certificates
@@ -821,26 +925,18 @@ Internet-Draft              PQ Composite Keys                  July 2022
    out more as we better understand the implementation concerns around
    composite encryption.
 
-7.  IANA Considerations
+8.  IANA Considerations
 
    The ASN.1 module OID is TBD.
 
-8.  Security Considerations
+9.  Security Considerations
 
-8.1.  Policy for Deprecated and Acceptable Algorithms
+9.1.  Policy for Deprecated and Acceptable Algorithms
 
    Traditionally, a public key, certificate, or signature contains a
    single cryptographic algorithm.  If and when an algorithm becomes
    deprecated (for example, RSA-512, or SHA1), it is obvious that
    structures using that algorithm are implicitly revoked.
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 15]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
 
    In the composite model this is less obvious since implementers may
    decide that certain cryptographic algorithms have complementary
@@ -849,34 +945,33 @@ Internet-Draft              PQ Composite Keys                  July 2022
    single composite public key, certificate, signature, or ciphertext
    may contain a mixture of deprecated and non-deprecated algorithms.
 
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 17]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    Specifying behaviour in these cases is beyond the scope of this
    document, but should be considered by Implementers and potentially in
    additional standards.
 
    EDNOTE: Max is working on a CRL mechanism to accomplish this.
 
-8.2.  OR Modes
+9.2.  OR Modes
 
    TODO -- we'll need security consideration analysis of whatever OR
    modes we choose.
 
-   ~~~ BEGIN EDNOTE ~~~ In the context of encryption, OR modes could
-   mean one of two things:
-
-   Type 1: sender uses a subset
-
-   This would mean the sender (encrypter) uses a subset of the component
-   keys within the receiver's public key.  The obvious
-
-   ~~~ END EDNOTE ~~~
-
-8.3.  Cryptographic review of combiner
+9.3.  Cryptographic review of combiner
 
    EDNOTE: LAMPS should probably request CFRG review of this draft to
    ensure that the combiner is resistant to all known cryptographic
    attacks.
 
-8.3.1.  Need for a KDF within the combiner
+9.3.1.  Need for a KDF within the combiner
 
    It is expected that the majority of uses of the KEM defined in this
    document will be within a construct such as
@@ -890,18 +985,10 @@ Internet-Draft              PQ Composite Keys                  July 2022
 
    In protocols where the KEM output will be supplied to a KDF, it
    should be safe to use a NULL KDF within the composite KEM -- ie the
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 16]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    KDF where "KDF(m) = m" -- but we leave the details of any such
    security analysis to the protocol designers who wish to implement it.
 
-8.3.2.  APOP Attack on concatenated keys
+9.3.2.  APOP Attack on concatenated keys
 
    See the attack analysis described in summary in [Aviram2021].
 
@@ -915,6 +1002,14 @@ Internet-Draft              PQ Composite Keys                  July 2022
    KEM primitive approved for use within PKIX sets a fixed length for
    the shared secret that it produces so that the attacker cannot change
    the shared secret length between subsequent runs of the same
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 18]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    protocol.  This justification aligns with the justification used for
    [I-D.ietf-tls-hybrid-design].  Second, any non-deprecated KDF will
    not allow collision attacks.
@@ -923,7 +1018,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
    to provide additional collision resistance on top of that provided by
    the underlying KDF.
 
-8.3.3.  Aviram2022
+9.3.3.  Aviram2022
 
    See the attack analysis described in summary in [Aviram2022].
 
@@ -941,20 +1036,9 @@ Internet-Draft              PQ Composite Keys                  July 2022
    This holds even if the chosen KDF is HKDF with the same key (salt)
    used in each KDF() operation.
 
-9.  References
+10.  References
 
-
-
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 17]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
-9.1.  Normative References
+10.1.  Normative References
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
@@ -971,6 +1055,16 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Mail: Part I: Message Encryption and Authentication
               Procedures", RFC 1421, DOI 10.17487/RFC1421, February
               1993, <https://www.rfc-editor.org/info/rfc1421>.
+
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 19]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1003,13 +1097,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               DOI 10.17487/RFC5912, June 2010,
               <https://www.rfc-editor.org/info/rfc5912>.
 
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 18]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    [RFC5914]  Housley, R., Ashmore, S., and C. Wallace, "Trust Anchor
               Format", RFC 5914, DOI 10.17487/RFC5914, June 2010,
               <https://www.rfc-editor.org/info/rfc5914>.
@@ -1026,6 +1113,15 @@ Internet-Draft              PQ Composite Keys                  July 2022
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
 
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 20]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
@@ -1036,7 +1132,7 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Encoding Rules (CER) and Distinguished Encoding Rules
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [Aviram2021]
               "Concatenating Secrets May Be Dangerous", 2022,
@@ -1059,13 +1155,6 @@ Internet-Draft              PQ Composite Keys                  July 2022
               Protocols", draft-becker-guthrie-noncomposite-hybrid-
               auth-00 (work in progress), March 2022.
 
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 19]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    [I-D.ietf-tls-hybrid-design]
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
               exchange in TLS 1.3", draft-ietf-tls-hybrid-design-04
@@ -1082,6 +1171,13 @@ Internet-Draft              PQ Composite Keys                  July 2022
               (CRL) Profile", RFC 3279, DOI 10.17487/RFC3279, April
               2002, <https://www.rfc-editor.org/info/rfc3279>.
 
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 21]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
+
    [RFC5990]  Randall, J., Kaliski, B., Brainard, J., and S. Turner,
               "Use of the RSA-KEM Key Transport Algorithm in the
               Cryptographic Message Syntax (CMS)", RFC 5990,
@@ -1096,119 +1192,65 @@ Appendix B.  ASN.1 Module
 
    TBD -- UPDATE
 
- <CODE STARTS>
+<CODE STARTS>
 
- Composite-Keys-2022
-   { TBD }
+Composite-Keys-2022
+  { TBD }
 
- DEFINITIONS IMPLICIT TAGS ::= BEGIN
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
- EXPORTS ALL;
+EXPORTS ALL;
 
- IMPORTS
-   PUBLIC-KEY, SIGNATURE-ALGORITHM
-     FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
-       { iso(1) identified-organization(3) dod(6) internet(1)
-         security(5) mechanisms(5) pkix(7) id-mod(0)
-         id-mod-algorithmInformation-02(58) }
+IMPORTS
+-- any?
 
-   SubjectPublicKeyInfo
-     FROM PKIX1Explicit-2009
+--
+-- Object Identifiers
+--
+
+-- To be replaced by IANA
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1)
+entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+
+id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
+
+
+--
+-- Composite structures
+--
+
+CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params
 
 
 
-Ounsworth & Gray        Expires January 10, 2023               [Page 20]
+Ounsworth & Gray        Expires January 12, 2023               [Page 22]
 
 Internet-Draft              PQ Composite Keys                  July 2022
 
 
-       { iso(1) identified-organization(3) dod(6) internet(1)
-         security(5) mechanisms(5) pkix(7) id-mod(0)
-         id-mod-pkix1-explicit-02(51) }
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
 
-   OneAsymmetricKey
-     FROM AsymmetricKeyPackageModuleV1
-       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
-         pkcs-9(9) smime(16) modules(0)
-         id-mod-asymmetricKeyPkgV1(50) } ;
+TODO: this assumes that KEM-ALGORITHM is defined, which it currently is not.
 
- --
- -- Object Identifiers
- --
+composite-kem-params  ::=  SEQUENCE {
+    combiner     AlgorithmIdentifier
+}
 
- -- To be replaced by IANA
- id-composite-key OBJECT IDENTIFIER ::= {
-   iso(1) identified-organization(3) dod(6) internet(1) private(4)
-   enterprise(1) OpenCA(18227) algorithms(2) id-pk-compositeCrypto(1) }
+alg-composite-kdf-combiner-params ::=  SEQUENCE {
+        kdf     AlgorithmIdentifier
+}
 
- --
- -- Public Key
- --
+END
 
- pk-Composite PUBLIC-KEY ::= {
-     id id-composite-key,
-     KeyValue CompositePublicKey,
-     Params CompositeParams ARE OPTIONAL,
-     PrivateKey CompositePrivateKey,
- }
-
- CompositePublicKey ::= SEQUENCE SIZE (2..MAX) OF SubjectPublicKeyInfo
-
- CompositePublicKeyOs ::= OCTET STRING (CONTAINING CompositePublicKey
-                                             ENCODED BY der)
-
- CompositePublicKeyBs ::= BIT STRING (CONTAINING CompositePublicKey
-                                             ENCODED BY der)
-
- CompositePrivateKey ::= SEQUENCE SIZE (2..MAX) OF OneAsymmetricKey
-
-
- -- pk-explicitComposite - Composite public key information object
-
- pk-explicitComposite{OBJECT IDENTIFIER:id, PUBLIC-KEY:firstPublicKey,
-   FirstPublicKeyType, PUBLIC-KEY:secondPublicKey, SecondPublicKeyType}
-   PUBLIC-KEY ::= {
-     IDENTIFIER id
-     KEY ExplicitCompositePublicKey{firstPublicKey, FirstPublicKeyType,
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 21]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
-       secondPublicKey, SecondPublicKeyType}
-     PARAMS ARE absent
- }
-
-    The following ASN.1 object class then automatically generates the
-    public key structure from the types defined in pk-explicitComposite.
-
- -- ExplicitCompositePublicKey - The data structure for a composite
- -- public key sec-composite-pub-keys and SecondPublicKeyType are needed
- -- because PUBLIC-KEY contains a set of public key types, not a single
- -- type.
- -- TODO The parameters should be optional only if they are marked
- -- optional in the PUBLIC-KEY
-
-
- ExplicitCompositePublicKey{PUBLIC-KEY:firstPublicKey,
-   FirstPublicKeyType, PUBLIC-KEY:secondPublicKey,
-     SecondPublicKeyType} ::= SEQUENCE {
-       firstPublicKey SEQUENCE {
-         params firstPublicKey.&Params OPTIONAL,
-         publicKey FirstPublicKeyType
-       },
-       secondPublicKey SEQUENCE {
-         params secondPublicKey.&Params OPTIONAL,
-         publicKey SecondPublicKeyType
-       }
-   }
-
- END
-
- <CODE ENDS>
+<CODE ENDS>
 
 
 Appendix C.  Intellectual Property Considerations
@@ -1225,15 +1267,6 @@ Appendix D.  Contributors and Acknowledgements
    group of experts.  The Editors would especially like to acknowledge
    the expertise and tireless dedication of the following people, who
    attended many long meetings and generated millions of bytes of
-
-
-
-
-Ounsworth & Gray        Expires January 10, 2023               [Page 22]
-
-Internet-Draft              PQ Composite Keys                  July 2022
-
-
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
 
@@ -1248,6 +1281,14 @@ Internet-Draft              PQ Composite Keys                  July 2022
    referenced below.  Thanks go to the authors of those documents.
    "Copying always makes things easier and less error prone" -
    [RFC8411].
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 23]
+
+Internet-Draft              PQ Composite Keys                  July 2022
+
 
 D.1.  Making contributions
 
@@ -1285,4 +1326,19 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray        Expires January 10, 2023               [Page 23]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires January 12, 2023               [Page 24]
