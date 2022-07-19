@@ -351,7 +351,7 @@ For Composite KEM, we define a composite KEM Algorithm ID as:
 The following algorithm parameters MUST be included:
 
 ~~~
-composite-kem-params  ::=  SEQUENCE {
+composite-kem-params  ::= {
     combiner     AlgorithmIdentifier
 }
 ~~~
@@ -434,6 +434,8 @@ Answer: for -00 of this document we have decided YES, but we can revisit this.
 
 ~~~ END EDNOTE ~~~
 
+TODO: add a section for `SS = KDF(SS1 || .. || SSn)` for people who need strict compliance with NIST SP 800-56Cr2.
+
 ## NULL {#sect-null-combiner}
 
 If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.
@@ -459,7 +461,7 @@ id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
 It MUST carry parameters
 
 ~~~
-alg-composite-kdf-combiner-params ::=  SEQUENCE {
+alg-composite-kdf-combiner-params ::= {
         kdf     AlgorithmIdentifier
 }
 ~~~
@@ -513,7 +515,7 @@ where (SSi, Ci) are the Shared Secret and Ciphertext of component algorithm i. W
 Parameters for this would need to be:
 
 ~~~
-blockcipher-combiner-params ::= SEQUENCE {
+blockcipher-combiner-params ::= {
   hash    AlgorithIdentifier,
   wrap    AlgorithmIdentifier
 }
@@ -792,11 +794,11 @@ kema-CompositeKEM KEM-ALGORITHM ::= {
 
 TODO: this assumes that KEM-ALGORITHM is defined, which it currently is not.
 
-composite-kem-params  ::=  SEQUENCE {
+composite-kem-params  ::= {
     combiner     AlgorithmIdentifier
 }
 
-alg-composite-kdf-combiner-params ::=  SEQUENCE {
+alg-composite-kdf-combiner-params ::= {
         kdf     AlgorithmIdentifier
 }
 
