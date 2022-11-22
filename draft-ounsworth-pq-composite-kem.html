@@ -1,739 +1,1727 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
-<head profile="http://www.w3.org/2006/03/hcard http://dublincore.org/documents/2008/08/04/dc-html/">
-  <meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
-
-  <title>Composite KEM For Use In Internet PKI</title>
-
-  <style type="text/css" title="Xml2Rfc (sans serif)">
-  /*<![CDATA[*/
-	  a {
-	  text-decoration: none;
-	  }
-      /* info code from SantaKlauss at http://www.madaboutstyle.com/tooltip2.html */
-      a.info {
-          /* This is the key. */
-          position: relative;
-          z-index: 24;
-          text-decoration: none;
-      }
-      a.info:hover {
-          z-index: 25;
-          color: #FFF; background-color: #900;
-      }
-      a.info span { display: none; }
-      a.info:hover span.info {
-          /* The span will display just on :hover state. */
-          display: block;
-          position: absolute;
-          font-size: smaller;
-          top: 2em; left: -5em; width: 15em;
-          padding: 2px; border: 1px solid #333;
-          color: #900; background-color: #EEE;
-          text-align: left;
-      }
-	  a.smpl {
-	  color: black;
-	  }
-	  a:hover {
-	  text-decoration: underline;
-	  }
-	  a:active {
-	  text-decoration: underline;
-	  }
-	  address {
-	  margin-top: 1em;
-	  margin-left: 2em;
-	  font-style: normal;
-	  }
-	  body {
-	  color: black;
-	  font-family: verdana, helvetica, arial, sans-serif;
-	  font-size: 10pt;
-	  max-width: 55em;
-	  
-	  }
-	  cite {
-	  font-style: normal;
-	  }
-	  dd {
-	  margin-right: 2em;
-	  }
-	  dl {
-	  margin-left: 2em;
-	  }
-	
-	  ul.empty {
-	  list-style-type: none;
-	  }
-	  ul.empty li {
-	  margin-top: .5em;
-	  }
-	  dl p {
-	  margin-left: 0em;
-	  }
-	  dt {
-	  margin-top: .5em;
-	  }
-	  h1 {
-	  font-size: 14pt;
-	  line-height: 21pt;
-	  page-break-after: avoid;
-	  }
-	  h1.np {
-	  page-break-before: always;
-	  }
-	  h1 a {
-	  color: #333333;
-	  }
-	  h2 {
-	  font-size: 12pt;
-	  line-height: 15pt;
-	  page-break-after: avoid;
-	  }
-	  h3, h4, h5, h6 {
-	  font-size: 10pt;
-	  page-break-after: avoid;
-	  }
-	  h2 a, h3 a, h4 a, h5 a, h6 a {
-	  color: black;
-	  }
-	  img {
-	  margin-left: 3em;
-	  }
-	  li {
-	  margin-left: 2em;
-	  margin-right: 2em;
-	  }
-	  ol {
-	  margin-left: 2em;
-	  margin-right: 2em;
-	  }
-	  ol p {
-	  margin-left: 0em;
-	  }
-	  p {
-	  margin-left: 2em;
-	  margin-right: 2em;
-	  }
-	  pre {
-	  margin-left: 3em;
-	  background-color: lightyellow;
-	  padding: .25em;
-	  }
-	  pre.text2 {
-	  border-style: dotted;
-	  border-width: 1px;
-	  background-color: #f0f0f0;
-	  width: 69em;
-	  }
-	  pre.inline {
-	  background-color: white;
-	  padding: 0em;
-	  }
-	  pre.text {
-	  border-style: dotted;
-	  border-width: 1px;
-	  background-color: #f8f8f8;
-	  width: 69em;
-	  }
-	  pre.drawing {
-	  border-style: solid;
-	  border-width: 1px;
-	  background-color: #f8f8f8;
-	  padding: 2em;
-	  }
-	  table {
-	  margin-left: 2em;
-	  }
-	  table.tt {
-	  vertical-align: top;
-	  }
-	  table.full {
-	  border-style: outset;
-	  border-width: 1px;
-	  }
-	  table.headers {
-	  border-style: outset;
-	  border-width: 1px;
-	  }
-	  table.tt td {
-	  vertical-align: top;
-	  }
-	  table.full td {
-	  border-style: inset;
-	  border-width: 1px;
-	  }
-	  table.tt th {
-	  vertical-align: top;
-	  }
-	  table.full th {
-	  border-style: inset;
-	  border-width: 1px;
-	  }
-	  table.headers th {
-	  border-style: none none inset none;
-	  border-width: 1px;
-	  }
-	  table.left {
-	  margin-right: auto;
-	  }
-	  table.right {
-	  margin-left: auto;
-	  }
-	  table.center {
-	  margin-left: auto;
-	  margin-right: auto;
-	  }
-	  caption {
-	  caption-side: bottom;
-	  font-weight: bold;
-	  font-size: 9pt;
-	  margin-top: .5em;
-	  }
-	
-	  table.header {
-	  border-spacing: 1px;
-	  width: 95%;
-	  font-size: 10pt;
-	  color: white;
-	  }
-	  td.top {
-	  vertical-align: top;
-	  }
-	  td.topnowrap {
-	  vertical-align: top;
-	  white-space: nowrap; 
-	  }
-	  table.header td {
-	  background-color: gray;
-	  width: 50%;
-	  }
-	  table.header a {
-	  color: white;
-	  }
-	  td.reference {
-	  vertical-align: top;
-	  white-space: nowrap;
-	  padding-right: 1em;
-	  }
-	  thead {
-	  display:table-header-group;
-	  }
-	  ul.toc, ul.toc ul {
-	  list-style: none;
-	  margin-left: 1.5em;
-	  margin-right: 0em;
-	  padding-left: 0em;
-	  }
-	  ul.toc li {
-	  line-height: 150%;
-	  font-weight: bold;
-	  font-size: 10pt;
-	  margin-left: 0em;
-	  margin-right: 0em;
-	  }
-	  ul.toc li li {
-	  line-height: normal;
-	  font-weight: normal;
-	  font-size: 9pt;
-	  margin-left: 0em;
-	  margin-right: 0em;
-	  }
-	  li.excluded {
-	  font-size: 0pt;
-	  }
-	  ul p {
-	  margin-left: 0em;
-	  }
-	
-	  .comment {
-	  background-color: yellow;
-	  }
-	  .center {
-	  text-align: center;
-	  }
-	  .error {
-	  color: red;
-	  font-style: italic;
-	  font-weight: bold;
-	  }
-	  .figure {
-	  font-weight: bold;
-	  text-align: center;
-	  font-size: 9pt;
-	  }
-	  .filename {
-	  color: #333333;
-	  font-weight: bold;
-	  font-size: 12pt;
-	  line-height: 21pt;
-	  text-align: center;
-	  }
-	  .fn {
-	  font-weight: bold;
-	  }
-	  .hidden {
-	  display: none;
-	  }
-	  .left {
-	  text-align: left;
-	  }
-	  .right {
-	  text-align: right;
-	  }
-	  .title {
-	  color: #990000;
-	  font-size: 18pt;
-	  line-height: 18pt;
-	  font-weight: bold;
-	  text-align: center;
-	  margin-top: 36pt;
-	  }
-	  .vcardline {
-	  display: block;
-	  }
-	  .warning {
-	  font-size: 14pt;
-	  background-color: yellow;
-	  }
-	
-	
-	  @media print {
-	  .noprint {
-		display: none;
-	  }
-	
-	  a {
-		color: black;
-		text-decoration: none;
-	  }
-	
-	  table.header {
-		width: 90%;
-	  }
-	
-	  td.header {
-		width: 50%;
-		color: black;
-		background-color: white;
-		vertical-align: top;
-		font-size: 12pt;
-	  }
-	
-	  ul.toc a::after {
-		content: leader('.') target-counter(attr(href), page);
-	  }
-	
-	  ul.ind li li a {
-		content: target-counter(attr(href), page);
-	  }
-	
-	  .print2col {
-		column-count: 2;
-		-moz-column-count: 2;
-		column-fill: auto;
-	  }
-	  }
-	
-	  @page {
-	  @top-left {
-		   content: "Internet-Draft"; 
-	  } 
-	  @top-right {
-		   content: "December 2010"; 
-	  } 
-	  @top-center {
-		   content: "Abbreviated Title";
-	  } 
-	  @bottom-left {
-		   content: "Doe"; 
-	  } 
-	  @bottom-center {
-		   content: "Expires June 2011"; 
-	  } 
-	  @bottom-right {
-		   content: "[Page " counter(page) "]"; 
-	  } 
-	  }
-	
-	  @page:first { 
-		@top-left {
-		  content: normal;
-		}
-		@top-right {
-		  content: normal;
-		}
-		@top-center {
-		  content: normal;
-		}
-	  }
-  /*]]>*/
-  </style>
-
-  <link href="#rfc.toc" rel="Contents">
-<link href="#rfc.section.1" rel="Chapter" title="1 Introduction">
-<link href="#rfc.section.1.1" rel="Chapter" title="1.1 Terminology">
-<link href="#rfc.section.2" rel="Chapter" title="2 Composite KEM Structures">
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Key Encapsulation Mechanisms (KEMs)">
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Composite Keys">
-<link href="#rfc.section.2.2.1" rel="Chapter" title="2.2.1 Key Usage Bits">
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 CompositeCiphertextValue">
-<link href="#rfc.section.2.4" rel="Chapter" title="2.4 Encoding Rules">
-<link href="#rfc.section.3" rel="Chapter" title="3 KEM Algorithm Identifiers">
-<link href="#rfc.section.3.1" rel="Chapter" title="3.1 id-alg-composite-kem">
-<link href="#rfc.section.3.2" rel="Chapter" title="3.2 Other Explicit Algorithms">
-<link href="#rfc.section.4" rel="Chapter" title="4 Combiner Algorithm Identifiers">
-<link href="#rfc.section.4.1" rel="Chapter" title="4.1 NULL">
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 id-composite-kdf-combiner">
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 id-blockcipher-combiner">
-<link href="#rfc.section.5" rel="Chapter" title="5 Composite Encapsulation process">
-<link href="#rfc.section.6" rel="Chapter" title="6 Composite Key Decapsulation">
-<link href="#rfc.section.7" rel="Chapter" title="7 In Practice">
-<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Backwards Compatibility">
-<link href="#rfc.section.7.1.1" rel="Chapter" title="7.1.1 K-of-N modes">
-<link href="#rfc.section.7.1.2" rel="Chapter" title="7.1.2 Parallel PKIs">
-<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations">
-<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations">
-<link href="#rfc.section.9.1" rel="Chapter" title="9.1 Policy for Deprecated and Acceptable Algorithms">
-<link href="#rfc.section.9.2" rel="Chapter" title="9.2 OR Modes">
-<link href="#rfc.section.9.3" rel="Chapter" title="9.3 Cryptographic review of combiner">
-<link href="#rfc.section.9.3.1" rel="Chapter" title="9.3.1 Need for a KDF within the combiner">
-<link href="#rfc.section.9.3.2" rel="Chapter" title="9.3.2 APOP Attack on concatenated keys">
-<link href="#rfc.section.9.3.3" rel="Chapter" title="9.3.3 Aviram2022">
-<link href="#rfc.references" rel="Chapter" title="10 References">
-<link href="#rfc.references.1" rel="Chapter" title="10.1 Normative References">
-<link href="#rfc.references.2" rel="Chapter" title="10.2 Informative References">
-<link href="#rfc.appendix.A" rel="Chapter" title="A Examples">
-<link href="#rfc.appendix.B" rel="Chapter" title="B ASN.1 Module">
-<link href="#rfc.appendix.C" rel="Chapter" title="C Intellectual Property Considerations">
-<link href="#rfc.appendix.D" rel="Chapter" title="D Contributors and Acknowledgements">
-<link href="#rfc.appendix.D.1" rel="Chapter" title="D.1 Making contributions">
-<link href="#rfc.authors" rel="Chapter">
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Composite KEM For Use In Internet PKI</title>
+<meta content="Mike Ounsworth" name="author">
+<meta content="John Gray" name="author">
+<meta content='
+       The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. 
+       Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. 
+       EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. 
+       This document defines a Composite key encapsulation mechanism (KEM)
+procedure, for use with Composite keys which consist of combinations 
+of Encryption or KEM algorithms for each composite component 
+algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification. 
+       This document is intended to be coupled with the composite keys
+structure define in   and the CMS KEM-TRANS mechanism in  . 
+       
 
 
-  <meta name="generator" content="xml2rfc version 2.40.0 - https://tools.ietf.org/tools/xml2rfc" />
-  <link rel="schema.dct" href="http://purl.org/dc/terms/" />
 
-  <meta name="dct.creator" content="Ounsworth, M. and J. Gray" />
-  <meta name="dct.identifier" content="urn:ietf:id:draft-ounsworth-pq-composite-kem-00" />
-  <meta name="dct.issued" scheme="ISO8601" content="2022-07-19" />
-  <meta name="dct.abstract" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
-  <meta name="description" content="The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as &quot;dual&quot;, and for encryption key establishment this as referred to as &quot;hybrid&quot;. This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called &quot;composite&quot; where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. EDNOTE: the terms &quot;dual&quot; and &quot;hybrid&quot; are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly. This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification. This document is intended to be coupled with the composite keys structure define in  and the CMS KEM-TRANS mechanism in . " />
+    ' name="description">
+<meta content="xml2rfc 3.12.2" name="generator">
+<meta content="Internet-Draft" name="keyword">
+<meta content="draft-ounsworth-pq-composite-kem-00" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.12.2
+    Python 3.10.6
+    weasyprint 54.1
+-->
+<link href="draft-ounsworth-pq-composite-kem.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">/*
 
+  NOTE: Changes at the bottom of this file overrides some earlier settings.
+
+  Once the style has stabilized and has been adopted as an official RFC style,
+  this can be consolidated so that style settings occur only in one place, but
+  for now the contents of this file consists first of the initial CSS work as
+  provided to the RFC Formatter (xml2rfc) work, followed by itemized and
+  commented changes found necssary during the development of the v3
+  formatters.
+
+*/
+
+/* fonts */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans'); /* Sans-serif */
+@import url('https://fonts.googleapis.com/css?family=Noto+Serif'); /* Serif (print) */
+@import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); /* Monospace */
+
+@viewport {
+  zoom: 1.0;
+  width: extend-to-zoom;
+}
+@-ms-viewport {
+  width: extend-to-zoom;
+  zoom: 1.0;
+}
+/* general and mobile first */
+html {
+}
+body {
+  max-width: 90%;
+  margin: 1.5em auto;
+  color: #222;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  line-height: 1.6;
+  scroll-behavior: smooth;
+}
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  margin: 1em 0 0.5em;
+  font-weight: bold;
+  line-height: 1.3;
+}
+#title {
+  clear: both;
+  border-bottom: 1px solid #ddd;
+  margin: 0 0 0.5em 0;
+  padding: 1em 0 0.5em;
+}
+.author {
+  padding-bottom: 4px;
+}
+h1 {
+  font-size: 26px;
+  margin: 1em 0;
+}
+h2 {
+  font-size: 22px;
+  margin-top: -20px;  /* provide offset for in-page anchors */
+  padding-top: 33px;
+}
+h3 {
+  font-size: 18px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h4 {
+  font-size: 16px;
+  margin-top: -36px;  /* provide offset for in-page anchors */
+  padding-top: 42px;
+}
+h5, h6 {
+  font-size: 14px;
+}
+#n-copyright-notice {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1em;
+  margin-bottom: 1em;
+}
+/* general structure */
+p {
+  padding: 0;
+  margin: 0 0 1em 0;
+  text-align: left;
+}
+div, span {
+  position: relative;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 3px;
+  padding: 1em 1em 0;
+  margin-bottom: 1.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.ulBare, li.ulBare {
+  margin-left: 0em !important;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+/* 
+dl.nohang > dt {
+  float: none;
+}
+*/
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+
+/* links */
+a {
+  text-decoration: none;
+}
+a[href] {
+  color: #22e; /* Arlen: WCAG 2019 */
+}
+a[href]:hover {
+  background-color: #f2f2f2;
+}
+figcaption a[href],
+a[href].selfRef {
+  color: #222;
+}
+/* XXX probably not this:
+a.selfRef:hover {
+  background-color: transparent;
+  cursor: default;
+} */
+
+/* Figures */
+tt, code, pre, code {
+  background-color: #f9f9f9;
+  font-family: 'Roboto Mono', monospace;
+}
+pre {
+  border: 1px solid #eee;
+  margin: 0;
+  padding: 1em;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption {
+  font-style: italic;
+  margin: 0 0 1em 0;
+}
+@media screen {
+  pre {
+    overflow-x: auto;
+    max-width: 100%;
+    max-width: calc(100% - 22px);
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 1.2em 2em;
+}
+blockquote {
+  background-color: #f9f9f9;
+  color: #111; /* Arlen: WCAG 2019 */
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+  border: 1px solid #eee;
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.5em 0.75em;
+}
+th {
+  text-align: left;
+  background-color: #e9e9e9;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f5f5f5;
+}
+table caption {
+  font-style: italic;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+table p {
+  /* XXX to avoid bottom margin on table row signifiers. If paragraphs should
+     be allowed within tables more generally, it would be far better to select on a class. */
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  color: #666; /* Arlen: AHDJ 2019 */
+  text-decoration: none;
+  visibility: hidden;
+  user-select: none;
+  -ms-user-select: none;
+  -o-user-select:none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+@media screen {
+  aside:hover > a.pilcrow,
+  p:hover > a.pilcrow,
+  blockquote:hover > a.pilcrow,
+  div:hover > a.pilcrow,
+  li:hover > a.pilcrow,
+  pre:hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid #eee;
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: 0.9em;
+}
+#identifiers dt {
+  width: 3em;
+  clear: left;
+}
+#identifiers dd {
+  float: left;
+  margin-bottom: 0;
+}
+/* Fix PDF info block run off issue */
+@media print {
+  #identifiers dd {
+    float: none;
+  }
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #666; /* Arlen: WCAG 2019 */
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc  {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+nav.toc ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+nav.toc li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 600px) {
+  .index ul {
+    -moz-column-count: 2;
+    -moz-column-gap: 20px;
+  }
+  .index ul ul {
+    -moz-column-count: 1;
+    -moz-column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  font-family: "Noto Sans",Arial,Helvetica,sans-serif;
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+
+/* temporary notes */
+.rfcEditorRemove::before {
+  position: absolute;
+  top: 0.2em;
+  right: 0.2em;
+  padding: 0.2em;
+  content: "The RFC Editor will remove this note";
+  color: #9e2a00; /* Arlen: WCAG 2019 */
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+}
+.rfcEditorRemove {
+  position: relative;
+  padding-top: 1.8em;
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  border-radius: 3px;
+}
+.cref {
+  background-color: #ffd; /* Arlen: WCAG 2019 */
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 1023px) {
+  body {
+    padding-top: 2em;
+  }
+  #title {
+    padding: 1em 0;
+  }
+  h1 {
+    font-size: 24px;
+  }
+  h2 {
+    font-size: 20px;
+    margin-top: -18px;  /* provide offset for in-page anchors */
+    padding-top: 38px;
+  }
+  #identifiers dd {
+    max-width: 60%;
+  }
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    background-color: inherit;
+    border-bottom: 1px solid #ccc;
+  }
+  #toc h2 {
+    margin: -1px 0 0 0;
+    padding: 4px 0 4px 6px;
+    padding-right: 1em;
+    min-width: 190px;
+    font-size: 1.1em;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 6px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 1024px) {
+  body {
+    max-width: 724px;
+    margin: 42px auto;
+    padding-left: 1.5em;
+    padding-right: 29em;
+  }
+  #toc {
+    position: fixed;
+    top: 42px;
+    right: 42px;
+    width: 25%;
+    margin: 0;
+    padding: 0 1em;
+    z-index: 1;
+  }
+  #toc h2 {
+    border-top: none;
+    border-bottom: 1px solid #ddd;
+    font-size: 1em;
+    font-weight: normal;
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 0;
+    overflow: auto;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+/* This is commented out here, as the string-set: doesn't
+   pass W3C validation currently */
+/*
+.ears thead .left {
+  string-set: ears-top-left content();
+}
+
+.ears thead .center {
+  string-set: ears-top-center content();
+}
+
+.ears thead .right {
+  string-set: ears-top-right content();
+}
+
+.ears tfoot .left {
+  string-set: ears-bottom-left content();
+}
+
+.ears tfoot .center {
+  string-set: ears-bottom-center content();
+}
+
+.ears tfoot .right {
+  string-set: ears-bottom-right content();
+}
+*/
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+  /* The follwing is commented out here, but set appropriately by in code, as
+     the content depends on the document */
+  /*
+  @top-left {
+    content: 'Internet-Draft';
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-left {
+    content: string(ears-top-left);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-center {
+    content: string(ears-top-center);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @top-right {
+    content: string(ears-top-right);
+    vertical-align: bottom;
+    border-bottom: solid 1px #ccc;
+  }
+  @bottom-left {
+    content: string(ears-bottom-left);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-center {
+    content: string(ears-bottom-center);
+    vertical-align: top;
+    border-top: solid 1px #ccc;
+  }
+  @bottom-right {
+      content: '[Page ' counter(page) ']';
+      vertical-align: top;
+      border-top: solid 1px #ccc;
+  }
+  */
+
+}
+
+/* Changes introduced to fix issues found during implementation */
+/* Make sure links are clickable even if overlapped by following H* */
+a {
+  z-index: 2;
+}
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Leave room in document info to show Internet-Draft on one line */
+#identifiers dt {
+  width: 8em;
+}
+
+/* Don't waste quite as much whitespace between label and value in doc info */
+#identifiers dd {
+  margin-left: 1em;
+}
+
+/* Give floating toc a background color (needed when it's a div inside section */
+#toc {
+  background-color: white;
+}
+
+/* Make the collapsed ToC header render white on gray also when it's a link */
+@media screen and (max-width: 1023px) {
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+}
+
+/* Give the bottom of the ToC some whitespace */
+@media screen and (min-width: 1024px) {
+  #toc {
+    padding: 0 0 1em 1em;
+  }
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* prevent monospace from becoming overly large */
+tt, code, pre, code {
+  font-size: 95%;
+}
+
+/* Fix the height/width aspect for ascii art*/
+pre.sourcecode,
+.art-text pre {
+  line-height: 1.12;
+}
+
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table td.text-left,
+table th.text-left {
+  text-align: left;
+}
+table td.text-center,
+table th.text-center {
+  text-align: center;
+}
+table td.text-right,
+table th.text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact informatio look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 30em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Provide table alignment support.  We can't use the alignX classes above
+   since they do unwanted things with caption and other styling. */
+table.right {
+ margin-left: auto;
+ margin-right: 0;
+}
+table.center {
+ margin-left: auto;
+ margin-right: auto;
+}
+table.left {
+ margin-left: 0;
+ margin-right: auto;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+caption a[href] {
+  color: #222;
+}
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+/* Tweak the invisible space above H* in order not to overlay links in text above */
+ h2 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 31px;
+ }
+ h3 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+ h4 {
+  margin-top: -18px;  /* provide offset for in-page anchors */
+  padding-top: 24px;
+ }
+/* Float artwork pilcrow to the right */
+@media screen {
+  .artwork a.pilcrow {
+    display: block;
+    line-height: 0.7;
+    margin-top: 0.15em;
+  }
+}
+/* Make pilcrows on dd visible */
+@media screen {
+  dd:hover > a.pilcrow {
+    visibility: visible;
+  }
+}
+/* Make the placement of figcaption match that of a table's caption
+   by removing the figure's added bottom margin */
+.alignLeft.art-text,
+.alignCenter.art-text,
+.alignRight.art-text {
+   margin-bottom: 0;
+}
+.alignLeft,
+.alignCenter,
+.alignRight {
+  margin: 1em 0 0 0;
+}
+/* In print, the pilcrow won't show on hover, so prevent it from taking up space,
+   possibly even requiring a new line */
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+/* Styling for the external metadata */
+div#external-metadata {
+  background-color: #eee;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+  display: none;
+}
+div#internal-metadata {
+  padding: 0.5em;                       /* to match the external-metadata padding */
+}
+/* Styling for title RFC Number */
+h1#rfcnum {
+  clear: both;
+  margin: 0 0 -1em;
+  padding: 1em 0 0 0;
+}
+/* Make .olPercent look the same as <ol><li> */
+dl.olPercent > dd {
+  margin-bottom: 0.25em;
+  min-height: initial;
+}
+/* Give aside some styling to set it apart */
+aside {
+  border-left: 1px solid #ddd;
+  margin: 1em 0 1em 2em;
+  padding: 0.2em 2em;
+}
+aside > dl,
+aside > ol,
+aside > ul,
+aside > table,
+aside > p {
+  margin-bottom: 0.5em;
+}
+/* Additional page break settings */
+@media print {
+  figcaption, table caption {
+    page-break-before: avoid;
+  }
+}
+/* Font size adjustments for print */
+@media print {
+  body  { font-size: 10pt;      line-height: normal; max-width: 96%; }
+  h1    { font-size: 1.72em;    padding-top: 1.5em; } /* 1*1.2*1.2*1.2 */
+  h2    { font-size: 1.44em;    padding-top: 1.5em; } /* 1*1.2*1.2 */
+  h3    { font-size: 1.2em;     padding-top: 1.5em; } /* 1*1.2 */
+  h4    { font-size: 1em;       padding-top: 1.5em; }
+  h5, h6 { font-size: 1em;      margin: initial; padding: 0.5em 0 0.3em; }
+}
+/* Sourcecode margin in print, when there's no pilcrow */
+@media print {
+  .artwork,
+  .sourcecode {
+    margin-bottom: 1em;
+  }
+}
+/* Avoid narrow tables forcing too narrow table captions, which may render badly */
+table {
+  min-width: 20em;
+}
+/* ol type a */
+ol.type-a { list-style-type: lower-alpha; }
+ol.type-A { list-style-type: upper-alpha; }
+ol.type-i { list-style-type: lower-roman; }
+ol.type-I { list-style-type: lower-roman; }
+/* Apply the print table and row borders in general, on request from the RPC,
+and increase the contrast between border and odd row background sligthtly */
+table {
+  border: 1px solid #ddd;
+}
+td {
+  border-top: 1px solid #ddd;
+}
+tr:nth-child(2n+1) > td {
+  background-color: #f8f8f8;
+}
+/* Use style rules to govern display of the TOC. */
+@media screen and (max-width: 1023px) {
+  #toc nav { display: none; }
+  #toc.active nav { display: block; }
+}
+/* Add support for keepWithNext */
+.keepWithNext {
+  break-after: avoid-page;
+  break-after: avoid-page;
+}
+/* Add support for keepWithPrevious */
+.keepWithPrevious {
+  break-before: avoid-page;
+}
+/* Change the approach to avoiding breaks inside artwork etc. */
+figure, pre, table, .artwork, .sourcecode  {
+  break-before: auto;
+  break-after: auto;
+}
+/* Avoid breaks between <dt> and <dd> */
+dl {
+  break-before: auto;
+  break-inside: auto;
+}
+dt {
+  break-before: auto;
+  break-after: avoid-page;
+}
+dd {
+  break-before: avoid-page;
+  break-after: auto;
+  orphans: 3;
+  widows: 3
+}
+span.break, dd.break {
+  margin-bottom: 0;
+  min-height: 0;
+  break-before: auto;
+  break-inside: auto;
+  break-after: auto;
+}
+/* Undo break-before ToC */
+@media print {
+  #toc {
+    break-before: auto;
+  }
+}
+/* Text in compact lists should not get extra bottim margin space,
+   since that would makes the list not compact */
+ul.compact p, .ulCompact p,
+ol.compact p, .olCompact p {
+ margin: 0;
+}
+/* But the list as a whole needs the extra space at the end */
+section ul.compact,
+section .ulCompact,
+section ol.compact,
+section .olCompact {
+  margin-bottom: 1em;                    /* same as p not within ul.compact etc. */
+}
+/* The tt and code background above interferes with for instance table cell
+   backgrounds.  Changed to something a bit more selective. */
+tt, code {
+  background-color: transparent;
+}
+p tt, p code, li tt, li code {
+  background-color: #f8f8f8;
+}
+/* Tweak the pre margin -- 0px doesn't come out well */
+pre {
+   margin-top: 0.5px;
+}
+/* Tweak the comact list text */
+ul.compact, .ulCompact,
+ol.compact, .olCompact,
+dl.compact, .dlCompact {
+  line-height: normal;
+}
+/* Don't add top margin for nested lists */
+li > ul, li > ol, li > dl,
+dd > ul, dd > ol, dd > dl,
+dl > dd > dl {
+  margin-top: initial;
+}
+/* Elements that should not be rendered on the same line as a <dt> */
+/* This should match the element list in writer.text.TextWriter.render_dl() */
+dd > div.artwork:first-child,
+dd > aside:first-child,
+dd > figure:first-child,
+dd > ol:first-child,
+dd > div:first-child > pre.sourcecode,
+dd > table:first-child,
+dd > ul:first-child {
+  clear: left;
+}
+/* fix for weird browser behaviour when <dd/> is empty */
+dt+dd:empty::before{
+  content: "\00a0";
+}
+/* Make paragraph spacing inside <li> smaller than in body text, to fit better within the list */
+li > p {
+  margin-bottom: 0.5em
+}
+/* Don't let p margin spill out from inside list items */
+li > p:last-of-type {
+  margin-bottom: 0;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+<script type="application/javascript">async function addMetadata(){try{const e=document.styleSheets[0].cssRules;for(let t=0;t<e.length;t++)if(/#identifiers/.exec(e[t].selectorText)){const a=e[t].cssText.replace("#identifiers","#external-updates");document.styleSheets[0].insertRule(a,document.styleSheets[0].cssRules.length)}}catch(e){console.log(e)}const e=document.getElementById("external-metadata");if(e)try{var t,a="",o=function(e){const t=document.getElementsByTagName("meta");for(let a=0;a<t.length;a++)if(t[a].getAttribute("name")===e)return t[a].getAttribute("content");return""}("rfc.number");if(o){t="https://www.rfc-editor.org/rfc/rfc"+o+".json";try{const e=await fetch(t);a=await e.json()}catch(e){t=document.URL.indexOf("html")>=0?document.URL.replace(/html$/,"json"):document.URL+".json";const o=await fetch(t);a=await o.json()}}if(!a)return;e.style.display="block";const s="",d="https://datatracker.ietf.org/doc",n="https://datatracker.ietf.org/ipr/search",c="https://www.rfc-editor.org/info",l=a.doc_id.toLowerCase(),i=a.doc_id.slice(0,3).toLowerCase(),f=a.doc_id.slice(3).replace(/^0+/,""),u={status:"Status",obsoletes:"Obsoletes",obsoleted_by:"Obsoleted By",updates:"Updates",updated_by:"Updated By",see_also:"See Also",errata_url:"Errata"};let h="<dl style='overflow:hidden' id='external-updates'>";["status","obsoletes","obsoleted_by","updates","updated_by","see_also","errata_url"].forEach(e=>{if("status"==e){a[e]=a[e].toLowerCase();var t=a[e].split(" "),o=t.length,w="",p=1;for(let e=0;e<o;e++)p<o?w=w+r(t[e])+" ":w+=r(t[e]),p++;a[e]=w}else if("obsoletes"==e||"obsoleted_by"==e||"updates"==e||"updated_by"==e){var g,m="",b=1;g=a[e].length;for(let t=0;t<g;t++)a[e][t]&&(a[e][t]=String(a[e][t]).toLowerCase(),m=b<g?m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>, ":m+"<a href='"+s+"/rfc/".concat(a[e][t])+"'>"+a[e][t].slice(3)+"</a>",b++);a[e]=m}else if("see_also"==e){var y,L="",C=1;y=a[e].length;for(let t=0;t<y;t++)if(a[e][t]){a[e][t]=String(a[e][t]);var _=a[e][t].slice(0,3),v=a[e][t].slice(3).replace(/^0+/,"");L=C<y?"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>, ":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>, ":"RFC"!=_?L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+_+" "+v+"</a>":L+"<a href='"+s+"/info/"+_.toLowerCase().concat(v.toLowerCase())+"'>"+v+"</a>",C++}a[e]=L}else if("errata_url"==e){var R="";R=a[e]?R+"<a href='"+a[e]+"'>Errata exist</a> | <a href='"+d+"/"+l+"'>Datatracker</a>| <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>":"<a href='"+d+"/"+l+"'>Datatracker</a> | <a href='"+n+"/?"+i+"="+f+"&submit="+i+"'>IPR</a> | <a href='"+c+"/"+l+"'>Info page</a>",a[e]=R}""!=a[e]?"Errata"==u[e]?h+=`<dt>More info:</dt><dd>${a[e]}</dd>`:h+=`<dt>${u[e]}:</dt><dd>${a[e]}</dd>`:"Errata"==u[e]&&(h+=`<dt>More info:</dt><dd>${a[e]}</dd>`)}),h+="</dl>",e.innerHTML=h}catch(e){console.log(e)}else console.log("Could not locate metadata <div> element");function r(e){return e.charAt(0).toUpperCase()+e.slice(1)}}window.removeEventListener("load",addMetadata),window.addEventListener("load",addMetadata);</script>
 </head>
-
 <body>
-
-  <table class="header">
-    <tbody>
-    
-    	<tr>
-<td class="left">LAMPS</td>
-<td class="right">M. Ounsworth</td>
-</tr>
-<tr>
+<script src="metadata.min.js"></script>
+<table class="ears">
+<thead><tr>
 <td class="left">Internet-Draft</td>
-<td class="right">J. Gray</td>
-</tr>
-<tr>
-<td class="left">Intended status: Standards Track</td>
-<td class="right">Entrust</td>
-</tr>
-<tr>
-<td class="left">Expires: January 20, 2023</td>
-<td class="right">July 19, 2022</td>
-</tr>
-
-    	
-    </tbody>
-  </table>
-
-  <p class="title">Composite KEM For Use In Internet PKI<br />
-  <span class="filename">draft-ounsworth-pq-composite-kem-00</span></p>
-  
-  <h1 id="rfc.abstract"><a href="#rfc.abstract">Abstract</a></h1>
-<p>The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.</p>
-<p>Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.</p>
-<p>EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.</p>
-<p>This document defines a Composite key encapsulation mechanism (KEM) procedure, for use with Composite keys which consist of combinations of Encryption or KEM algorithms for each composite component<br> algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification.</p>
-<p>This document is intended to be coupled with the composite keys structure define in <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a> and the CMS KEM-TRANS mechanism in <a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">[I-D.perret-prat-lamps-cms-pq-kem]</a>.</p>
-<h1 id="rfc.status"><a href="#rfc.status">Status of This Memo</a></h1>
-<p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
-<p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at https://datatracker.ietf.org/drafts/current/.</p>
-<p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on January 20, 2023.</p>
-<h1 id="rfc.copyrightnotice"><a href="#rfc.copyrightnotice">Copyright Notice</a></h1>
-<p>Copyright (c) 2022 IETF Trust and the persons identified as the document authors.  All rights reserved.</p>
-<p>This document is subject to BCP 78 and the IETF Trust's Legal Provisions Relating to IETF Documents (https://trustee.ietf.org/license-info) in effect on the date of publication of this document.  Please review these documents carefully, as they describe your rights and restrictions with respect to this document.  Code Components extracted from this document must include Simplified BSD License text as described in Section 4.e of the Trust Legal Provisions and are provided without warranty as described in the Simplified BSD License.</p>
-
-  
-  <hr class="noprint" />
-  <h1 class="np" id="rfc.toc"><a href="#rfc.toc">Table of Contents</a></h1>
-  <ul class="toc">
-
-  	<li>1.   <a href="#rfc.section.1">Introduction</a>
+<td class="center">PQ Composite Keys</td>
+<td class="right">November 2022</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Ounsworth &amp; Gray</td>
+<td class="center">Expires 25 May 2023</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">LAMPS</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ounsworth-pq-composite-kem-00</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2022-11-21" class="published">21 November 2022</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2023-05-25">25 May 2023</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">M. Ounsworth</div>
+<div class="org">Entrust</div>
+</div>
+<div class="author">
+      <div class="author-name">J. Gray</div>
+<div class="org">Entrust</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Composite KEM For Use In Internet PKI</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptanalysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">Cautious Implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected. For digital signatures, this is referred to as "dual", and for encryption key establishment this as referred to as "hybrid". This document, and its companions, defines a specific instantiation of the dual and hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">EDNOTE: the terms "dual" and "hybrid" are currently in flux. We anticipate an Informational draft to normalize terminology, and will update this draft accordingly.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-4">This document defines a Composite key encapsulation mechanism (KEM)
+procedure, for use with Composite keys which consist of combinations 
+of Encryption or KEM algorithms for each composite component<br>
+algorithm. This document also introduces the idea of assigning an Object Identifier (OID) to a shared secret combiner so that stronger combiners can be implemented in the future without needing to re-issue this specification.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
+<p id="section-abstract-5">This document is intended to be coupled with the composite keys
+structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and the CMS KEM-TRANS mechanism in <span>[<a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">I-D.perret-prat-lamps-cms-pq-kem</a>]</span>.<a href="#section-abstract-5" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo-2">
+<a href="#name-status-of-this-memo-2" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 25 May 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice-2">
+<a href="#name-copyright-notice-2" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2022 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Revised BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Revised BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents-2">
+<a href="#name-table-of-contents-2" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
 </li>
-<ul><li>1.1.   <a href="#rfc.section.1.1">Terminology</a>
+            </ul>
 </li>
-</ul><li>2.   <a href="#rfc.section.2">Composite KEM Structures</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-composite-kem-structures-2" class="xref">Composite KEM Structures</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-key-encapsulation-mechanisms" class="xref">Key Encapsulation Mechanisms (KEMs)</a></p>
 </li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">Key Encapsulation Mechanisms (KEMs)</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-composite-keys-2" class="xref">Composite Keys</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+                    <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="xref">2.2.1</a>.  <a href="#name-key-usage-bits-2" class="xref">Key Usage Bits</a></p>
 </li>
-<li>2.2.   <a href="#rfc.section.2.2">Composite Keys</a>
+                </ul>
 </li>
-<ul><li>2.2.1.   <a href="#rfc.section.2.2.1">Key Usage Bits</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
+                <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-compositeciphertextvalue-2" class="xref">CompositeCiphertextValue</a></p>
 </li>
-</ul><li>2.3.   <a href="#rfc.section.2.3">CompositeCiphertextValue</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
+                <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="xref">2.4</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
 </li>
-<li>2.4.   <a href="#rfc.section.2.4">Encoding Rules</a>
+            </ul>
 </li>
-</ul><li>3.   <a href="#rfc.section.3">KEM Algorithm Identifiers</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-kem-algorithm-identifiers-2" class="xref">KEM Algorithm Identifiers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-id-alg-composite-kem-2" class="xref">id-alg-composite-kem</a></p>
 </li>
-<ul><li>3.1.   <a href="#rfc.section.3.1">id-alg-composite-kem</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-other-explicit-algorithms-2" class="xref">Other Explicit Algorithms</a></p>
 </li>
-<li>3.2.   <a href="#rfc.section.3.2">Other Explicit Algorithms</a>
+            </ul>
 </li>
-</ul><li>4.   <a href="#rfc.section.4">Combiner Algorithm Identifiers</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-combiner-algorithm-identifie" class="xref">Combiner Algorithm Identifiers</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-null-2" class="xref">NULL</a></p>
 </li>
-<ul><li>4.1.   <a href="#rfc.section.4.1">NULL</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-id-composite-kdf-combiner-2" class="xref">id-composite-kdf-combiner</a></p>
 </li>
-<li>4.2.   <a href="#rfc.section.4.2">id-composite-kdf-combiner</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
+                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-id-blockcipher-combiner-2" class="xref">id-blockcipher-combiner</a></p>
 </li>
-<li>4.3.   <a href="#rfc.section.4.3">id-blockcipher-combiner</a>
+            </ul>
 </li>
-</ul><li>5.   <a href="#rfc.section.5">Composite Encapsulation process</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-composite-encapsulation-proc" class="xref">Composite Encapsulation process</a></p>
 </li>
-<li>6.   <a href="#rfc.section.6">Composite Key Decapsulation</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-composite-key-decapsulation-2" class="xref">Composite Key Decapsulation</a></p>
 </li>
-<li>7.   <a href="#rfc.section.7">In Practice</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-in-practice-2" class="xref">In Practice</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-backwards-compatibility-2" class="xref">Backwards Compatibility</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="xref">7.1.1</a>.  <a href="#name-k-of-n-modes-2" class="xref">K-of-N modes</a></p>
 </li>
-<ul><li>7.1.   <a href="#rfc.section.7.1">Backwards Compatibility</a>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.2">
+                    <p id="section-toc.1-1.7.2.1.2.2.1"><a href="#section-7.1.2" class="xref">7.1.2</a>.  <a href="#name-parallel-pkis-2" class="xref">Parallel PKIs</a></p>
 </li>
-<ul><li>7.1.1.   <a href="#rfc.section.7.1.1">K-of-N modes</a>
+                </ul>
 </li>
-<li>7.1.2.   <a href="#rfc.section.7.1.2">Parallel PKIs</a>
+            </ul>
 </li>
-</ul></ul><li>8.   <a href="#rfc.section.8">IANA Considerations</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-iana-considerations-2" class="xref">IANA Considerations</a></p>
 </li>
-<li>9.   <a href="#rfc.section.9">Security Considerations</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-security-considerations-2" class="xref">Security Considerations</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.1">
+                <p id="section-toc.1-1.9.2.1.1"><a href="#section-9.1" class="xref">9.1</a>.  <a href="#name-policy-for-deprecated-and-ac" class="xref">Policy for Deprecated and Acceptable Algorithms</a></p>
 </li>
-<ul><li>9.1.   <a href="#rfc.section.9.1">Policy for Deprecated and Acceptable Algorithms</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.2">
+                <p id="section-toc.1-1.9.2.2.1"><a href="#section-9.2" class="xref">9.2</a>.  <a href="#name-or-modes-2" class="xref">OR Modes</a></p>
 </li>
-<li>9.2.   <a href="#rfc.section.9.2">OR Modes</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3">
+                <p id="section-toc.1-1.9.2.3.1"><a href="#section-9.3" class="xref">9.3</a>.  <a href="#name-cryptographic-review-of-comb" class="xref">Cryptographic review of combiner</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3.2.1">
+                    <p id="section-toc.1-1.9.2.3.2.1.1"><a href="#section-9.3.1" class="xref">9.3.1</a>.  <a href="#name-need-for-a-kdf-within-the-co" class="xref">Need for a KDF within the combiner</a></p>
 </li>
-<li>9.3.   <a href="#rfc.section.9.3">Cryptographic review of combiner</a>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3.2.2">
+                    <p id="section-toc.1-1.9.2.3.2.2.1"><a href="#section-9.3.2" class="xref">9.3.2</a>.  <a href="#name-apop-attack-on-concatenated-" class="xref">APOP Attack on concatenated keys</a></p>
 </li>
-<ul><li>9.3.1.   <a href="#rfc.section.9.3.1">Need for a KDF within the combiner</a>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9.2.3.2.3">
+                    <p id="section-toc.1-1.9.2.3.2.3.1"><a href="#section-9.3.3" class="xref">9.3.3</a>.  <a href="#name-aviram2022-2" class="xref">Aviram2022</a></p>
 </li>
-<li>9.3.2.   <a href="#rfc.section.9.3.2">APOP Attack on concatenated keys</a>
+                </ul>
 </li>
-<li>9.3.3.   <a href="#rfc.section.9.3.3">Aviram2022</a>
+            </ul>
 </li>
-</ul></ul><li>10.   <a href="#rfc.references">References</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-references-2" class="xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-normative-references-2" class="xref">Normative References</a></p>
 </li>
-<ul><li>10.1.   <a href="#rfc.references.1">Normative References</a>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-informative-references-2" class="xref">Informative References</a></p>
 </li>
-<li>10.2.   <a href="#rfc.references.2">Informative References</a>
+            </ul>
 </li>
-</ul><li>Appendix A.   <a href="#rfc.appendix.A">Examples</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-examples-2" class="xref">Examples</a></p>
 </li>
-<li>Appendix B.   <a href="#rfc.appendix.B">ASN.1 Module</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="xref">Appendix B</a>.  <a href="#name-asn1-module-2" class="xref">ASN.1 Module</a></p>
 </li>
-<li>Appendix C.   <a href="#rfc.appendix.C">Intellectual Property Considerations</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="xref">Appendix C</a>.  <a href="#name-intellectual-property-consid" class="xref">Intellectual Property Considerations</a></p>
 </li>
-<li>Appendix D.   <a href="#rfc.appendix.D">Contributors and Acknowledgements</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14">
+            <p id="section-toc.1-1.14.1"><a href="#appendix-D" class="xref">Appendix D</a>.  <a href="#name-contributors-and-acknowledge" class="xref">Contributors and Acknowledgements</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.14.2.1">
+                <p id="section-toc.1-1.14.2.1.1"><a href="#appendix-D.1" class="xref">D.1</a>.  <a href="#name-making-contributions-2" class="xref">Making contributions</a></p>
 </li>
-<ul><li>D.1.   <a href="#rfc.appendix.D.1">Making contributions</a>
+            </ul>
 </li>
-</ul><li><a href="#rfc.authors">Authors' Addresses</a>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.15">
+            <p id="section-toc.1-1.15.1"><a href="#appendix-E" class="xref"></a><a href="#name-authors-addresses-2" class="xref">Authors' Addresses</a></p>
 </li>
-
-
-  </ul>
-
-  <h1 id="rfc.section.1">
-<a href="#rfc.section.1">1.</a> <a href="#sec-intro" id="sec-intro">Introduction</a>
-</h1>
-<p id="rfc.section.1.p.1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.</p>
-<p id="rfc.section.1.p.2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges</p>
-<p></p>
-
-<ul>
-<li>Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.</li>
-<li>Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.</li>
-</ul>
-<p id="rfc.section.1.p.4">This document provides a mechanism to address algorithm strength uncertainty by building on <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Section 7.1</a>.</p>
-<p id="rfc.section.1.p.5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.</p>
-<h1 id="rfc.section.1.1">
-<a href="#rfc.section.1.1">1.1.</a> <a href="#sec-terminology" id="sec-terminology">Terminology</a>
-</h1>
-<p id="rfc.section.1.1.p.1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <a href="#RFC2119" class="xref">[RFC2119]</a>  <a href="#RFC8174" class="xref">[RFC8174]</a> when, and only when, they appear in all capitals, as shown here.</p>
-<p id="rfc.section.1.1.p.2">The following terms are used in this document:</p>
-<p id="rfc.section.1.1.p.3">ALGORITHM: An information object class for identifying the type of cryptographic key being encapsulated.</p>
-<p id="rfc.section.1.1.p.4">BER: Basic Encoding Rules (BER) as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.5">CLIENT: Any software that is making use of a key at runtime.  This includes a signer, verifier, encrypter, decrypter.</p>
-<p id="rfc.section.1.1.p.6">COMBINER: A combiner specifies how multiple shared secrets are combined into a single shared secret.  It is expected that combiners will need to evolve with discovery of cryptanalytic attacks, so this document takes the approach of assigning Object Identifiers (OIDs) to combiners so that stronger combiners can be implemented in the future.</p>
-<p id="rfc.section.1.1.p.7">COMPONENT ALGORITHM: A single basic algorithm which is contained within a composite algorithm.</p>
-<p id="rfc.section.1.1.p.8">COMPOSITE ALGORITHM: An algorithm which is a sequence of two or more component algorithms.</p>
-<p id="rfc.section.1.1.p.9">DER: Distinguished Encoding Rules as defined in <a href="#X.690" class="xref">[X.690]</a>.</p>
-<p id="rfc.section.1.1.p.10">KEM: A key encapsulation mechanism as defined in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
-<p id="rfc.section.1.1.p.11">POST-QUANTUM ALGORITHM: Any cryptographic algorithm which is believed to be resistant to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.</p>
-<p id="rfc.section.1.1.p.12">PUBLIC / PRIVATE KEY: The public and private portion of an asymmetric cryptographic key, making no assumptions about which algorithm.</p>
-<p id="rfc.section.1.1.p.13">SHARED SECRET: A value established between two communicating parties for use as cryptographic key material, but which cannot be learned by an active or passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.</p>
-<h1 id="rfc.section.2">
-<a href="#rfc.section.2">2.</a> <a href="#composite-kem-structures" id="composite-kem-structures">Composite KEM Structures</a>
-</h1>
-<h1 id="rfc.section.2.1">
-<a href="#rfc.section.2.1">2.1.</a> <a href="#sec-kems" id="sec-kems">Key Encapsulation Mechanisms (KEMs)</a>
-</h1>
-<p id="rfc.section.2.1.p.1">We borrow here the definition of a key encapsulation mechanism (KEM) from <a href="#I-D.ietf-tls-hybrid-design" class="xref">[I-D.ietf-tls-hybrid-design]</a>, in which a KEM consists of three algorithms:</p>
-<p></p>
-
-<ul>
-<li>KeyGen() -&gt; (pk, sk): A probabilistic key generation algorithm, which generates a public key pk and a secret key sk.</li>
-<li>Encaps(pk) -&gt; (ct, ss): A probabilistic encapsulation algorithm, which takes as input a public key pk and outputs a ciphertext ct and shared secret ss.</li>
-<li>Decaps(sk, ct) -&gt; ss: A decapsulation algorithm, which takes as input a secret key sk and ciphertext ct and outputs a shared secret ss, or in some cases a distinguished error value.</li>
-</ul>
-<p id="rfc.section.2.1.p.3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.</p>
-<p id="rfc.section.2.1.p.4">The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in <a href="#RFC5652" class="xref">[RFC5652]</a>), and key agreement (for example for use with KeyAgreeRecipientInfo defined in <a href="#RFC5652" class="xref">[RFC5652]</a>).</p>
-<p id="rfc.section.2.1.p.5">The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:</p>
-<p id="rfc.section.2.1.p.6">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <a href="#RFC5990" class="xref">[RFC5990]</a>.</p>
-<p id="rfc.section.2.1.p.7">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.</p>
-<p id="rfc.section.2.1.p.8">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.</p>
-<p id="rfc.section.2.1.p.9">The main security property for KEMs is indistinguishability under adaptive chosen ciphertext attack (IND-CCA2), which means that shared secret values should be indistinguishable from random strings even given the ability to have other arbitrary ciphertexts decapsulated.</p>
-<p id="rfc.section.2.1.p.10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.</p>
-<p id="rfc.section.2.1.p.11">A weaker security notion is indistinguishability under chosen plaintext attack (IND-CPA), which means that the shared secret values should be indistinguishable from random strings given a copy of the public key.  IND-CPA roughly corresponds to security against a passive attacker, and sometimes corresponds to one-time key exchange.</p>
-<p id="rfc.section.2.1.p.12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.</p>
-<p id="rfc.section.2.1.p.13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.</p>
-<p id="rfc.section.2.1.p.14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.</p>
-<h1 id="rfc.section.2.2">
-<a href="#rfc.section.2.2">2.2.</a> <a href="#composite-keys" id="composite-keys">Composite Keys</a>
-</h1>
-<p id="rfc.section.2.2.p.1">A composite key is a single key object that performs an atomic cryptographic operation as defined in <a href="#I-D.ounsworth-pq-composite-keys" class="xref">[I-D.ounsworth-pq-composite-keys]</a>.</p>
-<h1 id="rfc.section.2.2.1">
-<a href="#rfc.section.2.2.1">2.2.1.</a> <a href="#key-usage-bits" id="key-usage-bits">Key Usage Bits</a>
-</h1>
-<p id="rfc.section.2.2.1.p.1">When using composite KEM keys in a structure which defines a key usage (such as in an X509Certificate as defined in RFC 5280), the following key usage MUST be used.</p>
-<p id="rfc.section.2.2.1.p.2">keyEncipherment</p>
-<p id="rfc.section.2.2.1.p.3">Additional key usages SHOULD not be used.   The main intent for this keyEncipherment is to encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and composite-KEM does not deviate from this intent.</p>
-<p id="rfc.section.2.2.1.p.4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple parties are required to contribute to a key agreement verses a single party in keyEncipherment.</p>
-<p id="rfc.section.2.2.1.p.5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.</p>
-<h1 id="rfc.section.2.3">
-<a href="#rfc.section.2.3">2.3.</a> <a href="#compositeciphertextvalue" id="compositeciphertextvalue">CompositeCiphertextValue</a>
-</h1>
-<p id="rfc.section.2.3.p.1">The compositeCipherTextValue is a concatenation of the ciphertexts of the underlying component algorithms.  It is represented in ASN.1 as follows:</p>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="sec-intro">
+<section id="section-1">
+      <h2 id="name-introduction-2">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction-2" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges<a href="#section-1-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-3.1">Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.<a href="#section-1-3.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-3.2">Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.<a href="#section-1-3.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-1-4">This document provides a mechanism to address algorithm strength uncertainty by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Section 7.1</a>.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<p id="section-1-5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<div id="sec-terminology">
+<section id="section-1.1">
+        <h3 id="name-terminology-2">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-terminology-2" class="section-name selfRef">Terminology</a>
+        </h3>
+<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>  <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">The following terms are used in this document:<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">ALGORITHM:
+          An information object class for identifying the type of
+            cryptographic key being encapsulated.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">BER:
+          Basic Encoding Rules (BER) as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">CLIENT:
+          Any software that is making use of a key at runtime.
+          This includes a signer, verifier, encrypter, decrypter.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+<p id="section-1.1-6">COMBINER:
+          A combiner specifies how multiple shared secrets
+          are combined into a single shared secret.
+          It is expected that combiners will need to evolve 
+          with discovery of cryptanalytic attacks, so this
+          document takes the approach of assigning
+          Object Identifiers (OIDs) to combiners so that
+          stronger combiners can be implemented in the future.<a href="#section-1.1-6" class="pilcrow">¶</a></p>
+<p id="section-1.1-7">COMPONENT ALGORITHM:
+          A single basic algorithm which is contained within a
+            composite algorithm.<a href="#section-1.1-7" class="pilcrow">¶</a></p>
+<p id="section-1.1-8">COMPOSITE ALGORITHM:
+          An algorithm which is a sequence of two or more component
+            algorithms.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
+<p id="section-1.1-9">DER:
+          Distinguished Encoding Rules as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-1.1-9" class="pilcrow">¶</a></p>
+<p id="section-1.1-10">KEM:
+        A key encapsulation mechanism as defined in <a href="#sec-kems" class="xref">Section 2.1</a>.<a href="#section-1.1-10" class="pilcrow">¶</a></p>
+<p id="section-1.1-11">POST-QUANTUM ALGORITHM:
+          Any cryptographic algorithm which is believed to be resistant
+          to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.<a href="#section-1.1-11" class="pilcrow">¶</a></p>
+<p id="section-1.1-12">PUBLIC / PRIVATE KEY:
+          The public and private portion of an asymmetric cryptographic
+            key, making no assumptions about which algorithm.<a href="#section-1.1-12" class="pilcrow">¶</a></p>
+<p id="section-1.1-13">SHARED SECRET:
+        A value established between two communicating parties for use as cryptographic key material, but which cannot be learned by an active or 
+        passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.<a href="#section-1.1-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="composite-kem-structures">
+<section id="section-2">
+      <h2 id="name-composite-kem-structures-2">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-composite-kem-structures-2" class="section-name selfRef">Composite KEM Structures</a>
+      </h2>
+<div id="sec-kems">
+<section id="section-2.1">
+        <h3 id="name-key-encapsulation-mechanisms">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-key-encapsulation-mechanisms" class="section-name selfRef">Key Encapsulation Mechanisms (KEMs)</a>
+        </h3>
+<p id="section-2.1-1">We borrow here the definition of a key encapsulation mechanism (KEM) from <span>[<a href="#I-D.ietf-tls-hybrid-design" class="xref">I-D.ietf-tls-hybrid-design</a>]</span>, in which a KEM consists of three algorithms:<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1-2.1">KeyGen() -&gt; (pk, sk): A probabilistic key generation algorithm,
+which generates a public key pk and a secret key sk.<a href="#section-2.1-2.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-2.1-2.2">Encaps(pk) -&gt; (ct, ss): A probabilistic encapsulation algorithm,
+which takes as input a public key pk and outputs a ciphertext ct
+and shared secret ss.<a href="#section-2.1-2.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-2.1-2.3">Decaps(sk, ct) -&gt; ss: A decapsulation algorithm, which takes as
+input a secret key sk and ciphertext ct and outputs a shared
+secret ss, or in some cases a distinguished error value.<a href="#section-2.1-2.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-2.1-3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>), and key agreement (for example for use with KeyAgreeRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>).<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-9">The main security property for KEMs is indistinguishability under
+adaptive chosen ciphertext attack (IND-CCA2), which means that shared
+secret values should be indistinguishable from random strings even
+given the ability to have other arbitrary ciphertexts decapsulated.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
+<p id="section-2.1-10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.<a href="#section-2.1-10" class="pilcrow">¶</a></p>
+<p id="section-2.1-11">A weaker security notion is indistinguishability under chosen
+plaintext attack (IND-CPA), which means that the shared secret values
+should be indistinguishable from random strings given a copy of the
+public key.  IND-CPA roughly corresponds to security against a
+passive attacker, and sometimes corresponds to one-time key exchange.<a href="#section-2.1-11" class="pilcrow">¶</a></p>
+<p id="section-2.1-12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.<a href="#section-2.1-12" class="pilcrow">¶</a></p>
+<p id="section-2.1-13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.<a href="#section-2.1-13" class="pilcrow">¶</a></p>
+<p id="section-2.1-14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
+us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.<a href="#section-2.1-14" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="composite-keys">
+<section id="section-2.2">
+        <h3 id="name-composite-keys-2">
+<a href="#section-2.2" class="section-number selfRef">2.2. </a><a href="#name-composite-keys-2" class="section-name selfRef">Composite Keys</a>
+        </h3>
+<p id="section-2.2-1">A composite key is a single key object that performs an atomic cryptographic operation as
+defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>.<a href="#section-2.2-1" class="pilcrow">¶</a></p>
+<div id="key-usage-bits">
+<section id="section-2.2.1">
+          <h4 id="name-key-usage-bits-2">
+<a href="#section-2.2.1" class="section-number selfRef">2.2.1. </a><a href="#name-key-usage-bits-2" class="section-name selfRef">Key Usage Bits</a>
+          </h4>
+<p id="section-2.2.1-1">When using composite KEM keys in a structure which defines a key usage (such as in an 
+X509Certificate as defined in RFC 5280), the following key usage MUST be used.<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-2">keyEncipherment<a href="#section-2.2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-3">Additional key usages SHOULD not be used.   The main intent for this keyEncipherment is to
+encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and
+composite-KEM does not deviate from this intent.<a href="#section-2.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
+parties are required to contribute to a key agreement verses a single party in keyEncipherment.<a href="#section-2.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.2.1-5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.<a href="#section-2.2.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="compositeciphertextvalue">
+<section id="section-2.3">
+        <h3 id="name-compositeciphertextvalue-2">
+<a href="#section-2.3" class="section-number selfRef">2.3. </a><a href="#name-compositeciphertextvalue-2" class="section-name selfRef">CompositeCiphertextValue</a>
+        </h3>
+<p id="section-2.3-1">The compositeCipherTextValue is a concatenation of the ciphertexts of the
+underlying component algorithms.  It is represented in ASN.1 as follows:<a href="#section-2.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-2.3-2">
 <pre>
 CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
-</pre>
-<h1 id="rfc.section.2.4">
-<a href="#rfc.section.2.4">2.4.</a> <a href="#encoding-rules" id="encoding-rules">Encoding Rules</a>
-</h1>
-<p id="rfc.section.2.4.p.1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.</p>
-<p id="rfc.section.2.4.p.2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.</p>
-<p id="rfc.section.2.4.p.3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.</p>
-<p id="rfc.section.2.4.p.4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.</p>
-<p id="rfc.section.2.4.p.5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.</p>
-<h1 id="rfc.section.3">
-<a href="#rfc.section.3">3.</a> <a href="#kem-algorithm-identifiers" id="kem-algorithm-identifiers">KEM Algorithm Identifiers</a>
-</h1>
-<p id="rfc.section.3.p.1">The following algorithm Identifiers and their associated parameters are used with composite KEM.</p>
-<h1 id="rfc.section.3.1">
-<a href="#rfc.section.3.1">3.1.</a> <a href="#id-alg-composite-kem" id="id-alg-composite-kem">id-alg-composite-kem</a>
-</h1>
-<p id="rfc.section.3.1.p.1">The id-alg-composite-kem object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized.</p>
+</pre><a href="#section-2.3-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="encoding-rules">
+<section id="section-2.4">
+        <h3 id="name-encoding-rules-2">
+<a href="#section-2.4" class="section-number selfRef">2.4. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
+        </h3>
+<p id="section-2.4-1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.<a href="#section-2.4-1" class="pilcrow">¶</a></p>
+<p id="section-2.4-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-2.4-2" class="pilcrow">¶</a></p>
+<p id="section-2.4-3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.<a href="#section-2.4-3" class="pilcrow">¶</a></p>
+<p id="section-2.4-4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-2.4-4" class="pilcrow">¶</a></p>
+<p id="section-2.4-5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-2.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="kem-algorithm-identifiers">
+<section id="section-3">
+      <h2 id="name-kem-algorithm-identifiers-2">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-kem-algorithm-identifiers-2" class="section-name selfRef">KEM Algorithm Identifiers</a>
+      </h2>
+<p id="section-3-1">The following algorithm Identifiers and their associated parameters are used with composite KEM.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<div id="id-alg-composite-kem">
+<section id="section-3.1">
+        <h3 id="name-id-alg-composite-kem-2">
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-id-alg-composite-kem-2" class="section-name selfRef">id-alg-composite-kem</a>
+        </h3>
+<p id="section-3.1-1">The id-alg-composite-kem object identifier is used for identifying a
+   generic composite KEM algorithm. This allows arbitrary combinations 
+   of component key transport, key agreement and KEM algorithms without 
+   needing the combination to be pre-registered or standardized.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.1-2">
 <pre>
 id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  joint-iso-itu-t(2) country(16) us(840) organization(1)
   entrust(114027) Algorithm(80) Composite(4) KEM (5) }
-</pre>
-<p id="rfc.section.3.1.p.2">EDNOTE: this is a temporary OID for the purposes of prototyping.  We are requesting IANA to assign a permanent OID, see Section 6.</p>
-<p id="rfc.section.3.1.p.3">Which yields an information object:</p>
-<p id="rfc.section.3.1.p.4">TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?</p>
+</pre><a href="#section-3.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">Which yields an information object:<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.1-6">
 <pre>
 kema-CompositeKEM KEM-ALGORITHM ::= {
     IDENTIFIER id-alg-composite-kem
     VALUE CompositeCiphertextValue
-    PARAMS composite-kem-params  
+    PARAMS composite-kem-params
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
-</pre>
-<p id="rfc.section.3.1.p.5">For Composite KEM, we define a composite KEM Algorithm ID as:</p>
-<p id="rfc.section.3.1.p.6">The following algorithm parameters MUST be included:</p>
+</pre><a href="#section-3.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-7">For Composite KEM, we define a composite KEM Algorithm ID as:<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+<p id="section-3.1-8">The following algorithm parameters MUST be included:<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.1-9">
 <pre>
 composite-kem-params  ::= {
     combiner     AlgorithmIdentifier
 }
-</pre>
-<p id="rfc.section.3.1.p.7">EDNOTE: this ASN.1 could be simplified to <samp>composite-kem-params ::= AlgorithmIdentifier</samp> to save a couple bytes on the wire, but we're presenting it this way for now for readability.</p>
-<p id="rfc.section.3.1.p.8">EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg.</p>
-<p id="rfc.section.3.1.p.9">If no, or a NULL, combiner is specified, then {#sect-null-combiner} applies.</p>
-<p id="rfc.section.3.1.p.10">See Ednote below for a discussion on some possible combiner modes</p>
-<h1 id="rfc.section.3.2">
-<a href="#rfc.section.3.2">3.2.</a> <a href="#other-explicit-algorithms" id="other-explicit-algorithms">Other Explicit Algorithms</a>
-</h1>
-<p id="rfc.section.3.2.p.1">This variant provides a rigid way of specifying supported combinations of algorithms.</p>
-<p id="rfc.section.3.2.p.2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.</p>
-<p id="rfc.section.3.2.p.3">Explicit algorithms must define a new signature algorithm which consists of:</p>
-<p></p>
-
-<ul>
-<li>A new algorithm identifier OID for the explicit algorithm.</li>
-<li>The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.</li>
-<li>Algorithm parameters either declared ABSENT, or defined with a type and encoding.</li>
-</ul>
-<p id="rfc.section.3.2.p.5">TODO: lay out the details.</p>
-<h1 id="rfc.section.4">
-<a href="#rfc.section.4">4.</a> <a href="#sect-combiners" id="sect-combiners">Combiner Algorithm Identifiers</a>
-</h1>
-<p id="rfc.section.4.p.1">This section defines concrete shared secret combiners that may be used with composite KEM.</p>
-<p id="rfc.section.4.p.2">~~~ BEGIN EDNOTE ~~~</p>
-<p id="rfc.section.4.p.3">EDNOTE: We need to add a KDF-based combiner here.  Suggestions are:</p>
-<p id="rfc.section.4.p.4">Option 0)</p>
-<p><samp>SS = SS1 || SS2 || .. || SSn</samp> with fixed length KEM algs.</p>
-<p id="rfc.section.4.p.6">Option 1)</p>
-<p><samp>SS = KDF( SS1 || SS2 || .. || SSn )</samp> with fixed length KEM algs.</p>
-<p id="rfc.section.4.p.8">Option 1b)</p>
-<p><samp>SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )</samp></p>
-<p id="rfc.section.4.p.10">Option 2)</p>
-<p><samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp></p>
-<p id="rfc.section.4.p.12">Option 2b)</p>
-<p><samp>SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)</samp></p>
-<p id="rfc.section.4.p.14">Option 3)</p>
-<p id="rfc.section.4.p.15">The combiner suggested in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
-<p id="rfc.section.4.p.16">At present we are opting for Option 2.</p>
-<p id="rfc.section.4.p.17">QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.  Answer: for -00 of this document we have decided YES, but we can revisit this.</p>
-<p id="rfc.section.4.p.18">~~~ END EDNOTE ~~~</p>
-<p id="rfc.section.4.p.19">TODO: add a section for <samp>SS = KDF(SS1 || .. || SSn)</samp> for people who need strict compliance with NIST SP 800-56Cr2.</p>
-<h1 id="rfc.section.4.1">
-<a href="#rfc.section.4.1">4.1.</a> <a href="#sect-null-combiner" id="sect-null-combiner">NULL</a>
-</h1>
-<p id="rfc.section.4.1.p.1">If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.</p>
+</pre><a href="#section-3.1-9" class="pilcrow">¶</a>
+</div>
+<p id="section-3.1-10">EDNOTE: this ASN.1 could be simplified to <code>composite-kem-params ::= AlgorithmIdentifier</code> to save a couple bytes on the wire, but we're presenting it this way for now for readability.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
+<p id="section-3.1-11">EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
+<p id="section-3.1-12">If no, or a NULL, combiner is specified, then {#sect-null-combiner} applies.<a href="#section-3.1-12" class="pilcrow">¶</a></p>
+<p id="section-3.1-13">See Ednote below for a discussion on some possible combiner modes<a href="#section-3.1-13" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="other-explicit-algorithms">
+<section id="section-3.2">
+        <h3 id="name-other-explicit-algorithms-2">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-other-explicit-algorithms-2" class="section-name selfRef">Other Explicit Algorithms</a>
+        </h3>
+<p id="section-3.2-1">This variant provides a rigid way of specifying supported combinations of algorithms.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.<a href="#section-3.2-2" class="pilcrow">¶</a></p>
+<p id="section-3.2-3">Explicit algorithms must define a new signature algorithm which consists of:<a href="#section-3.2-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.2-4.1">A new algorithm identifier OID for the explicit algorithm.<a href="#section-3.2-4.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.2-4.2">The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.<a href="#section-3.2-4.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.2-4.3">Algorithm parameters either declared ABSENT, or defined with a type and encoding.<a href="#section-3.2-4.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-3.2-5">TODO: lay out the details.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="sect-combiners">
+<section id="section-4">
+      <h2 id="name-combiner-algorithm-identifie">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-combiner-algorithm-identifie" class="section-name selfRef">Combiner Algorithm Identifiers</a>
+      </h2>
+<p id="section-4-1">This section defines concrete shared secret combiners that may be used with composite KEM.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">~~~ BEGIN EDNOTE ~~~<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">EDNOTE: We need to add a KDF-based combiner here.
+Suggestions are:<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">Option 0)<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5"><code>SS = SS1 || SS2 || .. || SSn</code>
+with fixed length KEM algs.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">Option 1)<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7"><code>SS = KDF( SS1 || SS2 || .. || SSn )</code>
+with fixed length KEM algs.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">Option 1b)<a href="#section-4-8" class="pilcrow">¶</a></p>
+<p id="section-4-9"><code>SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )</code><a href="#section-4-9" class="pilcrow">¶</a></p>
+<p id="section-4-10">Option 2)<a href="#section-4-10" class="pilcrow">¶</a></p>
+<p id="section-4-11"><code>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</code><a href="#section-4-11" class="pilcrow">¶</a></p>
+<p id="section-4-12">Option 2b)<a href="#section-4-12" class="pilcrow">¶</a></p>
+<p id="section-4-13"><code>SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)</code><a href="#section-4-13" class="pilcrow">¶</a></p>
+<p id="section-4-14">Option 3)<a href="#section-4-14" class="pilcrow">¶</a></p>
+<p id="section-4-15">The combiner suggested in <span>[<a href="#Aviram2022" class="xref">Aviram2022</a>]</span>.<a href="#section-4-15" class="pilcrow">¶</a></p>
+<p id="section-4-16">At present we are opting for Option 2.<a href="#section-4-16" class="pilcrow">¶</a></p>
+<p id="section-4-17">QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.
+Answer: for -00 of this document we have decided YES, but we can revisit this.<a href="#section-4-17" class="pilcrow">¶</a></p>
+<p id="section-4-18">~~~ END EDNOTE ~~~<a href="#section-4-18" class="pilcrow">¶</a></p>
+<p id="section-4-19">TODO: add a section for <code>SS = KDF(SS1 || .. || SSn)</code> for people who need strict compliance with NIST SP 800-56Cr2.<a href="#section-4-19" class="pilcrow">¶</a></p>
+<div id="sect-null-combiner">
+<section id="section-4.1">
+        <h3 id="name-null-2">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-null-2" class="section-name selfRef">NULL</a>
+        </h3>
+<p id="section-4.1-1">If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-2">
 <pre>
 SS =  SS1 || SS2 || .. || SSn
-</pre>
-<p id="rfc.section.4.1.p.2">This mode is often appropriate, and complies with NIST SP-56Cr2, when the protocol making use of this composite KEM will use the shared secret output to derive a cryptographic key via a KDF, making it uncessessary to use a combiner within composite KEM.</p>
-<p id="rfc.section.4.1.p.3">Security consideration: protocols that allow the NULL combiner MUST ensure either that none of the component shared secrets are directly controllable by an attacker (which allows for attacks similar to those discussed in <a href="#sec-apop-attack" class="xref">Section 9.3.2</a>), or that appropriate mitigations have been put into place.</p>
-<h1 id="rfc.section.4.2">
-<a href="#rfc.section.4.2">4.2.</a> <a href="#id-composite-kdf-combiner" id="id-composite-kdf-combiner">id-composite-kdf-combiner</a>
-</h1>
-<p id="rfc.section.4.2.p.1">This section defines a KDF-based shared secret combiner.</p>
+</pre><a href="#section-4.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1-3">This mode is often appropriate, and complies with NIST SP-56Cr2, when the protocol making use of this composite KEM will use the shared secret output to derive a cryptographic key via a KDF, making it uncessessary to use a combiner within composite KEM.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
+<p id="section-4.1-4">Security consideration: protocols that allow the NULL combiner MUST ensure either that none of the component shared secrets are directly controllable by an attacker (which allows for attacks similar to those discussed in <a href="#sec-apop-attack" class="xref">Section 9.3.2</a>), or that appropriate mitigations have been put into place.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="id-composite-kdf-combiner">
+<section id="section-4.2">
+        <h3 id="name-id-composite-kdf-combiner-2">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-id-composite-kdf-combiner-2" class="section-name selfRef">id-composite-kdf-combiner</a>
+        </h3>
+<p id="section-4.2-1">This section defines a KDF-based shared secret combiner.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-2">
 <pre>
 id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
-</pre>
-<p id="rfc.section.4.2.p.2">It MUST carry parameters</p>
+</pre><a href="#section-4.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2-3">It MUST carry parameters<a href="#section-4.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-4">
 <pre>
 alg-composite-kdf-combiner-params ::= {
         kdf     AlgorithmIdentifier
 }
-</pre>
-<p id="rfc.section.4.2.p.3">to specify the KDF to be used.</p>
-<p id="rfc.section.4.2.p.4">EDNOTE: this ASN.1 could be simplified to <samp>alg-composite-kdf-combiner-params ::=  AlgorithmIdentifier</samp> to save a couple bytes on the wire, but we're presenting it this way for now for readability.</p>
-<p id="rfc.section.4.2.p.5">The behaviour of this combiner is: <samp>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp> where <samp>||</samp> denotes contatenation.</p>
-<p id="rfc.section.4.2.p.6">Formally:</p>
+</pre><a href="#section-4.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2-5">to specify the KDF to be used.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
+<p id="section-4.2-6">EDNOTE: this ASN.1 could be simplified to <code>alg-composite-kdf-combiner-params ::=  AlgorithmIdentifier</code> to save a couple bytes on the wire, but we're presenting it this way for now for readability.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
+<p id="section-4.2-7">The behaviour of this combiner is: <code>SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</code> where <code>||</code> denotes contatenation.<a href="#section-4.2-7" class="pilcrow">¶</a></p>
+<p id="section-4.2-8">Formally:<a href="#section-4.2-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.2-9">
 <pre>
 Input:
    SS1, SS2, .., SSn   Shared secrets to combine
@@ -742,45 +1730,66 @@ Output:
    SS                  Combined shared secret.
 
 1.  SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
-</pre>
-<p id="rfc.section.4.2.p.7">The intent of this combiner is to frustrate known cryptanalytic attacks by normalizing the component shared secrets to a common fixed length (dictated by the output length of the supplied KDF), as well as attacks that exploit known weaknesses in the underlying hash function since, short of a full pre-image attack, an attacker who is able to control SSi will still not be able to control KDF(SSi).</p>
-<p id="rfc.section.4.2.p.8">EDNOTE: this combiner needs cryptographic review.</p>
-<p id="rfc.section.4.2.p.9">EDNOTE: Do we need domain separation in case other protocols use the same shared secrets in the same construction? Something like <samp>KDF( ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</samp> ?</p>
-<h1 id="rfc.section.4.3">
-<a href="#rfc.section.4.3">4.3.</a> <a href="#id-blockcipher-combiner" id="id-blockcipher-combiner">id-blockcipher-combiner</a>
-</h1>
-<p id="rfc.section.4.3.p.1">TODO -- finish this section.</p>
-<p id="rfc.section.4.3.p.2">https://eprint.iacr.org/2018/024.pdf</p>
+</pre><a href="#section-4.2-9" class="pilcrow">¶</a>
+</div>
+<p id="section-4.2-10">The intent of this combiner is to frustrate known cryptanalytic attacks by normalizing the component shared secrets to a common fixed length (dictated by the output length of the supplied KDF), as well as attacks that exploit known weaknesses in the underlying hash function since, short of a full pre-image attack, an attacker who is able to control SSi will still not be able to control KDF(SSi).<a href="#section-4.2-10" class="pilcrow">¶</a></p>
+<p id="section-4.2-11">EDNOTE: this combiner needs cryptographic review.<a href="#section-4.2-11" class="pilcrow">¶</a></p>
+<p id="section-4.2-12">EDNOTE: Do we need domain separation in case other protocols use the same shared secrets in the same construction? Something like <code>KDF( ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )</code> ?<a href="#section-4.2-12" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="id-blockcipher-combiner">
+<section id="section-4.3">
+        <h3 id="name-id-blockcipher-combiner-2">
+<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-id-blockcipher-combiner-2" class="section-name selfRef">id-blockcipher-combiner</a>
+        </h3>
+<p id="section-4.3-1">TODO -- finish this section.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
+<p id="section-4.3-2">https://eprint.iacr.org/2018/024.pdf<a href="#section-4.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-3">
 <pre>
 K = F (pi_kn * ... pi_k1(0), c1 || ... || cn)
-</pre>
-<p id="rfc.section.4.3.p.3">where * denotes function composition, and pi_kn denotes a blockcipher with key kn.</p>
-<p id="rfc.section.4.3.p.4">which would work out to (in our notation)</p>
+</pre><a href="#section-4.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-4">where * denotes function composition, and pi_kn denotes a blockcipher with key kn.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
+<p id="section-4.3-5">which would work out to (in our notation)<a href="#section-4.3-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-6">
 <pre>
 SS = HASH( WRAP(SSn, WRAP(SSn-1, .. WRAP(SS1, 0) .. ) || CT1 || .. || CTn)
-</pre>
-<p id="rfc.section.4.3.p.5">where (SSi, Ci) are the Shared Secret and Ciphertext of component algorithm i. WRAP(key, message) would be some form of AES.</p>
-<p id="rfc.section.4.3.p.6">Parameters for this would need to be:</p>
+</pre><a href="#section-4.3-6" class="pilcrow">¶</a>
+</div>
+<p id="section-4.3-7">where (SSi, Ci) are the Shared Secret and Ciphertext of component algorithm i. WRAP(key, message) would be some form of AES.<a href="#section-4.3-7" class="pilcrow">¶</a></p>
+<p id="section-4.3-8">Parameters for this would need to be:<a href="#section-4.3-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-9">
 <pre>
 blockcipher-combiner-params ::= {
   hash    AlgorithIdentifier,
   wrap    AlgorithmIdentifier
 }
-</pre>
-<h1 id="rfc.section.5">
-<a href="#rfc.section.5">5.</a> <a href="#sec-encaps-proc" id="sec-encaps-proc">Composite Encapsulation process</a>
-</h1>
-<p id="rfc.section.5.p.1">Composite key encapsulations takes a CompositePublicKey as its input.  The CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  For example (RSA).</p>
-<p id="rfc.section.5.p.2">This operation outputs a shared-secret and cipher text.</p>
-<p id="rfc.section.5.p.3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.</p>
-<p id="rfc.section.5.p.4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
+</pre><a href="#section-4.3-9" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-encaps-proc">
+<section id="section-5">
+      <h2 id="name-composite-encapsulation-proc">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-composite-encapsulation-proc" class="section-name selfRef">Composite Encapsulation process</a>
+      </h2>
+<p id="section-5-1">Composite key encapsulations takes a CompositePublicKey as its input.  The
+CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent 
+an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that 
+contains encryption or decryption primitive.  For example (RSA).<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">This operation outputs a shared-secret and cipher text.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<p id="section-5-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.<a href="#section-5-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5-5">
 <pre>
-Input:  
-   PK1, PK2 .. PKn   Encryption public keys. See note below on 
+Input:
+   PK1, PK2 .. PKn   Encryption public keys. See note below on
                      composite inputs.
 
    A1, A2, ... An     Component keyTransport, keyAgreement, or
-                      KEM algorithms. See note below on composite 
+                      KEM algorithms. See note below on composite
                       inputs.
 
    COMBINER          A combiner function.
@@ -793,7 +1802,7 @@ Output:  SS, CT
 1.  for i := 1 to n
        if Ai is of type KEM:
           SSi, CTi := encaps(PKi)
-       
+
        else, if Ai is of type keyTransport:
          SSi := random_bits(SIZE)
          CTi := encrypt(SSi, PKi)
@@ -806,35 +1815,47 @@ Output:  SS, CT
 
   2.  SS = COMBINER(SS1, SS2, .., SSn)
       CT = CT1, CT2, .., CTn
-</pre>
-<p id="rfc.section.5.p.5">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
-<p id="rfc.section.5.p.6">Since recursive composite public keys are disallowed in [I-D.ounsworth-pq-composite-keys], no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.</p>
-<h1 id="rfc.section.6">
-<a href="#rfc.section.6">6.</a> <a href="#sec-decaps-proc" id="sec-decaps-proc">Composite Key Decapsulation</a>
-</h1>
-<p id="rfc.section.6.p.1">Composite key decapsulations takes a CompositePrivateKey as its input and the sequence of Cipher texts (ct1 .. ctn) computed by the composite key encapsulation method.  The CompositePrivateKey MUST contain composite keys (Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that contains encryption or decryption primitive.  These keys MUST consist of the same component keys in the same order as the Composite Key Encapsulation process that generated them.</p>
-<p id="rfc.section.6.p.2">This operation outputs a shared-secret.</p>
-<p id="rfc.section.6.p.3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.</p>
-<p id="rfc.section.6.p.4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.</p>
+</pre><a href="#section-5-5" class="pilcrow">¶</a>
+</div>
+<p id="section-5-6">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-5-6" class="pilcrow">¶</a></p>
+<p id="section-5-7">Since recursive composite public keys are disallowed in [I-D.ounsworth-pq-composite-keys], no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.<a href="#section-5-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-decaps-proc">
+<section id="section-6">
+      <h2 id="name-composite-key-decapsulation-2">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-composite-key-decapsulation-2" class="section-name selfRef">Composite Key Decapsulation</a>
+      </h2>
+<p id="section-6-1">Composite key decapsulations takes a CompositePrivateKey as its input and the
+sequence of Cipher texts (ct1 .. ctn) computed by the composite key 
+encapsulation method.  The CompositePrivateKey MUST contain composite keys 
+(Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method),
+or an algorithm that contains encryption or decryption primitive.  These keys 
+MUST consist of the same component keys in the same order as the Composite Key 
+Encapsulation process that generated them.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">This operation outputs a shared-secret.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 4</a>.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 2.1</a>.<a href="#section-6-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6-5">
 <pre>
 Input:   CompositePrivateKey = SK1, SK2 .. SKn
 
-   SK1, SK2 .. SKn    Decryption private keys. See note below on 
+   SK1, SK2 .. SKn    Decryption private keys. See note below on
                       composite inputs.
 
    A1, A2, ... An     Component keyTransport, keyAgreement, or
-                      KEM algorithms. See note below on composite 
+                      KEM algorithms. See note below on composite
                       inputs.
 
    CT1, CT2, .., CTn  Ciphertexts. see note below on composite inputs.
-   
+
    COMBINER          A combiner function.
 
 
 Output:  SS
 
 1. for i := 1 to n
- 
+
       if Ai is of type KEM:
           SSi := decaps(Cti, SKi)
 
@@ -846,220 +1867,273 @@ Output:  SS
           SSi := keyAgree(PKe, SKi)
 
 2. Output SS = COMBINER(SS1, SS2, .., SSn)
-</pre>
-<p id="rfc.section.6.p.5">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.</p>
-<h1 id="rfc.section.7">
-<a href="#rfc.section.7">7.</a> <a href="#sec-in-pract" id="sec-in-pract">In Practice</a>
-</h1>
-<p id="rfc.section.7.p.1">This section addresses practical issues of how this draft affects other protocols and standards.</p>
-<p id="rfc.section.7.p.2">EDNOTE 10: Possible topics to address:</p>
-<p></p>
-
-<ul>
-<li>The size of these certs and cert chains.</li>
-<li>In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.</li>
-<li>If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?</li>
-<li>We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.</li>
-<li>We could talk about overhead (size and processing).</li>
-<li>We could also discuss backwards compatibility.</li>
-<li>We could include a subsection about implementation considerations.</li>
-</ul>
-<h1 id="rfc.section.7.1">
-<a href="#rfc.section.7.1">7.1.</a> <a href="#sec-backwards-compat" id="sec-backwards-compat">Backwards Compatibility</a>
-</h1>
-<p id="rfc.section.7.1.p.1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.</p>
-<p id="rfc.section.7.1.p.2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.</p>
-<p id="rfc.section.7.1.p.3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S&#8288;/&#8288;MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <a href="#RFC5652" class="xref">[RFC5652]</a> encrypted structures.</p>
-<h1 id="rfc.section.7.1.1">
-<a href="#rfc.section.7.1.1">7.1.1.</a> <a href="#k-of-n-modes" id="k-of-n-modes">K-of-N modes</a>
-</h1>
-<p id="rfc.section.7.1.1.p.1">~~~ BEGIN EDNOTE ~~~ In the context of encryption, K-of-N modes could mean one of two things:</p>
-<p id="rfc.section.7.1.1.p.2">Type 1: sender uses a subset</p>
-<p id="rfc.section.7.1.1.p.3">This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the <a href="#sec-encaps-proc" class="xref">Section 5</a> but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.</p>
-<p id="rfc.section.7.1.1.p.4">Type 2: receiver uses a subset</p>
-<p id="rfc.section.7.1.1.p.5">This would mean that the sender (encrypter) uses all N of the component keys within the receiver's public key in such a way that the receiver (decrypter) only needs to use K private keys to decrypt the message. This implies the need for some kind of Shamir's-like secret splitting scheme. This is a reasonably complex mechanism and it's currently unclear if there are any use-cases that require such a mechanism.</p>
-<p id="rfc.section.7.1.1.p.6">~~~ END EDNOTE ~~~</p>
-<h1 id="rfc.section.7.1.2">
-<a href="#rfc.section.7.1.2">7.1.2.</a> <a href="#parallel-pkis" id="parallel-pkis">Parallel PKIs</a>
-</h1>
-<p id="rfc.section.7.1.2.p.1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).</p>
-<p id="rfc.section.7.1.2.p.2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.</p>
-<p id="rfc.section.7.1.2.p.3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms.</p>
-<p id="rfc.section.7.1.2.p.4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <a href="#RFC5652" class="xref">[RFC5652]</a>.</p>
-<p id="rfc.section.7.1.2.p.5">EDNOTE: I copied and pruned this text from <a href="#I-D.ounsworth-pq-composite-sigs" class="xref">[I-D.ounsworth-pq-composite-sigs]</a>. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.</p>
-<h1 id="rfc.section.8">
-<a href="#rfc.section.8">8.</a> <a href="#sec-iana" id="sec-iana">IANA Considerations</a>
-</h1>
-<p id="rfc.section.8.p.1">The ASN.1 module OID is TBD.</p>
-<h1 id="rfc.section.9">
-<a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a>
-</h1>
-<h1 id="rfc.section.9.1">
-<a href="#rfc.section.9.1">9.1.</a> <a href="#policy-for-deprecated-and-acceptable-algorithms" id="policy-for-deprecated-and-acceptable-algorithms">Policy for Deprecated and Acceptable Algorithms</a>
-</h1>
-<p id="rfc.section.9.1.p.1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.</p>
-<p id="rfc.section.9.1.p.2">In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms.</p>
-<p id="rfc.section.9.1.p.3">Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.</p>
-<p id="rfc.section.9.1.p.4">EDNOTE: Max is working on a CRL mechanism to accomplish this.</p>
-<h1 id="rfc.section.9.2">
-<a href="#rfc.section.9.2">9.2.</a> <a href="#or-modes" id="or-modes">OR Modes</a>
-</h1>
-<p id="rfc.section.9.2.p.1">TODO -- we'll need security consideration analysis of whatever OR modes we choose.</p>
-<h1 id="rfc.section.9.3">
-<a href="#rfc.section.9.3">9.3.</a> <a href="#cryptographic-review-of-combiner" id="cryptographic-review-of-combiner">Cryptographic review of combiner</a>
-</h1>
-<p id="rfc.section.9.3.p.1">EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that the combiner is resistant to all known cryptographic attacks.</p>
-<h1 id="rfc.section.9.3.1">
-<a href="#rfc.section.9.3.1">9.3.1.</a> <a href="#need-for-a-kdf-within-the-combiner" id="need-for-a-kdf-within-the-combiner">Need for a KDF within the combiner</a>
-</h1>
-<p id="rfc.section.9.3.1.p.1">It is expected that the majority of uses of the KEM defined in this document will be within a construct such as <a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">[I-D.perret-prat-lamps-cms-pq-kem]</a> which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.</p>
-<p id="rfc.section.9.3.1.p.2">In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where <samp>KDF(m) = m</samp> -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.</p>
-<h1 id="rfc.section.9.3.2">
-<a href="#rfc.section.9.3.2">9.3.2.</a> <a href="#sec-apop-attack" id="sec-apop-attack">APOP Attack on concatenated keys</a>
-</h1>
-<p id="rfc.section.9.3.2.p.1">See the attack analysis described in summary in <a href="#Aviram2021" class="xref">[Aviram2021]</a>.</p>
-<p id="rfc.section.9.3.2.p.2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.</p>
-<p id="rfc.section.9.3.2.p.3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for <a href="#I-D.ietf-tls-hybrid-design" class="xref">[I-D.ietf-tls-hybrid-design]</a>. Second, any non-deprecated KDF will not allow collision attacks.</p>
-<p id="rfc.section.9.3.2.p.4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.</p>
-<h1 id="rfc.section.9.3.3">
-<a href="#rfc.section.9.3.3">9.3.3.</a> <a href="#aviram2022" id="aviram2022">Aviram2022</a>
-</h1>
-<p id="rfc.section.9.3.3.p.1">See the attack analysis described in summary in <a href="#Aviram2022" class="xref">[Aviram2022]</a>.</p>
-<p id="rfc.section.9.3.3.p.2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.</p>
-<p><a href="#Aviram2022" class="xref">[Aviram2022]</a> gives the following definition: "If we would like to combine two keys, either of which might be influenced by an attacker, we need a dual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.</p>
-<p id="rfc.section.9.3.3.p.4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.</p>
-<h1 id="rfc.references">
-<a href="#rfc.references">10.</a> References</h1>
-<h1 id="rfc.references.1">
-<a href="#rfc.references.1">10.1.</a> Normative References</h1>
-<table><tbody>
-<tr>
-<td class="reference"><b id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</b></td>
-<td class="top">
-<a title="Entrust Limited">Ounsworth, M.</a> and <a title="CableLabs">M. Pala</a>, "<a href="https://tools.ietf.org/html/draft-ounsworth-pq-composite-keys-01">Composite Public and Private Keys For Use In Internet PKI</a>", Internet-Draft draft-ounsworth-pq-composite-keys-01, February 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.perret-prat-lamps-cms-pq-kem">[I-D.perret-prat-lamps-cms-pq-kem]</b></td>
-<td class="top">
-<a title="CryptoNext Security">Perret, L.</a>, <a title="CryptoNext Security">Prat, J.</a> and <a title="Entrust Limited">M. Ounsworth</a>, "<a href="https://tools.ietf.org/html/draft-perret-prat-lamps-cms-pq-kem-00">Use of Post-Quantum KEM in the Cryptographic Message Syntax (CMS)</a>", Internet-Draft draft-perret-prat-lamps-cms-pq-kem-00, November 2021.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC1421">[RFC1421]</b></td>
-<td class="top">
-<a>Linn, J.</a>, "<a href="https://tools.ietf.org/html/rfc1421">Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures</a>", RFC 1421, DOI 10.17487/RFC1421, February 1993.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC2119">[RFC2119]</b></td>
-<td class="top">
-<a>Bradner, S.</a>, "<a href="https://tools.ietf.org/html/rfc2119">Key words for use in RFCs to Indicate Requirement Levels</a>", BCP 14, RFC 2119, DOI 10.17487/RFC2119, March 1997.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC2986">[RFC2986]</b></td>
-<td class="top">
-<a>Nystrom, M.</a> and <a>B. Kaliski</a>, "<a href="https://tools.ietf.org/html/rfc2986">PKCS #10: Certification Request Syntax Specification Version 1.7</a>", RFC 2986, DOI 10.17487/RFC2986, November 2000.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC4210">[RFC4210]</b></td>
-<td class="top">
-<a>Adams, C.</a>, <a>Farrell, S.</a>, <a>Kause, T.</a> and <a>T. Mononen</a>, "<a href="https://tools.ietf.org/html/rfc4210">Internet X.509 Public Key Infrastructure Certificate Management Protocol (CMP)</a>", RFC 4210, DOI 10.17487/RFC4210, September 2005.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5280">[RFC5280]</b></td>
-<td class="top">
-<a>Cooper, D.</a>, <a>Santesson, S.</a>, <a>Farrell, S.</a>, <a>Boeyen, S.</a>, <a>Housley, R.</a> and <a>W. Polk</a>, "<a href="https://tools.ietf.org/html/rfc5280">Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 5280, DOI 10.17487/RFC5280, May 2008.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5652">[RFC5652]</b></td>
-<td class="top">
-<a>Housley, R.</a>, "<a href="https://tools.ietf.org/html/rfc5652">Cryptographic Message Syntax (CMS)</a>", STD 70, RFC 5652, DOI 10.17487/RFC5652, September 2009.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5912">[RFC5912]</b></td>
-<td class="top">
-<a>Hoffman, P.</a> and <a>J. Schaad</a>, "<a href="https://tools.ietf.org/html/rfc5912">New ASN.1 Modules for the Public Key Infrastructure Using X.509 (PKIX)</a>", RFC 5912, DOI 10.17487/RFC5912, June 2010.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5914">[RFC5914]</b></td>
-<td class="top">
-<a>Housley, R.</a>, <a>Ashmore, S.</a> and <a>C. Wallace</a>, "<a href="https://tools.ietf.org/html/rfc5914">Trust Anchor Format</a>", RFC 5914, DOI 10.17487/RFC5914, June 2010.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5958">[RFC5958]</b></td>
-<td class="top">
-<a>Turner, S.</a>, "<a href="https://tools.ietf.org/html/rfc5958">Asymmetric Key Packages</a>", RFC 5958, DOI 10.17487/RFC5958, August 2010.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC7468">[RFC7468]</b></td>
-<td class="top">
-<a>Josefsson, S.</a> and <a>S. Leonard</a>, "<a href="https://tools.ietf.org/html/rfc7468">Textual Encodings of PKIX, PKCS, and CMS Structures</a>", RFC 7468, DOI 10.17487/RFC7468, April 2015.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC8174">[RFC8174]</b></td>
-<td class="top">
-<a>Leiba, B.</a>, "<a href="https://tools.ietf.org/html/rfc8174">Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words</a>", BCP 14, RFC 8174, DOI 10.17487/RFC8174, May 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC8411">[RFC8411]</b></td>
-<td class="top">
-<a>Schaad, J.</a> and <a>R. Andrews</a>, "<a href="https://tools.ietf.org/html/rfc8411">IANA Registration for the Cryptographic Algorithm Object Identifier Range</a>", RFC 8411, DOI 10.17487/RFC8411, August 2018.</td>
-</tr>
-<tr>
-<td class="reference"><b id="X.690">[X.690]</b></td>
-<td class="top">
-<a>ITU-T</a>, "<a>Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)</a>", ISO/IEC 8825-1:2015, November 2015.</td>
-</tr>
-</tbody></table>
-<h1 id="rfc.references.2">
-<a href="#rfc.references.2">10.2.</a> Informative References</h1>
-<table><tbody>
-<tr>
-<td class="reference"><b id="Aviram2021">[Aviram2021]</b></td>
-<td class="top">"<a href="https://github.com/nimia/kdf_public">Concatenating Secrets May Be Dangerous</a>", 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="Aviram2022">[Aviram2022]</b></td>
-<td class="top">"<a href="https://eprint.iacr.org/2022/065">Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS.</a>", n.d..</td>
-</tr>
-<tr>
-<td class="reference"><b id="Bindel2017">[Bindel2017]</b></td>
-<td class="top">
-<a>Bindel, N.</a>, <a>Herath, U.</a>, <a>McKague, M.</a> and <a>D. Stebila</a>, "<a href="https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22">Transitioning to a quantum-resistant public key infrastructure</a>", 2017.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.becker-guthrie-noncomposite-hybrid-auth">[I-D.becker-guthrie-noncomposite-hybrid-auth]</b></td>
-<td class="top">
-<a title="National Security Agency">Becker, A.</a>, <a title="National Security Agency">Guthrie, R.</a> and <a title="National Security Agency">M. Jenkins</a>, "<a href="https://tools.ietf.org/html/draft-becker-guthrie-noncomposite-hybrid-auth-00">Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols</a>", Internet-Draft draft-becker-guthrie-noncomposite-hybrid-auth-00, March 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.ietf-tls-hybrid-design">[I-D.ietf-tls-hybrid-design]</b></td>
-<td class="top">
-<a title="University of Waterloo">Stebila, D.</a>, <a title="Cisco Systems">Fluhrer, S.</a> and <a title="University of Haifa and Amazon Web Services">S. Gueron</a>, "<a href="https://tools.ietf.org/html/draft-ietf-tls-hybrid-design-04">Hybrid key exchange in TLS 1.3</a>", Internet-Draft draft-ietf-tls-hybrid-design-04, January 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="I-D.ounsworth-pq-composite-sigs">[I-D.ounsworth-pq-composite-sigs]</b></td>
-<td class="top">
-<a title="Entrust Limited">Ounsworth, M.</a> and <a title="CableLabs">M. Pala</a>, "<a href="https://tools.ietf.org/html/draft-ounsworth-pq-composite-sigs-07">Composite Signatures For Use In Internet PKI</a>", Internet-Draft draft-ounsworth-pq-composite-sigs-07, June 2022.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC3279">[RFC3279]</b></td>
-<td class="top">
-<a>Bassham, L.</a>, <a>Polk, W.</a> and <a>R. Housley</a>, "<a href="https://tools.ietf.org/html/rfc3279">Algorithms and Identifiers for the Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile</a>", RFC 3279, DOI 10.17487/RFC3279, April 2002.</td>
-</tr>
-<tr>
-<td class="reference"><b id="RFC5990">[RFC5990]</b></td>
-<td class="top">
-<a>Randall, J.</a>, <a>Kaliski, B.</a>, <a>Brainard, J.</a> and <a>S. Turner</a>, "<a href="https://tools.ietf.org/html/rfc5990">Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)</a>", RFC 5990, DOI 10.17487/RFC5990, September 2010.</td>
-</tr>
-</tbody></table>
-<h1 id="rfc.appendix.A">
-<a href="#rfc.appendix.A">Appendix A.</a> <a href="#appdx-examples" id="appdx-examples">Examples</a>
-</h1>
-<p id="rfc.section.A.p.1">TBD</p>
-<h1 id="rfc.appendix.B">
-<a href="#rfc.appendix.B">Appendix B.</a> <a href="#asn1-module" id="asn1-module">ASN.1 Module</a>
-</h1>
-<p id="rfc.section.B.p.1">TBD -- UPDATE</p>
-<pre>
+</pre><a href="#section-6-5" class="pilcrow">¶</a>
+</div>
+<p id="section-6-6">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-6-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-in-pract">
+<section id="section-7">
+      <h2 id="name-in-practice-2">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-in-practice-2" class="section-name selfRef">In Practice</a>
+      </h2>
+<p id="section-7-1">This section addresses practical issues of how this draft affects other protocols and standards.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-2">EDNOTE 10: Possible topics to address:<a href="#section-7-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-3.1">The size of these certs and cert chains.<a href="#section-7-3.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.2">In particular, implications for (large) composite keys / signatures / certs on the handshake stages of TLS and IKEv2.<a href="#section-7-3.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.3">If a cert in the chain is a composite cert then does the whole chain need to be of composite Certs?<a href="#section-7-3.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.4">We could also explain that the root CA cert does not have to be of the same algorithms. The root cert SHOULD NOT be transferred in the authentication exchange to save transport overhead and thus it can be different than the intermediate and leaf certs.<a href="#section-7-3.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.5">We could talk about overhead (size and processing).<a href="#section-7-3.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.6">We could also discuss backwards compatibility.<a href="#section-7-3.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-3.7">We could include a subsection about implementation considerations.<a href="#section-7-3.7" class="pilcrow">¶</a>
+</li>
+      </ul>
+<div id="sec-backwards-compat">
+<section id="section-7.1">
+        <h3 id="name-backwards-compatibility-2">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-backwards-compatibility-2" class="section-name selfRef">Backwards Compatibility</a>
+        </h3>
+<p id="section-7.1-1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1-2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.<a href="#section-7.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1-3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span> encrypted structures.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<div id="k-of-n-modes">
+<section id="section-7.1.1">
+          <h4 id="name-k-of-n-modes-2">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-k-of-n-modes-2" class="section-name selfRef">K-of-N modes</a>
+          </h4>
+<p id="section-7.1.1-1">~~~ BEGIN EDNOTE ~~~
+In the context of encryption, K-of-N modes could mean one of two things:<a href="#section-7.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-2">Type 1: sender uses a subset<a href="#section-7.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-3">This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the <a href="#sec-encaps-proc" class="xref">Section 5</a> but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.<a href="#section-7.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-4">Type 2: receiver uses a subset<a href="#section-7.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-5">This would mean that the sender (encrypter) uses all N of the component keys within the receiver's public key in such a way that the receiver (decrypter) only needs to use K private keys to decrypt the message. This implies the need for some kind of Shamir's-like secret splitting scheme. This is a reasonably complex mechanism and it's currently unclear if there are any use-cases that require such a mechanism.<a href="#section-7.1.1-5" class="pilcrow">¶</a></p>
+<p id="section-7.1.1-6">~~~ END EDNOTE ~~~<a href="#section-7.1.1-6" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="parallel-pkis">
+<section id="section-7.1.2">
+          <h4 id="name-parallel-pkis-2">
+<a href="#section-7.1.2" class="section-number selfRef">7.1.2. </a><a href="#name-parallel-pkis-2" class="section-name selfRef">Parallel PKIs</a>
+          </h4>
+<p id="section-7.1.2-1">We present the term "Parallel PKI" to refer to the setup where a PKI end entity possesses two or more distinct public keys or certificates for the same identity (name), but containing keys for different cryptographic algorithms. One could imagine a set of parallel PKIs where an existing PKI using legacy algorithms (RSA, ECC) is left operational during the post-quantum migration but is shadowed by one or more parallel PKIs using pure post quantum algorithms or composite algorithms (legacy and post-quantum).<a href="#section-7.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-2">Equipped with a set of parallel public keys in this way, a client would have the flexibility to choose which public key(s) or certificate(s) to use in a given signature operation.<a href="#section-7.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-3">For negotiated protocols, the client could choose which public key(s) or certificate(s) to use based on the negotiated algorithms.<a href="#section-7.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-4">For non-negotiated protocols, the details for obtaining backwards compatibility will vary by protocol, but for example in CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>.<a href="#section-7.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-7.1.2-5">EDNOTE: I copied and pruned this text from <span>[<a href="#I-D.ounsworth-pq-composite-sigs" class="xref">I-D.ounsworth-pq-composite-sigs</a>]</span>. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.<a href="#section-7.1.2-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="sec-iana">
+<section id="section-8">
+      <h2 id="name-iana-considerations-2">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-iana-considerations-2" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-8-1">The ASN.1 module OID is TBD.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-9">
+      <h2 id="name-security-considerations-2">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations-2" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<div id="policy-for-deprecated-and-acceptable-algorithms">
+<section id="section-9.1">
+        <h3 id="name-policy-for-deprecated-and-ac">
+<a href="#section-9.1" class="section-number selfRef">9.1. </a><a href="#name-policy-for-deprecated-and-ac" class="section-name selfRef">Policy for Deprecated and Acceptable Algorithms</a>
+        </h3>
+<p id="section-9.1-1">Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.1-2">In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-4">EDNOTE: Max is working on a CRL mechanism to accomplish this.<a href="#section-9.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="or-modes">
+<section id="section-9.2">
+        <h3 id="name-or-modes-2">
+<a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-or-modes-2" class="section-name selfRef">OR Modes</a>
+        </h3>
+<p id="section-9.2-1">TODO -- we'll need security consideration analysis of whatever OR modes we choose.<a href="#section-9.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="cryptographic-review-of-combiner">
+<section id="section-9.3">
+        <h3 id="name-cryptographic-review-of-comb">
+<a href="#section-9.3" class="section-number selfRef">9.3. </a><a href="#name-cryptographic-review-of-comb" class="section-name selfRef">Cryptographic review of combiner</a>
+        </h3>
+<p id="section-9.3-1">EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that the combiner is resistant to all known cryptographic attacks.<a href="#section-9.3-1" class="pilcrow">¶</a></p>
+<div id="need-for-a-kdf-within-the-combiner">
+<section id="section-9.3.1">
+          <h4 id="name-need-for-a-kdf-within-the-co">
+<a href="#section-9.3.1" class="section-number selfRef">9.3.1. </a><a href="#name-need-for-a-kdf-within-the-co" class="section-name selfRef">Need for a KDF within the combiner</a>
+          </h4>
+<p id="section-9.3.1-1">It is expected that the majority of uses of the KEM defined in this document will be within a construct such as <span>[<a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">I-D.perret-prat-lamps-cms-pq-kem</a>]</span> which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.<a href="#section-9.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-9.3.1-2">In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where <code>KDF(m) = m</code> -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.<a href="#section-9.3.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="sec-apop-attack">
+<section id="section-9.3.2">
+          <h4 id="name-apop-attack-on-concatenated-">
+<a href="#section-9.3.2" class="section-number selfRef">9.3.2. </a><a href="#name-apop-attack-on-concatenated-" class="section-name selfRef">APOP Attack on concatenated keys</a>
+          </h4>
+<p id="section-9.3.2-1">See the attack analysis described in summary in <span>[<a href="#Aviram2021" class="xref">Aviram2021</a>]</span>.<a href="#section-9.3.2-1" class="pilcrow">¶</a></p>
+<p id="section-9.3.2-2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.<a href="#section-9.3.2-2" class="pilcrow">¶</a></p>
+<p id="section-9.3.2-3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for <span>[<a href="#I-D.ietf-tls-hybrid-design" class="xref">I-D.ietf-tls-hybrid-design</a>]</span>. Second, any non-deprecated KDF will not allow collision attacks.<a href="#section-9.3.2-3" class="pilcrow">¶</a></p>
+<p id="section-9.3.2-4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.<a href="#section-9.3.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="aviram2022">
+<section id="section-9.3.3">
+          <h4 id="name-aviram2022-2">
+<a href="#section-9.3.3" class="section-number selfRef">9.3.3. </a><a href="#name-aviram2022-2" class="section-name selfRef">Aviram2022</a>
+          </h4>
+<p id="section-9.3.3-1">See the attack analysis described in summary in <span>[<a href="#Aviram2022" class="xref">Aviram2022</a>]</span>.<a href="#section-9.3.3-1" class="pilcrow">¶</a></p>
+<p id="section-9.3.3-2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.<a href="#section-9.3.3-2" class="pilcrow">¶</a></p>
+<p id="section-9.3.3-3"><span>[<a href="#Aviram2022" class="xref">Aviram2022</a>]</span> gives the following definition:
+"If we would like to combine two keys, either of which might be influenced by an attacker, we need a dual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.<a href="#section-9.3.3-3" class="pilcrow">¶</a></p>
+<p id="section-9.3.3-4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.<a href="#section-9.3.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<section id="section-10">
+      <h2 id="name-references-2">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references-2" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-10.1">
+        <h3 id="name-normative-references-2">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references-2" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</dt>
+        <dd>
+<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-01</span>, <time datetime="2022-02-14" class="refDate">14 February 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-keys-01.txt">https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-keys-01.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.perret-prat-lamps-cms-pq-kem">[I-D.perret-prat-lamps-cms-pq-kem]</dt>
+        <dd>
+<span class="refAuthor">Perret, L.</span>, <span class="refAuthor">Prat, J.</span>, and <span class="refAuthor">M. Ounsworth</span>, <span class="refTitle">"Use of Post-Quantum KEM in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-perret-prat-lamps-cms-pq-kem-00</span>, <time datetime="2021-11-22" class="refDate">22 November 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-perret-prat-lamps-cms-pq-kem-00.txt">https://www.ietf.org/archive/id/draft-perret-prat-lamps-cms-pq-kem-00.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC1421">[RFC1421]</dt>
+        <dd>
+<span class="refAuthor">Linn, J.</span>, <span class="refTitle">"Privacy Enhancement for Internet Electronic Mail: Part I: Message Encryption and Authentication Procedures"</span>, <span class="seriesInfo">RFC 1421</span>, <span class="seriesInfo">DOI 10.17487/RFC1421</span>, <time datetime="1993-02" class="refDate">February 1993</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1421">https://www.rfc-editor.org/info/rfc1421</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2986">[RFC2986]</dt>
+        <dd>
+<span class="refAuthor">Nystrom, M.</span> and <span class="refAuthor">B. Kaliski</span>, <span class="refTitle">"PKCS #10: Certification Request Syntax Specification Version 1.7"</span>, <span class="seriesInfo">RFC 2986</span>, <span class="seriesInfo">DOI 10.17487/RFC2986</span>, <time datetime="2000-11" class="refDate">November 2000</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2986">https://www.rfc-editor.org/info/rfc2986</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4210">[RFC4210]</dt>
+        <dd>
+<span class="refAuthor">Adams, C.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Kause, T.</span>, and <span class="refAuthor">T. Mononen</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate Management Protocol (CMP)"</span>, <span class="seriesInfo">RFC 4210</span>, <span class="seriesInfo">DOI 10.17487/RFC4210</span>, <time datetime="2005-09" class="refDate">September 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc4210">https://www.rfc-editor.org/info/rfc4210</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5280">[RFC5280]</dt>
+        <dd>
+<span class="refAuthor">Cooper, D.</span>, <span class="refAuthor">Santesson, S.</span>, <span class="refAuthor">Farrell, S.</span>, <span class="refAuthor">Boeyen, S.</span>, <span class="refAuthor">Housley, R.</span>, and <span class="refAuthor">W. Polk</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 5280</span>, <span class="seriesInfo">DOI 10.17487/RFC5280</span>, <time datetime="2008-05" class="refDate">May 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5280">https://www.rfc-editor.org/info/rfc5280</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5652">[RFC5652]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">STD 70</span>, <span class="seriesInfo">RFC 5652</span>, <span class="seriesInfo">DOI 10.17487/RFC5652</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5652">https://www.rfc-editor.org/info/rfc5652</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5912">[RFC5912]</dt>
+        <dd>
+<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">J. Schaad</span>, <span class="refTitle">"New ASN.1 Modules for the Public Key Infrastructure Using X.509 (PKIX)"</span>, <span class="seriesInfo">RFC 5912</span>, <span class="seriesInfo">DOI 10.17487/RFC5912</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5912">https://www.rfc-editor.org/info/rfc5912</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5914">[RFC5914]</dt>
+        <dd>
+<span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Ashmore, S.</span>, and <span class="refAuthor">C. Wallace</span>, <span class="refTitle">"Trust Anchor Format"</span>, <span class="seriesInfo">RFC 5914</span>, <span class="seriesInfo">DOI 10.17487/RFC5914</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5914">https://www.rfc-editor.org/info/rfc5914</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5958">[RFC5958]</dt>
+        <dd>
+<span class="refAuthor">Turner, S.</span>, <span class="refTitle">"Asymmetric Key Packages"</span>, <span class="seriesInfo">RFC 5958</span>, <span class="seriesInfo">DOI 10.17487/RFC5958</span>, <time datetime="2010-08" class="refDate">August 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5958">https://www.rfc-editor.org/info/rfc5958</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7468">[RFC7468]</dt>
+        <dd>
+<span class="refAuthor">Josefsson, S.</span> and <span class="refAuthor">S. Leonard</span>, <span class="refTitle">"Textual Encodings of PKIX, PKCS, and CMS Structures"</span>, <span class="seriesInfo">RFC 7468</span>, <span class="seriesInfo">DOI 10.17487/RFC7468</span>, <time datetime="2015-04" class="refDate">April 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7468">https://www.rfc-editor.org/info/rfc7468</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8411">[RFC8411]</dt>
+        <dd>
+<span class="refAuthor">Schaad, J.</span> and <span class="refAuthor">R. Andrews</span>, <span class="refTitle">"IANA Registration for the Cryptographic Algorithm Object Identifier Range"</span>, <span class="seriesInfo">RFC 8411</span>, <span class="seriesInfo">DOI 10.17487/RFC8411</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8411">https://www.rfc-editor.org/info/rfc8411</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="X.690">[X.690]</dt>
+      <dd>
+<span class="refAuthor">ITU-T</span>, <span class="refTitle">"Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"</span>, <span class="seriesInfo">ISO/IEC 8825-1:2015</span>, <time datetime="2015-11" class="refDate">November 2015</time>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-10.2">
+        <h3 id="name-informative-references-2">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references-2" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="Aviram2021">[Aviram2021]</dt>
+        <dd>
+<span class="refTitle">"Concatenating Secrets May Be Dangerous"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://github.com/nimia/kdf_public">https://github.com/nimia/kdf_public</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Aviram2022">[Aviram2022]</dt>
+        <dd>
+<span class="refTitle">"Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS."</span>, <span>n.d.</span>, <span>&lt;<a href="https://eprint.iacr.org/2022/065">https://eprint.iacr.org/2022/065</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Bindel2017">[Bindel2017]</dt>
+        <dd>
+<span class="refAuthor">Bindel, N.</span>, <span class="refAuthor">Herath, U.</span>, <span class="refAuthor">McKague, M.</span>, and <span class="refAuthor">D. Stebila</span>, <span class="refTitle">"Transitioning to a quantum-resistant public key infrastructure"</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22">https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.becker-guthrie-noncomposite-hybrid-auth">[I-D.becker-guthrie-noncomposite-hybrid-auth]</dt>
+        <dd>
+<span class="refAuthor">Becker, A.</span>, <span class="refAuthor">Guthrie, R.</span>, and <span class="refAuthor">M. Jenkins</span>, <span class="refTitle">"Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-becker-guthrie-noncomposite-hybrid-auth-00</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt">https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-tls-hybrid-design">[I-D.ietf-tls-hybrid-design]</dt>
+        <dd>
+<span class="refAuthor">Stebila, D.</span>, <span class="refAuthor">Fluhrer, S.</span>, and <span class="refAuthor">S. Gueron</span>, <span class="refTitle">"Hybrid key exchange in TLS 1.3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-hybrid-design-04</span>, <time datetime="2022-01-11" class="refDate">11 January 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-design-04.txt">https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-design-04.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ounsworth-pq-composite-sigs">[I-D.ounsworth-pq-composite-sigs]</dt>
+        <dd>
+<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Signatures For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-sigs-07</span>, <time datetime="2022-06-08" class="refDate">8 June 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-sigs-07.txt">https://www.ietf.org/archive/id/draft-ounsworth-pq-composite-sigs-07.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3279">[RFC3279]</dt>
+        <dd>
+<span class="refAuthor">Bassham, L.</span>, <span class="refAuthor">Polk, W.</span>, and <span class="refAuthor">R. Housley</span>, <span class="refTitle">"Algorithms and Identifiers for the Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 3279</span>, <span class="seriesInfo">DOI 10.17487/RFC3279</span>, <time datetime="2002-04" class="refDate">April 2002</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3279">https://www.rfc-editor.org/info/rfc3279</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5990">[RFC5990]</dt>
+      <dd>
+<span class="refAuthor">Randall, J.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Brainard, J.</span>, <span class="refAuthor">Turner, S.</span>, and <span class="refAuthor">RFC Publisher</span>, <span class="refTitle">"Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 5990</span>, <span class="seriesInfo">DOI 10.17487/RFC5990</span>, <time datetime="2010-09" class="refDate">September 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5990">https://www.rfc-editor.org/info/rfc5990</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</section>
+<div id="appdx-examples">
+<section id="appendix-A">
+      <h2 id="name-examples-2">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-examples-2" class="section-name selfRef">Examples</a>
+      </h2>
+<p id="appendix-A-1">TBD<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="asn1-module">
+<section id="appendix-B">
+      <h2 id="name-asn1-module-2">
+<a href="#appendix-B" class="section-number selfRef">Appendix B. </a><a href="#name-asn1-module-2" class="section-name selfRef">ASN.1 Module</a>
+      </h2>
+<p id="appendix-B-1">TBD -- UPDATE<a href="#appendix-B-1" class="pilcrow">¶</a></p>
+<div id="appendix-B-2">
+<pre class="lang-ASN.1 sourcecode">
 &lt;CODE STARTS&gt;
 
 Composite-Keys-2022
@@ -1078,7 +2152,7 @@ IMPORTS
 
 -- To be replaced by IANA
 id-alg-composite-kem OBJECT IDENTIFIER ::= {
-joint-iso-itu-t(2) country(16) us(840) organization(1) 
+joint-iso-itu-t(2) country(16) us(840) organization(1)
 entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 
 id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
@@ -1093,7 +2167,7 @@ CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
 kema-CompositeKEM KEM-ALGORITHM ::= {
     IDENTIFIER id-alg-composite-kem
     VALUE CompositeCiphertextValue
-    PARAMS composite-kem-params  
+    PARAMS composite-kem-params
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
@@ -1112,70 +2186,78 @@ END
 
 &lt;CODE ENDS&gt;
 
-</pre>
-<h1 id="rfc.appendix.C">
-<a href="#rfc.appendix.C">Appendix C.</a> <a href="#intellectual-property-considerations" id="intellectual-property-considerations">Intellectual Property Considerations</a>
-</h1>
-<p id="rfc.section.C.p.1">The following IPR Disclosure relates to this draft:</p>
-<p id="rfc.section.C.p.2">https://datatracker.ietf.org/ipr/3588/</p>
-<p id="rfc.section.C.p.3">EDNOTE:   I don't think this applies to this draft.</p>
-<h1 id="rfc.appendix.D">
-<a href="#rfc.appendix.D">Appendix D.</a> <a href="#contributors-and-acknowledgements" id="contributors-and-acknowledgements">Contributors and Acknowledgements</a>
-</h1>
-<p id="rfc.section.D.p.1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:</p>
-<p id="rfc.section.D.p.2">Serge Mister (Entrust), Ali Noman (Entrust), Scott Fluhrer (Cisco), Jan Klaussner (D-Trust), Max Pala (CableLabs), and Douglas Stebila (University of Waterloo).</p>
-<p id="rfc.section.D.p.3">We are grateful to all, including any contributors who may have been inadvertently omitted from this list.</p>
-<p id="rfc.section.D.p.4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those documents.  "Copying always makes things easier and less error prone" - <a href="#RFC8411" class="xref">[RFC8411]</a>.</p>
-<h1 id="rfc.appendix.D.1">
-<a href="#rfc.appendix.D.1">D.1.</a> <a href="#making-contributions" id="making-contributions">Making contributions</a>
-</h1>
-<p id="rfc.section.D.1.p.1">Additional contributions to this draft are welcome. Please see the working copy of this draft at, as well as open issues at:</p>
-<p id="rfc.section.D.1.p.2">https://github.com/EntrustCorporation/draft-composite-kem/</p>
-<h1 id="rfc.authors"><a href="#rfc.authors">Authors' Addresses</a></h1>
-<div class="avoidbreak">
-  <address class="vcard">
-	<span class="vcardline">
-	  <span class="fn">Mike Ounsworth</span> 
-	  <span class="n hidden">
-		<span class="family-name">Ounsworth</span>
-	  </span>
-	</span>
-	<span class="org vcardline">Entrust Limited</span>
-	<span class="adr">
-	  <span class="vcardline">2500 Solandt Road -- Suite 100</span>
-
-	  <span class="vcardline">
-		<span class="locality">Ottawa, Ontario</span>,  
-		<span class="region"></span>
-		<span class="code">K2K 3G5</span>
-	  </span>
-	  <span class="country-name vcardline">Canada</span>
-	</span>
-	<span class="vcardline">EMail: <a href="mailto:mike.ounsworth@entrust.com">mike.ounsworth@entrust.com</a></span>
-
-  </address>
-</div><div class="avoidbreak">
-  <address class="vcard">
-	<span class="vcardline">
-	  <span class="fn">John Gray</span> 
-	  <span class="n hidden">
-		<span class="family-name">Gray</span>
-	  </span>
-	</span>
-	<span class="org vcardline">Entrust Limited</span>
-	<span class="adr">
-	  
-	  <span class="vcardline">
-		<span class="locality"></span> 
-		<span class="region"></span>
-		<span class="code"></span>
-	  </span>
-	  <span class="country-name vcardline"></span>
-	</span>
-	<span class="vcardline">EMail: <a href="mailto:john.gray@entrust.com">john.gray@entrust.com</a></span>
-
-  </address>
+</pre><a href="#appendix-B-2" class="pilcrow">¶</a>
 </div>
-
+</section>
+</div>
+<div id="intellectual-property-considerations">
+<section id="appendix-C">
+      <h2 id="name-intellectual-property-consid">
+<a href="#appendix-C" class="section-number selfRef">Appendix C. </a><a href="#name-intellectual-property-consid" class="section-name selfRef">Intellectual Property Considerations</a>
+      </h2>
+<p id="appendix-C-1">The following IPR Disclosure relates to this draft:<a href="#appendix-C-1" class="pilcrow">¶</a></p>
+<p id="appendix-C-2">https://datatracker.ietf.org/ipr/3588/<a href="#appendix-C-2" class="pilcrow">¶</a></p>
+<p id="appendix-C-3">EDNOTE:   I don't think this applies to this draft.<a href="#appendix-C-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="contributors-and-acknowledgements">
+<section id="appendix-D">
+      <h2 id="name-contributors-and-acknowledge">
+<a href="#appendix-D" class="section-number selfRef">Appendix D. </a><a href="#name-contributors-and-acknowledge" class="section-name selfRef">Contributors and Acknowledgements</a>
+      </h2>
+<p id="appendix-D-1">This document incorporates contributions and comments from a large group of experts. The Editors would especially like to acknowledge the expertise and tireless dedication of the following people, who attended many long meetings and generated millions of bytes of electronic mail and VOIP traffic over the past year in pursuit of this document:<a href="#appendix-D-1" class="pilcrow">¶</a></p>
+<p id="appendix-D-2">Serge Mister (Entrust), Ali Noman (Entrust), Scott Fluhrer (Cisco), Jan Klaussner (D-Trust), Max Pala (CableLabs), and
+Douglas Stebila (University of Waterloo).<a href="#appendix-D-2" class="pilcrow">¶</a></p>
+<p id="appendix-D-3">We are grateful to all, including any contributors who may have
+been inadvertently omitted from this list.<a href="#appendix-D-3" class="pilcrow">¶</a></p>
+<p id="appendix-D-4">This document borrows text from similar documents, including those referenced below. Thanks go to the authors of those
+   documents.  "Copying always makes things easier and less error prone" - <span>[<a href="#RFC8411" class="xref">RFC8411</a>]</span>.<a href="#appendix-D-4" class="pilcrow">¶</a></p>
+<div id="making-contributions">
+<section id="appendix-D.1">
+        <h3 id="name-making-contributions-2">
+<a href="#appendix-D.1" class="section-number selfRef">D.1. </a><a href="#name-making-contributions-2" class="section-name selfRef">Making contributions</a>
+        </h3>
+<p id="appendix-D.1-1">Additional contributions to this draft are welcome. Please see the working copy of this draft at, as well as open issues at:<a href="#appendix-D.1-1" class="pilcrow">¶</a></p>
+<p id="appendix-D.1-2">https://github.com/EntrustCorporation/draft-composite-kem/<a href="#appendix-D.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="appendix-E">
+      <h2 id="name-authors-addresses-2">
+<a href="#name-authors-addresses-2" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Mike Ounsworth</span></div>
+<div dir="auto" class="left"><span class="org">Entrust Limited</span></div>
+<div dir="auto" class="left"><span class="street-address">2500 Solandt Road -- Suite 100</span></div>
+<div dir="auto" class="left">
+<span class="locality">Ottawa, Ontario</span>  <span class="postal-code">K2K 3G5</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">Canada</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:mike.ounsworth@entrust.com" class="email">mike.ounsworth@entrust.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">John Gray</span></div>
+<div dir="auto" class="left"><span class="org">Entrust Limited</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:john.gray@entrust.com" class="email">john.gray@entrust.com</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
 </body>
 </html>
