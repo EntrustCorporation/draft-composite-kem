@@ -13,8 +13,6 @@
        This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. The generic composite key type is also defined which allows arbitrary combinations of key types to be placed in the CompositePublicKey and CompositePrivateKey structures without needing the combination to be pre-registered or pre-agreed. For the purpose of combining KEMs, the combiner function from   is used. 
        This document is intended to be coupled with the composite keys
 structure define in   and the CMS KEM-TRANS mechanism in  . 
-       -- From -keys --&gt; 
-       -- end from -keys --&gt; 
        
 
 
@@ -1187,7 +1185,7 @@ li > p:last-of-type {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth &amp; Gray</td>
-<td class="center">Expires 11 June 2023</td>
+<td class="center">Expires 21 June 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1200,12 +1198,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-ounsworth-pq-composite-kem-01</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-12-08" class="published">8 December 2022</time>
+<time datetime="2022-12-18" class="published">18 December 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-06-11">11 June 2023</time></dd>
+<dd class="expires"><time datetime="2023-06-21">21 June 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1227,8 +1225,6 @@ li > p:last-of-type {
 <p id="section-abstract-3">This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. The generic composite key type is also defined which allows arbitrary combinations of key types to be placed in the CompositePublicKey and CompositePrivateKey structures without needing the combination to be pre-registered or pre-agreed. For the purpose of combining KEMs, the combiner function from <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> is used.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 <p id="section-abstract-4">This document is intended to be coupled with the composite keys
 structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and the CMS KEM-TRANS mechanism in <span>[<a href="#I-D.perret-prat-lamps-cms-pq-kem" class="xref">I-D.perret-prat-lamps-cms-pq-kem</a>]</span>.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
-<p id="section-abstract-5">-- From -keys --&gt;<a href="#section-abstract-5" class="pilcrow">¶</a></p>
-<p id="section-abstract-6">-- end from -keys --&gt;<a href="#section-abstract-6" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1249,7 +1245,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 11 June 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 21 June 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1282,40 +1278,48 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-changes-in-version-01-2" class="xref">Changes in version -01</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-mike-up-to-here-2" class="xref">Mike up to here</a></p>
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-composite-kem-structures-2" class="xref">Composite KEM Structures</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
-                <p id="section-toc.1-1.3.2.1.1" class="keepWithNext"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-terminology-2" class="xref">Terminology</a></p>
+                <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-key-encapsulation-mechanisms" class="xref">Key Encapsulation Mechanisms (KEMs)</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-composite-keys-2" class="xref">Composite Keys</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+                    <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-key-usage-bits-2" class="xref">Key Usage Bits</a></p>
+</li>
+                </ul>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
+                <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-compositeciphertextvalue-2" class="xref">CompositeCiphertextValue</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
+                <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-kem-combiner-2" class="xref">KEM Combiner</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-composite-kem-structures-2" class="xref">Composite KEM Structures</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-algorithm-identifiers-2" class="xref">Algorithm Identifiers</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-key-encapsulation-mechanisms" class="xref">Key Encapsulation Mechanisms (KEMs)</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-composite-keys-2" class="xref">Composite Keys</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2.2.1">
-                    <p id="section-toc.1-1.4.2.2.2.1.1"><a href="#section-4.2.1" class="xref">4.2.1</a>.  <a href="#name-key-usage-bits-2" class="xref">Key Usage Bits</a></p>
-</li>
-                </ul>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-compositeciphertextvalue-2" class="xref">CompositeCiphertextValue</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-id-kem-kyber512-ecdh-p256-sh" class="xref">id-kem-Kyber512-ECDH-P256-SHAKE128</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-kem-algorithm-identifiers-2" class="xref">KEM Algorithm Identifiers</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-mike-up-to-here-2" class="xref">Mike up to here</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-id-alg-composite-kem-2" class="xref">id-alg-composite-kem</a></p>
@@ -1428,184 +1432,289 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
 <section id="section-1">
       <h2 id="name-changes-in-version-01-2">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-01-2" class="section-name selfRef">Changes in version -01</a>
-    </h2>
-</section>
-</div>
-<div id="mike-up-to-here">
-<section id="section-2">
-      <h2 id="name-mike-up-to-here-2">
-<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-mike-up-to-here-2" class="section-name selfRef">Mike up to here</a>
       </h2>
-<p id="section-2-1">Up to here in my pass of merging changes from -keys-04.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-1-1.1">Sycronized terminology with I-D.draft-driscoll-pqt-hybrid-terminology-01.<a href="#section-1-1.1" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="sec-intro">
-<section id="section-3">
+<section id="section-2">
       <h2 id="name-introduction-2">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-introduction-2" class="section-name selfRef">Introduction</a>
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-introduction-2" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-3-1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-2-1">During the transition to post-quantum cryptography, there will be uncertainty as to the strength of cryptographic algorithms; we will no longer fully trust traditional cryptography such as RSA, Diffie-Hellman, DSA and their elliptic curve variants, while we may also not fully trust their post-quantum replacements until they have had sufficient scrutiny and time to discover and fix implementation bugs. Unlike previous cryptographic algorithm migrations, the choice of when to migrate and which algorithms to migrate to, is not so clear. Even after the migration period, it may be advantageous for an entity's cryptographic identity to be composed of multiple public-key algorithms.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-2">The deployment of composite public keys and composite encryption using post-quantum algorithms will face two challenges<a href="#section-2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3-3.1">Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.<a href="#section-3-3.1" class="pilcrow">¶</a>
+<li class="normal" id="section-2-3.1">Algorithm strength uncertainty: During the transition period, some post-quantum signature and encryption algorithms will not be fully trusted, while also the trust in legacy public key algorithms will start to erode.  A relying party may learn some time after deployment that a public key algorithm has become untrustworthy, but in the interim, they may not know which algorithm an adversary has compromised.<a href="#section-2-3.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-3-3.2">Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.<a href="#section-3-3.2" class="pilcrow">¶</a>
+        <li class="normal" id="section-2-3.2">Migration: During the transition period, systems will require mechanisms that allow for staged migrations from fully classical to fully post-quantum-aware cryptography.<a href="#section-2-3.2" class="pilcrow">¶</a>
 </li>
       </ul>
-<p id="section-3-4">This document provides a mechanism to address algorithm strength uncertainty by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Section 9.1</a>.<a href="#section-3-4" class="pilcrow">¶</a></p>
-<p id="section-3-5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-2-4">This document provides a mechanism to address algorithm strength uncertainty by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Section 9.1</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
+<p id="section-2-5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <div id="sec-terminology">
-<section id="section-3.1">
+<section id="section-2.1">
         <h3 id="name-terminology-2">
-<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-terminology-2" class="section-name selfRef">Terminology</a>
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-terminology-2" class="section-name selfRef">Terminology</a>
         </h3>
-<p id="section-3.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>  <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-3.1-1" class="pilcrow">¶</a></p>
-<p id="section-3.1-2">The following terms are used in this document:<a href="#section-3.1-2" class="pilcrow">¶</a></p>
-<p id="section-3.1-3">ALGORITHM:
-          An information object class for identifying the type of
-            cryptographic key being encapsulated.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.1-4">BER:
-          Basic Encoding Rules (BER) as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.1-5">CLIENT:
-          Any software that is making use of a key at runtime.
-          This includes a signer, verifier, encrypter, decrypter.<a href="#section-3.1-5" class="pilcrow">¶</a></p>
-<p id="section-3.1-6">COMBINER:
+<p id="section-2.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span>  <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they appear in all capitals, as shown here.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1-2">This document is consistent with all terminology from <span>[<a href="#I-D.driscoll-pqt-hybrid-terminology" class="xref">I-D.driscoll-pqt-hybrid-terminology</a>]</span>.<a href="#section-2.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">In addition, the following terms are used in this document:<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-4">BER:
+          Basic Encoding Rules (BER) as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-2.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1-5">CLIENT:
+          Any software that is making use of a cryptographic key.
+          This includes a signer, verifier, encrypter, decrypter.<a href="#section-2.1-5" class="pilcrow">¶</a></p>
+<p id="section-2.1-6">COMBINER:
           A combiner specifies how multiple shared secrets
           are combined into a single shared secret.
-          It is expected that combiners will need to evolve 
-          with discovery of cryptanalytic attacks, so this
-          document takes the approach of assigning
-          Object Identifiers (OIDs) to combiners so that
-          stronger combiners can be implemented in the future.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
-<p id="section-3.1-7">COMPONENT ALGORITHM:
-          A single basic algorithm which is contained within a
-            composite algorithm.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
-<p id="section-3.1-8">COMPOSITE ALGORITHM:
-          An algorithm which is a sequence of two or more component
-            algorithms.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
-<p id="section-3.1-9">DER:
-          Distinguished Encoding Rules as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
-<p id="section-3.1-10">KEM:
-        A key encapsulation mechanism as defined in <a href="#sec-kems" class="xref">Section 4.1</a>.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
-<p id="section-3.1-11">POST-QUANTUM ALGORITHM:
-          Any cryptographic algorithm which is believed to be resistant
-          to classical and quantum cryptanalysis, such as the algorithms being considered for standardization by NIST.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
-<p id="section-3.1-12">PUBLIC / PRIVATE KEY:
-          The public and private portion of an asymmetric cryptographic
-            key, making no assumptions about which algorithm.<a href="#section-3.1-12" class="pilcrow">¶</a></p>
-<p id="section-3.1-13">SHARED SECRET:
+DER:
+          Distinguished Encoding Rules as defined in <span>[<a href="#X.690" class="xref">X.690</a>]</span>.<a href="#section-2.1-6" class="pilcrow">¶</a></p>
+<p id="section-2.1-7">KEM:
+        A key encapsulation mechanism as defined in <a href="#sec-kems" class="xref">Section 3.1</a>.<a href="#section-2.1-7" class="pilcrow">¶</a></p>
+<p id="section-2.1-8">PKI:
+          Public Key Infrastructure, as defined in <span>[<a href="#RFC5280" class="xref">RFC5280</a>]</span>.<a href="#section-2.1-8" class="pilcrow">¶</a></p>
+<p id="section-2.1-9">SHARED SECRET:
         A value established between two communicating parties for use as cryptographic key material, but which cannot be learned by an active or 
-        passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.<a href="#section-3.1-13" class="pilcrow">¶</a></p>
+        passive adversary. This document is concerned with shared secrets established via public key cryptagraphic operations.<a href="#section-2.1-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="composite-kem-structures">
-<section id="section-4">
+<section id="section-3">
       <h2 id="name-composite-kem-structures-2">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-composite-kem-structures-2" class="section-name selfRef">Composite KEM Structures</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-composite-kem-structures-2" class="section-name selfRef">Composite KEM Structures</a>
       </h2>
 <div id="sec-kems">
-<section id="section-4.1">
+<section id="section-3.1">
         <h3 id="name-key-encapsulation-mechanisms">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-key-encapsulation-mechanisms" class="section-name selfRef">Key Encapsulation Mechanisms (KEMs)</a>
+<a href="#section-3.1" class="section-number selfRef">3.1. </a><a href="#name-key-encapsulation-mechanisms" class="section-name selfRef">Key Encapsulation Mechanisms (KEMs)</a>
         </h3>
-<p id="section-4.1-1">We borrow here the definition of a key encapsulation mechanism (KEM) from <span>[<a href="#I-D.ietf-tls-hybrid-design" class="xref">I-D.ietf-tls-hybrid-design</a>]</span>, in which a KEM consists of three algorithms:<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-3.1-1">We borrow here the definition of a key encapsulation mechanism (KEM) from <span>[<a href="#I-D.ietf-tls-hybrid-design" class="xref">I-D.ietf-tls-hybrid-design</a>]</span>, in which a KEM is a cryptographic primitive that consists of three algorithms:<a href="#section-3.1-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-4.1-2.1">KeyGen() -&gt; (pk, sk): A probabilistic key generation algorithm,
-which generates a public key pk and a secret key sk.<a href="#section-4.1-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.1-2.1">KeyGen() -&gt; (pk, sk): A probabilistic key generation algorithm,
+which generates a public key pk and a secret key sk.<a href="#section-3.1-2.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-4.1-2.2">Encaps(pk) -&gt; (ct, ss): A probabilistic encapsulation algorithm,
+          <li class="normal" id="section-3.1-2.2">Encaps(pk) -&gt; (ct, ss): A probabilistic encapsulation algorithm,
 which takes as input a public key pk and outputs a ciphertext ct
-and shared secret ss.<a href="#section-4.1-2.2" class="pilcrow">¶</a>
+and shared secret ss.<a href="#section-3.1-2.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-4.1-2.3">Decaps(sk, ct) -&gt; ss: A decapsulation algorithm, which takes as
+          <li class="normal" id="section-3.1-2.3">Decaps(sk, ct) -&gt; ss: A decapsulation algorithm, which takes as
 input a secret key sk and ciphertext ct and outputs a shared
-secret ss, or in some cases a distinguished error value.<a href="#section-4.1-2.3" class="pilcrow">¶</a>
+secret ss, or in some cases a distinguished error value.<a href="#section-3.1-2.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-4.1-3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1-4">The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>), and key agreement (for example for use with KeyAgreeRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>).<a href="#section-4.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.1-5">The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:<a href="#section-4.1-5" class="pilcrow">¶</a></p>
-<p id="section-4.1-6">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.1-7">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.1-8">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.<a href="#section-4.1-8" class="pilcrow">¶</a></p>
-<p id="section-4.1-9">The main security property for KEMs is indistinguishability under
+<p id="section-3.1-3">This document is not concerned with the KeyGen() algorithm of a KEM, but it is included above for completeness.<a href="#section-3.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.1-4">The KEM interface defined above differs from both traditional key transport mechanism (for example for use with KeyTransRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>), and key agreement (for example for use with KeyAgreeRecipientInfo defined in <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span>).<a href="#section-3.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.1-5">The KEM interface was chosen as the interface for a composite key exchange because it allows for arbitrary combinations of component algorithm types since both key transport and key agreement mechanisms can be promoted into KEMs in the following ways:<a href="#section-3.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.1-6">A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating a random shared secret ss and performing KeyTrans.Encrypt(pk, ss) -&gt; ct; and into a KEM.Decaps(sk, ct) by KeyTrans.Decrypt(sk, ct) -&gt; ss. This follows the pattern of RSA-KEM <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>.<a href="#section-3.1-6" class="pilcrow">¶</a></p>
+<p id="section-3.1-7">A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -&gt; (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -&gt; ss.<a href="#section-3.1-7" class="pilcrow">¶</a></p>
+<p id="section-3.1-8">A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.<a href="#section-3.1-8" class="pilcrow">¶</a></p>
+<p id="section-3.1-9">The main security property for KEMs is indistinguishability under
 adaptive chosen ciphertext attack (IND-CCA2), which means that shared
 secret values should be indistinguishable from random strings even
-given the ability to have other arbitrary ciphertexts decapsulated.<a href="#section-4.1-9" class="pilcrow">¶</a></p>
-<p id="section-4.1-10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
-<p id="section-4.1-11">A weaker security notion is indistinguishability under chosen
+given the ability to have other arbitrary ciphertexts decapsulated.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-3.1-10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
+<p id="section-3.1-11">A weaker security notion is indistinguishability under chosen
 plaintext attack (IND-CPA), which means that the shared secret values
 should be indistinguishable from random strings given a copy of the
 public key.  IND-CPA roughly corresponds to security against a
-passive attacker, and sometimes corresponds to one-time key exchange.<a href="#section-4.1-11" class="pilcrow">¶</a></p>
-<p id="section-4.1-12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.<a href="#section-4.1-12" class="pilcrow">¶</a></p>
-<p id="section-4.1-13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.<a href="#section-4.1-13" class="pilcrow">¶</a></p>
-<p id="section-4.1-14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
-us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.<a href="#section-4.1-14" class="pilcrow">¶</a></p>
+passive attacker, and sometimes corresponds to one-time key exchange.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
+<p id="section-3.1-12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.<a href="#section-3.1-12" class="pilcrow">¶</a></p>
+<p id="section-3.1-13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.<a href="#section-3.1-13" class="pilcrow">¶</a></p>
+<p id="section-3.1-14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
+us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.<a href="#section-3.1-14" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="composite-keys">
-<section id="section-4.2">
+<section id="section-3.2">
         <h3 id="name-composite-keys-2">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-composite-keys-2" class="section-name selfRef">Composite Keys</a>
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-composite-keys-2" class="section-name selfRef">Composite Keys</a>
         </h3>
-<p id="section-4.2-1">A composite key is a single key object that performs an atomic cryptographic operation as
-defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">A composite key is a single key object that performs an atomic cryptographic operation as
+defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
 <div id="key-usage-bits">
-<section id="section-4.2.1">
+<section id="section-3.2.1">
           <h4 id="name-key-usage-bits-2">
-<a href="#section-4.2.1" class="section-number selfRef">4.2.1. </a><a href="#name-key-usage-bits-2" class="section-name selfRef">Key Usage Bits</a>
+<a href="#section-3.2.1" class="section-number selfRef">3.2.1. </a><a href="#name-key-usage-bits-2" class="section-name selfRef">Key Usage Bits</a>
           </h4>
-<p id="section-4.2.1-1">When using composite KEM keys in a structure which defines a key usage (such as in an 
-X509Certificate as defined in RFC 5280), the following key usage MUST be used.<a href="#section-4.2.1-1" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-2">keyEncipherment<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-3">Additional key usages SHOULD not be used.   The main intent for this keyEncipherment is to
-encapsulate (encrypt) another key.  This is the main purpose of a KEM algorithm, and
-composite-KEM does not deviate from this intent.<a href="#section-4.2.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
-parties are required to contribute to a key agreement verses a single party in keyEncipherment.<a href="#section-4.2.1-4" class="pilcrow">¶</a></p>
-<p id="section-4.2.1-5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.<a href="#section-4.2.1-5" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-1">When using composite KEM keys in a structure which defines a key usage (such as in an 
+X509Certificate as defined in <span>[<a href="#RFC5280" class="xref">RFC5280</a>]</span>), the following key usage MUST be used.<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.2.1-2">
+<pre>
+  keyEncipherment
+</pre><a href="#section-3.2.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.2.1-3">Additional key usages SHOULD not be used.<a href="#section-3.2.1-3" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
+parties are required to contribute to a key agreement verses a single party in keyEncipherment.<a href="#section-3.2.1-4" class="pilcrow">¶</a></p>
+<p id="section-3.2.1-5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.<a href="#section-3.2.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="compositeciphertextvalue">
-<section id="section-4.3">
+<section id="section-3.3">
         <h3 id="name-compositeciphertextvalue-2">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-compositeciphertextvalue-2" class="section-name selfRef">CompositeCiphertextValue</a>
+<a href="#section-3.3" class="section-number selfRef">3.3. </a><a href="#name-compositeciphertextvalue-2" class="section-name selfRef">CompositeCiphertextValue</a>
         </h3>
-<p id="section-4.3-1">The compositeCipherTextValue is a concatenation of the ciphertexts of the
-underlying component algorithms.  It is represented in ASN.1 as follows:<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-2">
+<p id="section-3.3-1">The compositeCipherTextValue is a concatenation of the ciphertexts of the
+underlying component algorithms.  It is represented in ASN.1 as follows:<a href="#section-3.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.3-2">
 <pre>
 CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
-</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
+</pre><a href="#section-3.3-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="encoding-rules">
-<section id="section-4.4">
+<section id="section-3.4">
         <h3 id="name-encoding-rules-2">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
+<a href="#section-3.4" class="section-number selfRef">3.4. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
         </h3>
-<p id="section-4.4-1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<p id="section-4.4-4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-4.4-4" class="pilcrow">¶</a></p>
-<p id="section-4.4-5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
+<p id="section-3.4-1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.<a href="#section-3.4-1" class="pilcrow">¶</a></p>
+<p id="section-3.4-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-3.4-2" class="pilcrow">¶</a></p>
+<p id="section-3.4-3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.<a href="#section-3.4-3" class="pilcrow">¶</a></p>
+<p id="section-3.4-4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-3.4-4" class="pilcrow">¶</a></p>
+<p id="section-3.4-5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-3.4-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="kem-combiner">
+<section id="section-3.5">
+        <h3 id="name-kem-combiner-2">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-kem-combiner-2" class="section-name selfRef">KEM Combiner</a>
+        </h3>
+<p id="section-3.5-1">This document follows the advice of <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>: the outputs of multiple KEMs are combined as<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.5-2">
+<pre>
+KDF( H(ss1) || H(ss2) )
+</pre><a href="#section-3.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.5-3">where the inner hash on <code>H(ss1)</code> and <code>H(ss2)</code> are optional if the component KEMs use a KDF internally when producing its output.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-4">Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
-<div id="kem-algorithm-identifiers">
-<section id="section-5">
-      <h2 id="name-kem-algorithm-identifiers-2">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-kem-algorithm-identifiers-2" class="section-name selfRef">KEM Algorithm Identifiers</a>
+<div id="sec-alg-ids">
+<section id="section-4">
+      <h2 id="name-algorithm-identifiers-2">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-algorithm-identifiers-2" class="section-name selfRef">Algorithm Identifiers</a>
       </h2>
-<p id="section-5-1">The following algorithm Identifiers and their associated parameters are used with composite KEM.<a href="#section-5-1" class="pilcrow">¶</a></p>
-<div id="id-alg-composite-kem">
+<p id="section-4-1">This section defines algorithm identifiers, component algorithms and their ordering for composite combinations. The combinations registered in this section are intended to strike a balance between the overall number of combinations ("the combinatorial explosion problem"), while also covering the needs of a wide range of protocols, applications, and regulatory environments in which X.509-based technologies are used.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">This section is not intended to be exhaustive and other authors may define OIDs for new combinations so long as they are compatible with the structures and processes defined in this and the companion signature and encryption documents.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<span id="name-composite-kem-key-types-2"></span><div id="tab-kem-agls">
+<table class="center" id="table-1">
+        <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-composite-kem-key-types-2" class="selfRef">Composite KEM key types</a>
+        </caption>
+<thead>
+          <tr>
+            <th class="text-left" rowspan="1" colspan="1">KEM type</th>
+            <th class="text-left" rowspan="1" colspan="1">Definition</th>
+            <th class="text-left" rowspan="1" colspan="1">OID</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-kem-Kyber512-ECDH-P256-SHAKE128</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <a href="#sec-id-kem-Kyber512-ECDH-P256-SHAKE128" class="xref">Section 4.1</a>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber512-EC-brainpoolP256r1</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber512-X25519</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber768-RSA</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber768-EC-P256</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber768-EC-brainpoolP256r1</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber768-X25519</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-EC-P384</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-EC-brainpoolP384r1</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-X448</td>
+            <td class="text-left" rowspan="1" colspan="1">TODO</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+          <tr>
+            <td class="text-left" rowspan="1" colspan="1">id-composite-key</td>
+            <td class="text-left" rowspan="1" colspan="1">
+              <a href="#sec-generic-composite" class="xref">Section 5.1</a>
+</td>
+            <td class="text-left" rowspan="1" colspan="1">TBD</td>
+          </tr>
+        </tbody>
+      </table>
+</div>
+<p id="section-4-4">These combinations were chosen according to the following rough guidelines:<a href="#section-4-4" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4-5">
+<li id="section-4-5.1">One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-4-5.1" class="pilcrow">¶</a>
+</li>
+        <li id="section-4-5.2">NIST <span>[<a href="#RFC6090" class="xref">RFC6090</a>]</span>, Edwards <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span>, and Brainpool <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span> elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-4-5.2" class="pilcrow">¶</a>
+</li>
+        <li id="section-4-5.3">NIST level 1 candidates (Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-4-5.3" class="pilcrow">¶</a>
+</li>
+        <li id="section-4-5.4">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-4-5.4" class="pilcrow">¶</a>
+</li>
+      </ol>
+<p id="section-4-6">The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite specified in <a href="#sec-generic-composite" class="xref">Section 5.1</a> of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<div id="sec-id-kem-Kyber512-ECDH-P256-SHAKE128">
+<section id="section-4.1">
+        <h3 id="name-id-kem-kyber512-ecdh-p256-sh">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-id-kem-kyber512-ecdh-p256-sh" class="section-name selfRef">id-kem-Kyber512-ECDH-P256-SHAKE128</a>
+        </h3>
+<p id="section-4.1-1">TODO:
+Define first ciphertext (ie the invocation of Kyber512), second ciphertext (ie the invocation of ECDH-P256).
+Define the combiner, which will be <code>SHAKE128( ss1 || ss2, 256)</code>. Will need to look at:
+  - Is the Kyber512 output 256 bit?
+  - Is ECDH output already through a KDF, or does it need to be <code>SHAKE128(ss2, 256)</code> ?<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">This compasite KEM algorithm MAY be used with a <code>id-Kyber512-EC-P256</code> as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber512 and EC P256 keys from independant sources.<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="mike-up-to-here">
+<section id="section-5">
+      <h2 id="name-mike-up-to-here-2">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-mike-up-to-here-2" class="section-name selfRef">Mike up to here</a>
+      </h2>
+<div id="sec-generic-composite">
 <section id="section-5.1">
         <h3 id="name-id-alg-composite-kem-2">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-id-alg-composite-kem-2" class="section-name selfRef">id-alg-composite-kem</a>
@@ -1798,7 +1907,7 @@ an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that
 contains encryption or decryption primitive.  For example (RSA).<a href="#section-7-1" class="pilcrow">¶</a></p>
 <p id="section-7-2">This operation outputs a shared-secret and cipher text.<a href="#section-7-2" class="pilcrow">¶</a></p>
 <p id="section-7-3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 6</a>.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 4.1</a>.<a href="#section-7-4" class="pilcrow">¶</a></p>
+<p id="section-7-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 3.1</a>.<a href="#section-7-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-5">
 <pre>
 Input:
@@ -1835,7 +1944,7 @@ Output:  SS, CT
 </pre><a href="#section-7-5" class="pilcrow">¶</a>
 </div>
 <p id="section-7-6">Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.<a href="#section-7-6" class="pilcrow">¶</a></p>
-<p id="section-7-7">Since recursive composite public keys are disallowed in [I-D.ounsworth-pq-composite-keys], no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.<a href="#section-7-7" class="pilcrow">¶</a></p>
+<p id="section-7-7">Since recursive composite public keys are disallowed in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.<a href="#section-7-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-decaps-proc">
@@ -1852,7 +1961,7 @@ MUST consist of the same component keys in the same order as the Composite Key
 Encapsulation process that generated them.<a href="#section-8-1" class="pilcrow">¶</a></p>
 <p id="section-8-2">This operation outputs a shared-secret.<a href="#section-8-2" class="pilcrow">¶</a></p>
 <p id="section-8-3">COMBINER is a function used to combine multiple shared secrets as defined in <a href="#sect-combiners" class="xref">Section 6</a>.<a href="#section-8-3" class="pilcrow">¶</a></p>
-<p id="section-8-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 4.1</a>.<a href="#section-8-4" class="pilcrow">¶</a></p>
+<p id="section-8-4">This process employs the transformations from KeyTransport or keyAgreement to KEM as described in <a href="#sec-kems" class="xref">Section 3.1</a>.<a href="#section-8-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-8-5">
 <pre>
 Input:   CompositePrivateKey = SK1, SK2 .. SKn
@@ -1919,7 +2028,7 @@ Output:  SS
         </h3>
 <p id="section-9.1-1">As noted in the introduction, the post-quantum cryptographic migration will face challenges in both ensuring cryptographic strength against adversaries of unknown capabilities, as well as providing ease of migration. The composite mechanisms defined in this document primarily address cryptographic strength, however this section contains notes on how backwards compatibility may be obtained.<a href="#section-9.1-1" class="pilcrow">¶</a></p>
 <p id="section-9.1-2">The term "ease of migration" is used here to mean that existing systems can be gracefully transitioned to the new technology without requiring large service disruptions or expensive upgrades. The term "backwards compatibility" is used here to mean something more specific; that existing systems as they are deployed today can interoperate with the upgraded systems of the future.<a href="#section-9.1-2" class="pilcrow">¶</a></p>
-<p id="section-9.1-3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous protocols such as S/MIME signed email [RFC8551], as well as myriad other standardized and proprietary protocols and applications that leverage CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span> encrypted structures.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
+<p id="section-9.1-3">These migration and interoperability concerns need to be thought about in the context of various types of protocols that make use of X.509 and PKIX with relation to key establishment and content encryption, from online negotiated protocols such as TLS 1.3 <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span> and IKEv2 <span>[<a href="#RFC7296" class="xref">RFC7296</a>]</span>, to non-negotiated asynchronous protocols such as S/MIME signed email <span>[<a href="#RFC8551" class="xref">RFC8551</a>]</span>, as well as myriad other standardized and proprietary protocols and applications that leverage CMS <span>[<a href="#RFC5652" class="xref">RFC5652</a>]</span> encrypted structures.<a href="#section-9.1-3" class="pilcrow">¶</a></p>
 <div id="k-of-n-modes">
 <section id="section-9.1.1">
           <h4 id="name-k-of-n-modes-2">
@@ -2116,6 +2225,10 @@ In the context of encryption, K-of-N modes could mean one of two things:<a href=
         <dd>
 <span class="refAuthor">Becker, A.</span>, <span class="refAuthor">Guthrie, R.</span>, and <span class="refAuthor">M. J. Jenkins</span>, <span class="refTitle">"Non-Composite Hybrid Authentication in PKIX and Applications to Internet Protocols"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-becker-guthrie-noncomposite-hybrid-auth-00</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt">https://www.ietf.org/archive/id/draft-becker-guthrie-noncomposite-hybrid-auth-00.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.driscoll-pqt-hybrid-terminology">[I-D.driscoll-pqt-hybrid-terminology]</dt>
+        <dd>
+<span class="refAuthor">D, F.</span>, <span class="refTitle">"Terminology for Post-Quantum Traditional Hybrid Schemes"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-driscoll-pqt-hybrid-terminology-01</span>, <time datetime="2022-10-20" class="refDate">20 October 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-driscoll-pqt-hybrid-terminology-01.txt">https://www.ietf.org/archive/id/draft-driscoll-pqt-hybrid-terminology-01.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ietf-tls-hybrid-design">[I-D.ietf-tls-hybrid-design]</dt>
         <dd>
 <span class="refAuthor">Stebila, D.</span>, <span class="refAuthor">Fluhrer, S.</span>, and <span class="refAuthor">S. Gueron</span>, <span class="refTitle">"Hybrid key exchange in TLS 1.3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-hybrid-design-04</span>, <time datetime="2022-01-11" class="refDate">11 January 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-design-04.txt">https://www.ietf.org/archive/id/draft-ietf-tls-hybrid-design-04.txt</a>&gt;</span>. </dd>
@@ -2132,9 +2245,33 @@ In the context of encryption, K-of-N modes could mean one of two things:<a href=
         <dd>
 <span class="refAuthor">Bassham, L.</span>, <span class="refAuthor">Polk, W.</span>, and <span class="refAuthor">R. Housley</span>, <span class="refTitle">"Algorithms and Identifiers for the Internet X.509 Public Key Infrastructure Certificate and Certificate Revocation List (CRL) Profile"</span>, <span class="seriesInfo">RFC 3279</span>, <span class="seriesInfo">DOI 10.17487/RFC3279</span>, <time datetime="2002-04" class="refDate">April 2002</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3279">https://www.rfc-editor.org/info/rfc3279</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC5639">[RFC5639]</dt>
+        <dd>
+<span class="refAuthor">Lochter, M.</span> and <span class="refAuthor">J. Merkle</span>, <span class="refTitle">"Elliptic Curve Cryptography (ECC) Brainpool Standard Curves and Curve Generation"</span>, <span class="seriesInfo">RFC 5639</span>, <span class="seriesInfo">DOI 10.17487/RFC5639</span>, <time datetime="2010-03" class="refDate">March 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5639">https://www.rfc-editor.org/info/rfc5639</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC5990">[RFC5990]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Randall, J.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Brainard, J.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 5990</span>, <span class="seriesInfo">DOI 10.17487/RFC5990</span>, <time datetime="2010-09" class="refDate">September 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5990">https://www.rfc-editor.org/info/rfc5990</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6090">[RFC6090]</dt>
+        <dd>
+<span class="refAuthor">McGrew, D.</span>, <span class="refAuthor">Igoe, K.</span>, and <span class="refAuthor">M. Salter</span>, <span class="refTitle">"Fundamental Elliptic Curve Cryptography Algorithms"</span>, <span class="seriesInfo">RFC 6090</span>, <span class="seriesInfo">DOI 10.17487/RFC6090</span>, <time datetime="2011-02" class="refDate">February 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6090">https://www.rfc-editor.org/info/rfc6090</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7296">[RFC7296]</dt>
+        <dd>
+<span class="refAuthor">Kaufman, C.</span>, <span class="refAuthor">Hoffman, P.</span>, <span class="refAuthor">Nir, Y.</span>, <span class="refAuthor">Eronen, P.</span>, and <span class="refAuthor">T. Kivinen</span>, <span class="refTitle">"Internet Key Exchange Protocol Version 2 (IKEv2)"</span>, <span class="seriesInfo">STD 79</span>, <span class="seriesInfo">RFC 7296</span>, <span class="seriesInfo">DOI 10.17487/RFC7296</span>, <time datetime="2014-10" class="refDate">October 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7296">https://www.rfc-editor.org/info/rfc7296</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7748">[RFC7748]</dt>
+        <dd>
+<span class="refAuthor">Langley, A.</span>, <span class="refAuthor">Hamburg, M.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Elliptic Curves for Security"</span>, <span class="seriesInfo">RFC 7748</span>, <span class="seriesInfo">DOI 10.17487/RFC7748</span>, <time datetime="2016-01" class="refDate">January 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7748">https://www.rfc-editor.org/info/rfc7748</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8551">[RFC8551]</dt>
+      <dd>
+<span class="refAuthor">Schaad, J.</span>, <span class="refAuthor">Ramsdell, B.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Secure/Multipurpose Internet Mail Extensions (S/MIME) Version 4.0 Message Specification"</span>, <span class="seriesInfo">RFC 8551</span>, <span class="seriesInfo">DOI 10.17487/RFC8551</span>, <time datetime="2019-04" class="refDate">April 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8551">https://www.rfc-editor.org/info/rfc8551</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
