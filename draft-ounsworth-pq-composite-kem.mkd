@@ -48,6 +48,16 @@ normative:
   RFC7468:
   RFC8174:
   RFC8411:
+  RFC8702:
+  I-D.draft-ietf-lamps-kyber-certificates-00:
+  I-D.draft-ounsworth-pq-composite-keys-01:
+  I-D.draft-perret-prat-lamps-cms-pq-kem-00:
+  SHA3:
+    title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions, FIPS PUB 202, DOI 10.6028/NIST.FIPS.202"
+    author: 
+      org: "National Institute of Standards and Technology (NIST)"
+    date: August 2015
+    target: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -55,8 +65,10 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
-  I-D.draft-ounsworth-pq-composite-keys-01:
-  I-D.draft-perret-prat-lamps-cms-pq-kem-00:
+  SEC1:
+    title: "Standards for Efficient Cryptography Group, SEC1: Elliptic Curve Cryptography"
+    date: "May 2009"
+    target: <https://www.secg.org/sec1-v2.pdf>
 
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
@@ -347,6 +359,7 @@ The authors wish to note that although the CompositePublicKey and CompositePriva
 
 ## id-kem-Kyber512-ECDH-P256-SHAKE128 {#sec-id-kem-Kyber512-ECDH-P256-SHAKE128}
 
+
 TODO:
 Define first ciphertext (ie the invocation of Kyber512), second ciphertext (ie the invocation of ECDH-P256).
 Define the combiner, which will be `SHAKE128( ss1 || ss2, 256)`. Will need to look at:
@@ -355,6 +368,24 @@ Define the combiner, which will be `SHAKE128( ss1 || ss2, 256)`. Will need to lo
 
 
 This compasite KEM algorithm MAY be used with a `id-Kyber512-EC-P256` as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm on the NIST P-256 curv as per TODO: cite NIST FIPS spec... WHICH ONE? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE. `ss2` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
+
+EDNOTE: check that the chosen ECDH does in fact use a KDF to compute its output, otherwise we'll need to do `SHAKE128(ss2)`.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE128( ss1 || ss2 , 256)
+~~~
+
+where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
+
 
 
 # Mike up to here
