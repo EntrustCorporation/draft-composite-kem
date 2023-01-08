@@ -288,7 +288,7 @@ parties are required to contribute to a key agreement verses a single party in k
 EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key. 
 
 
-## CompositeCiphertextValue
+## CompositeCiphertextValue {#sec-CompositeCiphertextValue}
 
 The compositeCipherTextValue is a concatenation of the ciphertexts of the
 underlying component algorithms.  It is represented in ASN.1 as follows:
@@ -359,21 +359,13 @@ The authors wish to note that although the CompositePublicKey and CompositePriva
 
 ## id-kem-Kyber512-ECDH-P256-SHAKE128 {#sec-id-kem-Kyber512-ECDH-P256-SHAKE128}
 
-
-TODO:
-Define first ciphertext (ie the invocation of Kyber512), second ciphertext (ie the invocation of ECDH-P256).
-Define the combiner, which will be `SHAKE128( ss1 || ss2, 256)`. Will need to look at:
-  - Is the Kyber512 output 256 bit?
-  - Is ECDH output already through a KDF, or does it need to be `SHAKE128(ss2, 256)` ?
-
-
 This compasite KEM algorithm MAY be used with a `id-Kyber512-EC-P256` as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources.
 
 
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm on the NIST P-256 curv as per TODO: cite NIST FIPS spec... WHICH ONE? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE. `ss2` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm on the NIST P-256 curv as per TODO: cite NIST FIPS spec... WHICH ONE? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE. `ss2` SHALL be the encpasulated shared secret corresponding to the second ciphertext.
 
 EDNOTE: check that the chosen ECDH does in fact use a KDF to compute its output, otherwise we'll need to do `SHAKE128(ss2)`.
 
@@ -385,6 +377,8 @@ ss = SHAKE128( ss1 || ss2 , 256)
 ~~~
 
 where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
+
+EDNOTE: I am assuming that both kyber512 and ECDH-P256 produce 256 bit shared secrets; if not then the size of the output of SHAKE128 should be the minimum of the two.
 
 
 
