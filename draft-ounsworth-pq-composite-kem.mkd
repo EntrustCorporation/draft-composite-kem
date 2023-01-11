@@ -41,6 +41,7 @@ normative:
   RFC2986:
   RFC4210:
   RFC5280:
+  RFC5480:
   RFC5652:
   RFC5912:
   RFC5914:
@@ -317,7 +318,7 @@ This document follows the advice of {{I-D.ounsworth-cfrg-kem-combiners}}: the ou
 KDF( H(ss1) || H(ss2) )
 ~~~
 
-where the inner hash on `H(ss1)` and `H(ss2)` are optional if the component KEMs use a KDF internally when producing its output.
+Note that explicitly-defined algorithm combinations MAY opt to define the combiner without the inner hash on `H(ss1)` and `H(ss2)` the component KEMs use a KDF internally when producing its output.
 
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
 
@@ -361,11 +362,20 @@ The authors wish to note that although the CompositePublicKey and CompositePriva
 
 This compasite KEM algorithm MAY be used with a `id-Kyber512-EC-P256` as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources.
 
+--- BEGIN EDNOTE ---
+Grab the keyAgreement algs from RFC 5753, for example kaa-dhSinglePass-cofactorDH-sha256kdf-scheme, as the second component.
+Take the cofactor one cause that seems to be the better one and the Certicom patents have fallen off. Though we are fixing the curves to NIST P-* and Brainpool P-* curves which I believe have a cofactor of 1, so the difference between "standard" and "cofactor" algorithm is moot.
+Once I pick, for example, kaa-dhSinglePass-cofactorDH-sha256kdf-scheme, then that answers most of the questions here.
+This means I can do KDF( ss1 || ss2 )
+--- END EDNOTE ---
+
+EDNOTE: the generic version should do `KDF( KDF(ss1) || KDF(ss2) )`.
+
 
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm on the NIST P-256 curv as per TODO: cite NIST FIPS spec... WHICH ONE? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE. `ss2` SHALL be the encpasulated shared secret corresponding to the second ciphertext.
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm as per -- TODO: cite ECDH spec... WHICH ONE? X9.63? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE -- with the domain parameter secp256r1 as defined in [RFC5480]. `ss2` SHALL be the encpasulated shared secret corresponding to the second ciphertext.
 
 EDNOTE: check that the chosen ECDH does in fact use a KDF to compute its output, otherwise we'll need to do `SHAKE128(ss2)`.
 
