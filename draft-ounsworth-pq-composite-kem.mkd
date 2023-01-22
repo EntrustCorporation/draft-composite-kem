@@ -36,21 +36,14 @@ author:
       email: john.gray@entrust.com
 
 normative:
-  RFC1421:
   RFC2119:
-  RFC2986:
-  RFC4210:
   RFC5280:
   RFC5480:
   RFC5652:
-  RFC5912:
-  RFC5914:
-  RFC5958:
-  RFC7468:
   RFC8174:
+  RFC8410:
   RFC8411:
-  RFC8702:
-  I-D.draft-ietf-lamps-kyber-certificates-00:
+  #<!-- I-D.draft-ietf-lamps-kyber-certificates-00: -->
   I-D.draft-ounsworth-pq-composite-keys-01:
   I-D.draft-perret-prat-lamps-cms-pq-kem-00:
   SHA3:
@@ -66,16 +59,22 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
-  SEC1:
-    title: "Standards for Efficient Cryptography Group, SEC1: Elliptic Curve Cryptography"
-    date: "May 2009"
-    target: <https://www.secg.org/sec1-v2.pdf>
+  # SEC1:
+  #   title: "Standards for Efficient Cryptography Group, SEC1: Elliptic Curve Cryptography"
+  #   date: "May 2009"
+  #   target: <https://www.secg.org/sec1-v2.pdf>
+  SP.800-56Ar3:
+    title: "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography"
+    date: April 2018
+    author: 
+      org: "National Institute of Standards and Technology (NIST)"
+    target: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-56Ar3.pdf
+
 
 
 # <!-- EDNOTE: full syntax for this defined here: https://github.com/cabo/kramdown-rfc2629 -->
 
 informative:
-  RFC3279:
   RFC5639:
   RFC5990:
   RFC6090:
@@ -85,26 +84,8 @@ informative:
   RFC8551:
   I-D.draft-ounsworth-pq-composite-sigs-07:
   I-D.draft-ietf-tls-hybrid-design-04:
-  I-D.draft-becker-guthrie-noncomposite-hybrid-auth-00:
   I-D.draft-ounsworth-cfrg-kem-combiners-00:
   I-D.draft-driscoll-pqt-hybrid-terminology-01:
-  Bindel2017:
-    title: "Transitioning to a quantum-resistant public key infrastructure"
-    target: "https://link.springer.com/chapter/10.1007/978-3-319-59879-6_22"
-    author:
-      -
-        ins: N. Bindel
-        name: Nina Bindel
-      -
-        ins: U. Herath
-        name: Udyani Herath
-      -
-        ins: M. McKague
-        name: Matthew McKague
-      -
-        ins: D. Stebila
-        name: Douglas Stebila
-    date: 2017
   Aviram2022:
     title: "Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS."
     target: "https://eprint.iacr.org/2022/065"
@@ -267,6 +248,29 @@ TODO: needs more formal analysis that the methods of transforming KeyTrans and K
 EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
 us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.
 
+## Specifying Composite KEM Algorithms
+
+The following is the mandatory to specify information when specifying a composite KEM type:
+
+* An AlgorithmIdentifier OID for the composite KEM type.
+* Component algorithms that will correspond to each position within the `CompositeCiphertextValue`. (see {{sec-CompositeCiphertextValue}}).
+* A KEM combiner appropriate to the specific choice of component algorithms (see {{sec-kem-combiner}}).
+
+
+
+TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?   
+
+~~~
+kema-CompositeKEM KEM-ALGORITHM ::= {
+    IDENTIFIER id-alg-composite-kem
+    VALUE CompositeCiphertextValue
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite }
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
+~~~
+
+
 ## Composite Keys
 
 A composite key is a single key object that performs an atomic cryptographic operation as
@@ -310,17 +314,24 @@ When a bit string is required, the octets of the DER encoded composite data stru
 
 In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.
 
-## KEM Combiner
+## KEM Combiner {#sec-kem-combiner}
 
 This document follows the advice of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
+
+TODO: Aron Wussler has a better version of the KEM combiner that should probably be rolled into {{I-D.ounsworth-cfrg-kem-combiners}} and then included here: `KMAC256(domainSeparation, 0x00000001 || K1 || K2 || fixedInfo, outputBits, “KDF”)`. TODO: update that doc, then take the new version here.
+
+EDNOTE: should we add in a context string? Ex.: `KDF( "id-kem-Kyber512-ECDH-P256-SHAKE128" || H(ss1) || H(ss2) )`  ?
 
 ~~~
 KDF( H(ss1) || H(ss2) )
 ~~~
 
+where `||` represents concatenation.
+
 Note that explicitly-defined algorithm combinations MAY opt to define the combiner without the inner hash on `H(ss1)` and `H(ss2)` the component KEMs use a KDF internally when producing its output.
 
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
+
 
 
 
@@ -331,19 +342,20 @@ This section defines algorithm identifiers, component algorithms and their order
 This section is not intended to be exhaustive and other authors may define OIDs for new combinations so long as they are compatible with the structures and processes defined in this and the companion signature and encryption documents.
 
 
-KEM type                           | Definition                                   | OID
----------                          | -----------                                  | ----------
-id-kem-Kyber512-ECDH-P256-SHAKE128 | {{sec-id-kem-Kyber512-ECDH-P256-SHAKE128}}   | TBD
-id-Kyber512-EC-brainpoolP256r1     | TODO                                         | TBD
-id-Kyber512-X25519                 | TODO                                         | TBD
-id-Kyber768-RSA                    | TODO                                      | TBD
-id-Kyber768-EC-P256                | TODO                                      | TBD
-id-Kyber768-EC-brainpoolP256r1     | TODO                                      | TBD
-id-Kyber768-X25519                 | TODO                                      | TBD
-id-Kyber1024-EC-P384               | TODO                                      | TBD
-id-Kyber1024-EC-brainpoolP384r1    | TODO                                      | TBD
-id-Kyber1024-X448                  | TODO                                      | TBD
-id-composite-key                   | {{sec-generic-composite}}                 | TBD
+KEM type                                    | Definition                                         | OID
+---------                                   | -----------                                        | ----------
+id-Kyber512-ECDH-P256-shake128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD
+id-Kyber512-ECDH-brainpoolP256r1-shake128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD
+id-Kyber512-X25519-shake128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD
+id-Kyber768-RSA-shake256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD
+id-Kyber768-ECDH-P256-shake256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD
+id-Kyber768-ECDH-brainpoolP256r1-shake256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD
+id-Kyber768-X25519-shake256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD
+id-Kyber1024-ECDH-P384-shake256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD
+id-Kyber1024-ECDH-brainpoolP384r1-shake256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD
+id-Kyber1024-X448-shake256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD
+id-composite-key-shake128          | {{sec-generic-composite-kem-shake128}}        | TBD
+id-composite-key-shake256          | {{sec-generic-composite-kem-shake256}}        | TBD
 {: #tab-kem-agls title="Composite KEM key types"}
 
 
@@ -355,354 +367,420 @@ These combinations were chosen according to the following rough guidelines:
 1. NIST level 1 candidates (Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
 1. A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
 
-The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite specified in {{sec-generic-composite}} of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
+The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite algorithms specified in {{sec-generic-composite-kem-shake128}} and {{sec-generic-composite-kem-shake256}} of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 
-## id-kem-Kyber512-ECDH-P256-SHAKE128 {#sec-id-kem-Kyber512-ECDH-P256-SHAKE128}
+## id-Kyber512-ECDH-P256-SHAKE128 {#sec-id-Kyber512-ECDH-P256-SHAKE128}
 
-This compasite KEM algorithm MAY be used with a `id-Kyber512-EC-P256` as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources.
-
---- BEGIN EDNOTE ---
-Grab the keyAgreement algs from RFC 5753, for example kaa-dhSinglePass-cofactorDH-sha256kdf-scheme, as the second component.
-Take the cofactor one cause that seems to be the better one and the Certicom patents have fallen off. Though we are fixing the curves to NIST P-* and Brainpool P-* curves which I believe have a cofactor of 1, so the difference between "standard" and "cofactor" algorithm is moot.
-Once I pick, for example, kaa-dhSinglePass-cofactorDH-sha256kdf-scheme, then that answers most of the questions here.
-This means I can do KDF( ss1 || ss2 )
---- END EDNOTE ---
-
-EDNOTE: the generic version should do `KDF( KDF(ss1) || KDF(ss2) )`.
-
-
-The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the encpasulated shared secret corresponding to the first ciphertext.
-
-
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext output of the ECDH algorithm as per -- TODO: cite ECDH spec... WHICH ONE? X9.63? NIST.SP.800-56Ar3? SEC1? THERE ARE A NUMBER OF DIFFERENT ALGS IN THERE I GUESS WE NEED TO CHOOSE ONE -- with the domain parameter secp256r1 as defined in [RFC5480]. `ss2` SHALL be the encpasulated shared secret corresponding to the second ciphertext.
-
-EDNOTE: check that the chosen ECDH does in fact use a KDF to compute its output, otherwise we'll need to do `SHAKE128(ss2)`.
-
-
-The output of the two component KEMs is to be combined as follows:
-
-~~~
-ss = SHAKE128( ss1 || ss2 , 256)
-~~~
-
-where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
-
-EDNOTE: I am assuming that both kyber512 and ECDH-P256 produce 256 bit shared secrets; if not then the size of the output of SHAKE128 should be the minimum of the two.
-
-
-
-# Mike up to here
-
-
-## id-alg-composite-kem {#sec-generic-composite}
-
-  The id-alg-composite-kem object identifier is used for identifying a
-   generic composite KEM algorithm. This allows arbitrary combinations 
-   of component key transport, key agreement and KEM algorithms without 
-   needing the combination to be pre-registered or standardized. 
+This composite KEM algorithm MAY be used with a `id-Kyber512-ECDH-P256` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
 
 ~~~
 id-alg-composite-kem OBJECT IDENTIFIER ::= {
   joint-iso-itu-t(2) country(16) us(840) organization(1) 
-  entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2) 
+  TBD }
 ~~~    
 
 EDNOTE: this is a temporary OID for the purposes of prototyping.  We
    are requesting IANA to assign a permanent OID, see Section 6.
 
-   Which yields an information object:
+AlgorithmIdentifier paramaters are ABSENT.
 
 
-TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?   
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
-~~~
-kema-CompositeKEM KEM-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite-kem
-    VALUE CompositeCiphertextValue
-    PARAMS composite-kem-params  
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-~~~
 
-For Composite KEM, we define a composite KEM Algorithm ID as:
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
 
-The following algorithm parameters MUST be included:
+
+The output of the two component KEMs is to be combined as follows:
 
 ~~~
-composite-kem-params  ::= {
-    combiner     AlgorithmIdentifier
-}
+ss = SHAKE128( ss1 || SHAKE128(ss2, 256) , 256)
 ~~~
 
-EDNOTE: this ASN.1 could be simplified to `composite-kem-params ::= AlgorithmIdentifier` to save a couple bytes on the wire, but we're presenting it this way for now for readability.
-
-EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg.
-
-If no, or a NULL, combiner is specified, then {#sect-null-combiner} applies.
-
-See Ednote below for a discussion on some possible combiner modes   
+where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
 
 
+## id-Kyber512-ECDH-brainpoolP256r1-shake128 {#sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}
 
-## Other Explicit Algorithms
-
-This variant provides a rigid way of specifying supported combinations of algorithms.
-
-The motivation for this variant is to make it easier to reference and enforce specific combinations of algorithms. The authors envision this being useful for client-server negotiated protocols, protocol designers who wish to place constraints on allowable algorithm combinations in the protocol specification, as well as audited environments that wish to prove that only certain combinations will be supported by clients.
-
-
-Explicit algorithms must define a new signature algorithm which consists of:
-
-- A new algorithm identifier OID for the explicit algorithm.
-- The algorithm identifier OID and PUBLIC-KEY type of each component algorithm.
-- Algorithm parameters either declared ABSENT, or defined with a type and encoding.
-
-<!-- See {{appdx-creatingExplicitCombinations}} for guidance on creating and registering OIDs for specific explicit combinations. -->
-
-TODO: lay out the details.
-
-# Combiner Algorithm Identifiers {#sect-combiners}
-
-This section defines concrete shared secret combiners that may be used with composite KEM.
-
-~~~ BEGIN EDNOTE ~~~
-
-EDNOTE: We need to add a KDF-based combiner here.
-Suggestions are:
-
-
-Option 0)
-
-`SS = SS1 || SS2 || .. || SSn`
-with fixed length KEM algs.
-
-
-Option 1) 
-
-`SS = KDF( SS1 || SS2 || .. || SSn )`
-with fixed length KEM algs.
-
-
-Option 1b)
-
-`SS = KDF( pad(SS1, len_kdf) || pad(SS2, len_kdf) )`
-
-
-Option 2)
-
-`SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )`
-
-
-Option 2b)
-
-`SS = KDF(SS1) XOR KDF(SS2) XOR .. XOR KDF(SSn)`
-
-
-Option 3)
-
-The combiner suggested in [Aviram2022].
-
-
-
-At present we are opting for Option 2.
-
-QUESTION: Should the choice of combiner be assigned an OID and made agile? If not, then we perhaps we need a version field within the composite kem structure to allow for future agility.
-Answer: for -00 of this document we have decided YES, but we can revisit this.
-
-
-~~~ END EDNOTE ~~~
-
-TODO: add a section for `SS = KDF(SS1 || .. || SSn)` for people who need strict compliance with NIST SP 800-56Cr2.
-
-## NULL {#sect-null-combiner}
-
-If no, or NULL, parameters are supplied, then the default combiner mode SHOULD be simple concatenation.
+This composite KEM algorithm MAY be used with a `id-Kyber512-ECDH-brainpoolP256r1` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
 
 ~~~
-SS =  SS1 || SS2 || .. || SSn
-~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
 
 
-This mode is often appropriate, and complies with NIST SP-56Cr2, when the protocol making use of this composite KEM will use the shared secret output to derive a cryptographic key via a KDF, making it uncessessary to use a combiner within composite KEM. 
-
-Security consideration: protocols that allow the NULL combiner MUST ensure either that none of the component shared secrets are directly controllable by an attacker (which allows for attacks similar to those discussed in {{sec-apop-attack}}), or that appropriate mitigations have been put into place.
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-## id-composite-kdf-combiner
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
 
-This section defines a KDF-based shared secret combiner.
+EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
 
-~~~
-id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
-~~~
 
-It MUST carry parameters
-
-~~~
-alg-composite-kdf-combiner-params ::= {
-        kdf     AlgorithmIdentifier
-}
-~~~
-
-to specify the KDF to be used.
-
-EDNOTE: this ASN.1 could be simplified to `alg-composite-kdf-combiner-params ::=  AlgorithmIdentifier` to save a couple bytes on the wire, but we're presenting it this way for now for readability.
-
-The behaviour of this combiner is: `SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )` where `||` denotes contatenation.
-
-Formally:
+The output of the two component KEMs is to be combined as follows:
 
 ~~~
-Input:
-   SS1, SS2, .., SSn   Shared secrets to combine
-
-Output:
-   SS                  Combined shared secret.
-
-1.  SS = KDF( KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )
+ss = SHAKE128( ss1 || SHAKE128(ss2, 256) , 256)
 ~~~
 
-The intent of this combiner is to frustrate known cryptanalytic attacks by normalizing the component shared secrets to a common fixed length (dictated by the output length of the supplied KDF), as well as attacks that exploit known weaknesses in the underlying hash function since, short of a full pre-image attack, an attacker who is able to control SSi will still not be able to control KDF(SSi).
-
-EDNOTE: this combiner needs cryptographic review.
-
-EDNOTE: Do we need domain separation in case other protocols use the same shared secrets in the same construction? Something like `KDF( ASCII("compositeKEM") || KDF(SS1) || KDF(SS2) || .. || KDF(SSn) )` ?
+where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
 
 
-## id-blockcipher-combiner
+## id-Kyber512-X25519-shake128 {#sec-id-Kyber512-X25519-shake128}
+
+This composite KEM algorithm MAY be used with a `id-Kyber512-X25519` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and X25519 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
 
 
-TODO -- finish this section.
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
-https://eprint.iacr.org/2018/024.pdf
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's X25519 public key as defied in [RFC8410]. `ss2` SHALL be the shared secret derived from applying X25519 as defined in [RFC7748] to the other party's public key and one's own X25519 private key.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE128( ss1 || ss2, 256)
+~~~
+
+where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
+
+
+## id-Kyber768-RSA-shake256 {#sec-id-Kyber768-RSA-shake256}
+
+
+This composite KEM algorithm MAY be used with a `id-Kyber768-RSA` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and RSA keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+--- BEGIN EDNOTE ---
+TODO: this needs some thought. We probably want to just point to RSA-KEM RFC5990, but we don't have an existing key to transport, so we only need steps 1 - 3 as defined in RFC5990 A.2.
+
+We need to carry the RSA-KEM params:
+
+
+      GenericHybridParameters ::= {
+         kem  KeyEncapsulationMechanism,
+         dem  DataEncapsulationMechanism
+      }
+
+
+We should probably set the KDF params to implicitely to match the KEM combiner: KDF=SHAKE256, keyLength=384 and omit the params.
+
+ RsaKemParameters ::= {
+               keyDerivationFunction  KeyDerivationFunction,
+               keyLength              KeyLength
+            }
+
+--- END EDNOTE ---
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the ciphertext `C` as defined in [RFC5990] appendix A.2. `ss2` SHALL be the shared secret `Z` as defined in [RFC5990]. Since `Z` variant is directly a field element, we need to mask it with a KDF prior to combining it with the other shared secret.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+~~~
+
+where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
+
+
+
+## id-Kyber768-ECDH-P256-shake256 {#sec-id-Kyber768-ECDH-P256-shake256}
+
+This composite KEM algorithm MAY be used with a `id-Kyber768-ECDH-P256` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2) 
+  TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+~~~
+
+where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
+
+
+## id-Kyber768-ECDH-brainpoolP256r1-shake256 {#sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}
+
+This composite KEM algorithm MAY be used with a `id-Kyber768-ECDH-brainpoolP256r1` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+
+EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+~~~
+
+where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
+
+
+## id-Kyber768-X25519-shake256 {#sec-id-Kyber768-X25519-shake256}
+
+This composite KEM algorithm MAY be used with a `id-Kyber768-X25519` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and X25519 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's X25519 public key as defied in [RFC8410]. `ss2` SHALL be the shared secret derived from applying X25519 as defined in [RFC7748] to the other party's public key and one's own X25519 private key.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+~~~
+
+where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
+
+
+## id-Kyber1024-ECDH-P384-shake256 {#sec-id-Kyber1024-ECDH-P384-shake256}
+
+
+This composite KEM algorithm MAY be used with a `id-Kyber1024-ECDH-P384` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2) 
+  TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 512?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp384r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp384r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
+~~~
+
+where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in [SHA3] with a 512 bit output.
+
+
+## id-Kyber1024-ECDH-brainpoolP384r1-shake256 {#sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}
+
+This composite KEM algorithm MAY be used with a `id-Kyber1024-ECDH-brainpoolP384r1` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP384r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP384r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+
+EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
+~~~
+
+where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in [SHA3] with a 512 bit output.
+
+
+## id-Kyber1024-X448-shake256 {#sec-id-Kyber1024-X448-shake256}
+
+This composite KEM algorithm MAY be used with a `id-Kyber1024-X448` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber1024 and X448 keys from independant sources, for example independant certificates, software or hardware keystores.
+
+~~~
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) TBD }
+~~~    
+
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+AlgorithmIdentifier paramaters are ABSENT.
+
+
+The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 512?) encapsulated key (ciphertext) of the Kyber1024 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
+
+
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's X448 public key as defied in [RFC8410]. `ss2` SHALL be the shared secret derived from applying X448 as defined in [RFC7748] to the other party's public key and one's own X448 private key.
+
+
+The output of the two component KEMs is to be combined as follows:
+
+~~~
+ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
+~~~
+
+where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in [SHA3] with a 512 bit output.
+
+
+
+## id-alg-composite-kem-shake128 {#sec-generic-composite-kem-shake128}
+
+The `id-alg-composite-kem-SHAKE128` object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. This generic KEM composite algorithm uses SHAKE128 as the KEM combiner and so is intended for use with component KEM algorithms that target the 128 bit security level. For combining KEM algorithms at higher security levels, it is recommended to use `id-alg-composite-kem-shake256` defined in {{sec-generic-composite-kem-shake256}}.
 
 
 ~~~
-K = F (pi_kn * ... pi_k1(0), c1 || ... || cn)
-~~~
-where * denotes function composition, and pi_kn denotes a blockcipher with key kn.
-
-which would work out to (in our notation)
-
-~~~
-SS = HASH( WRAP(SSn, WRAP(SSn-1, .. WRAP(SS1, 0) .. ) || CT1 || .. || CTn)
+id-alg-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 ~~~
 
-where (SSi, Ci) are the Shared Secret and Ciphertext of component algorithm i. WRAP(key, message) would be some form of AES.
-
-Parameters for this would need to be:
-
-~~~
-blockcipher-combiner-params ::= {
-  hash    AlgorithIdentifier,
-  wrap    AlgorithmIdentifier
-}
-~~~
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
 
 
-# Composite Encapsulation process {#sec-encaps-proc}
 
-Composite key encapsulations takes a CompositePublicKey as its input.  The
-CompositePublicKey MUST contain composite keys (Pi .. Pn) which represent 
-an algorithm which is a KEM (Key Encapsulation Method), or an algorithm that 
-contains encryption or decryption primitive.  For example (RSA).   
+EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg. So the question is: is it useful as a hint to the decrypter?
 
-This operation outputs a shared-secret and cipher text.
 
-COMBINER is a function used to combine multiple shared secrets as defined in {{sect-combiners}}.
+This composite KEM algorithm MAY be used with a `id-composite-key` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, prodived that it carries a carries a `keyUsage` of `keyEncipherment` or `keyAgreement` and contains component keys of corresponding approriate types. This composite KEM algorithm MAY also be used with `keyEncipherment` or `keyAgreement` type keys from independant sources, for example independant certificates, software or hardware keystores.
 
-This process employs the transformations from KeyTransport or keyAgreement to KEM as described in {{sec-kems}}.
+
+When using this generic composite mode, the application is responsible for determining the contents and order of the `CompositeCihprtextValue`s. 
+
+In general we do not know if it is safe to use the component shared secrets directly, so we wrap both with a KDF in the following KEM combiner:
 
 ~~~
-Input:  
-   PK1, PK2 .. PKn   Encryption public keys. See note below on 
-                     composite inputs.
-
-   A1, A2, ... An     Component keyTransport, keyAgreement, or
-                      KEM algorithms. See note below on composite 
-                      inputs.
-
-   COMBINER          A combiner function.
-
-   SIZE              The length of shared secret to generate
-                    when transforming a keyTransport into a KEM.
-
-Output:  SS, CT
-
-1.  for i := 1 to n
-       if Ai is of type KEM:
-          SSi, CTi := encaps(PKi)
-       
-       else, if Ai is of type keyTransport:
-         SSi := random_bits(SIZE)
-         CTi := encrypt(SSi, PKi)
-
-       else, if Ai is of type keyAgreement:
-          PKe, SKe := keyGen()
-          SSi := keyAgree(PKi, SKe)
-          CTi := PKe
-
-
-  2.  SS = COMBINER(SS1, SS2, .., SSn)
-      CT = CT1, CT2, .., CTn
+ss = SHAKE128( SHAKE128(ss1, 256) || SHAKE128(ss2, 256) , 256)
 ~~~
 
-Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
 
-Since recursive composite public keys are disallowed in {{I-D.ounsworth-pq-composite-keys}}, no component ciphertext may itself be composite; ie the encopsulation process MUST fail if any of the public keys P1, P2, .., Pn or algorithm identifiers A1, A2, .., An are composite with the OID id-alg-composite.
 
-# Composite Key Decapsulation {#sec-decaps-proc}
+## id-alg-composite-kem-shake256 {#sec-generic-composite-kem-shake256}
 
-Composite key decapsulations takes a CompositePrivateKey as its input and the
-sequence of Cipher texts (ct1 .. ctn) computed by the composite key 
-encapsulation method.  The CompositePrivateKey MUST contain composite keys 
-(Pi .. Pn) which represent an algorithm which is a KEM (Key Encapsulation Method),
-or an algorithm that contains encryption or decryption primitive.  These keys 
-MUST consist of the same component keys in the same order as the Composite Key 
-Encapsulation process that generated them.  
-
-This operation outputs a shared-secret.
-
-COMBINER is a function used to combine multiple shared secrets as defined in {{sect-combiners}}.
-
-This process employs the transformations from KeyTransport or keyAgreement to KEM as described in {{sec-kems}}.
+The id-alg-composite-kem object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. 
 
 
 ~~~
-Input:   CompositePrivateKey = SK1, SK2 .. SKn
-
-   SK1, SK2 .. SKn    Decryption private keys. See note below on 
-                      composite inputs.
-
-   A1, A2, ... An     Component keyTransport, keyAgreement, or
-                      KEM algorithms. See note below on composite 
-                      inputs.
-
-   CT1, CT2, .., CTn  Ciphertexts. see note below on composite inputs.
-   
-   COMBINER          A combiner function.
-
-
-Output:  SS
-
-1. for i := 1 to n
- 
-      if Ai is of type KEM:
-          SSi := decaps(Cti, SKi)
-
-      else, if Ai is of type keyEncipherment:
-          SSi := decrypt(Cti, SKi)
-
-       else, if Ai is of type keyAgreement:
-          PKe := decode(CTi)
-          SSi := keyAgree(PKe, SKi)
-
-2. Output SS = COMBINER(SS1, SS2, .., SSn)
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) 
+  entrust(114027) Algorithm(80) Composite(4) KEM (??) }
 ~~~
 
-Note on composite inputs: the method of providing the list of component keys and algorithms is flexible and beyond the scope of this pseudo-code, for example they may be carried in CompositePublicKey structure. It is also possible to perform a composite KEM that combines ciphertexts for distinct recipient keys stored, for example, in separate X.509 certificates. Variations in the process to accommodate particular private key storage mechanisms, for example when distinct keys stored in separate software or hardware keystores, are considered to be conformant to this document so long as it produces the same output as the process sketched above.
+EDNOTE: this is a temporary OID for the purposes of prototyping.  We
+   are requesting IANA to assign a permanent OID, see Section 6.
+
+TODO: update the Entrust registry to make this `KEM-SHAKE128 / KEM-SHAKE256`.
+
+
+
+EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg. So the question is: is it useful as a hint to the decrypter?
+
+
+This composite KEM algorithm MAY be used with a `id-composite-key` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, prodived that it carries a carries a `keyUsage` of `keyEncipherment` or `keyAgreement` and contains component keys of corresponding approriate types. This composite KEM algorithm MAY also be used with `keyEncipherment` or `keyAgreement` type keys from independant sources, for example independant certificates, software or hardware keystores.
+
+
+When using this generic composite mode, the application is responsible for determining the contents and order of the `CompositeCihprtextValue`s. 
+
+In general we do not know if it is safe to use the component shared secrets directly, so we wrap both with a KDF in the following KEM combiner:
+
+~~~
+ss = SHAKE256( SHAKE256(ss1, 512) || SHAKE256(ss2, 512) , 512)
+~~~
+
+where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in [SHA3] with a 512 bit output.
+
 
 
 # In Practice {#sec-in-pract}
@@ -737,7 +815,7 @@ In the context of encryption, K-of-N modes could mean one of two things:
 
 Type 1: sender uses a subset
 
-This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with the {{sec-encaps-proc}} but skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.
+This would mean the sender (encrypter) uses a subset of K the N component keys within the receiver's public key. The obvious way to combine them is with skipping the unused keys / algorithms and emitting a NULL ciphertext in their place. This mechanism is straight-forward and allows ease of migration where a sender encounters a composite encryption public key where it does not support all component algorithms. It also supports performance optimization where, for example, a receiver can be issued a key with many component keys and a sender can choose the highest-performance subset that are still considered safe.
 
 
 Type 2: receiver uses a subset
