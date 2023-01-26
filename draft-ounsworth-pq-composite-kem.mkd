@@ -59,6 +59,11 @@ normative:
         org: ITU-T
       seriesinfo:
         ISO/IEC: 8825-1:2015
+  BSI-ECC:
+    title: "Technical Guideline BSI TR-03111: Elliptic Curve Cryptography. Version 2.10"
+    author:
+      org: "Federal Office for Information Security (BSI)"
+    date: 2018-06-01
   # SEC1:
   #   title: "Standards for Efficient Cryptography Group, SEC1: Elliptic Curve Cryptography"
   #   date: "May 2009"
@@ -333,6 +338,11 @@ Note that explicitly-defined algorithm combinations MAY opt to define the combin
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
 
 
+Below we make the following pairings of kyber security level and KDF:
+
+* Kyber512: shake128/256
+* Kyber768: shake256/384
+* Kyber1024 shake256/512
 
 
 # Algorithm Identifiers {#sec-alg-ids}
@@ -390,7 +400,7 @@ AlgorithmIdentifier paramaters are ABSENT.
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. SBecause this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.
 
 
 The output of the two component KEMs is to be combined as follows:
@@ -421,15 +431,13 @@ AlgorithmIdentifier paramaters are ABSENT.
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
-
-EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of [BSI-ECC] to the other party's public key and one's own brainpoolP256r1 private key. Note that [BSI-ECC] states: "The shared secret value Z_AB MUST NOT be used directly for encryption or integrity protection, key derivation functions are described in Section 4.3.3." and therefore, unlike the NIST ECDH variant, we concatenate `ss2` directly with `ss1`.
 
 
 The output of the two component KEMs is to be combined as follows:
 
 ~~~
-ss = SHAKE128( ss1 || SHAKE128(ss2, 256) , 256)
+ss = SHAKE128( ss1 || ss2, 256)
 ~~~
 
 where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] with a 256 bit output.
@@ -540,7 +548,7 @@ AlgorithmIdentifier paramaters are ABSENT.
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp256r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp256r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.
 
 
 The output of the two component KEMs is to be combined as follows:
@@ -571,15 +579,13 @@ AlgorithmIdentifier paramaters are ABSENT.
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP256r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
-
-EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP256r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of [BSI-ECC] to the other party's public key and one's own brainpoolP256r1 private key. Note that [BSI-ECC] states: "The shared secret value Z_AB MUST NOT be used directly for encryption or integrity protection, key derivation functions are described in Section 4.3.3." and therefore, unlike the NIST ECDH variant, we concatenate `ss2` directly with `ss1`.
 
 
 The output of the two component KEMs is to be combined as follows:
 
 ~~~
-ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+ss = SHAKE256( ss1 || ss2, 384)
 ~~~
 
 where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
@@ -610,7 +616,7 @@ The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the se
 The output of the two component KEMs is to be combined as follows:
 
 ~~~
-ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+ss = SHAKE256( ss1 || ss2, 384)
 ~~~
 
 where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in [SHA3] with a 384 bit output.
@@ -637,7 +643,7 @@ AlgorithmIdentifier paramaters are ABSENT.
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 512?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
 
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp384r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp384r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the sender's secp384r1 public key as defied in [RFC5480]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own secp384r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.
 
 
 The output of the two component KEMs is to be combined as follows:
@@ -667,16 +673,13 @@ AlgorithmIdentifier paramaters are ABSENT.
 
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
 
-
-The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP384r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's own brainpoolP384r1 private key. Since this ECDH variant exports directly the the x-coordinate of the shared point, we need to mask it with a KDF prior to combining it with the other shared secret.
-
-EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is probably compatible, but is a bit weird. Is there a BSI definition of ECDH that we could reference instead?
+The second componet BIT STRING within `CompositeCiphertextValue` SHALL be the the sender's brainpoolP384r1 public key as defied in [RFC5639]. `ss2` SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of [BSI-ECC] to the other party's public key and one's own brainpoolP384r1 private key. Note that [BSI-ECC] states: "The shared secret value Z_AB MUST NOT be used directly for encryption or integrity protection, key derivation functions are described in Section 4.3.3." and therefore, unlike the NIST ECDH variant, we concatenate `ss2` directly with `ss1`.
 
 
 The output of the two component KEMs is to be combined as follows:
 
 ~~~
-ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
+ss = SHAKE256( ss1 || ss2, 512)
 ~~~
 
 where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in [SHA3] with a 512 bit output.

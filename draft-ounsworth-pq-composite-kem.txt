@@ -5,7 +5,7 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 26 July 2023                                    22 January 2023
+Expires: 29 July 2023                                    25 January 2023
 
 
                  Composite KEM For Use In Internet PKI
@@ -53,7 +53,7 @@ Abstract
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 1]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 1]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -73,7 +73,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 July 2023.
+   This Internet-Draft will expire on 29 July 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 2]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 2]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 3]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 3]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 4]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 4]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 5]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 5]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 6]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 6]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 7]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 7]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                  [Page 8]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 8]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -456,6 +456,14 @@ Internet-Draft              PQ Composite Keys               January 2023
 
    Each registered composite KEM algorithm must specify the exact KEM
    combiner construction that is to be used.
+
+   Below we make the following pairings of kyber security level and KDF:
+
+   *  Kyber512: shake128/256
+
+   *  Kyber768: shake256/384
+
+   *  Kyber1024 shake256/512
 
 4.  Algorithm Identifiers
 
@@ -493,15 +501,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-
-
-
-
-
-
-
-
-Ounsworth & Gray          Expires 26 July 2023                  [Page 9]
+Ounsworth & Gray          Expires 29 July 2023                  [Page 9]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -557,7 +557,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 10]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 10]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -602,9 +602,9 @@ Internet-Draft              PQ Composite Keys               January 2023
    SHALL be the shared secret derived from applying Elliptic Curve
    Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section
    5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's
-   own secp256r1 private key.  Since this ECDH variant exports directly
-   the the x-coordinate of the shared point, we need to mask it with a
-   KDF prior to combining it with the other shared secret.
+   own secp256r1 private key.  SBecause this ECDH variant outputs
+   directly the x coordinate of the shared point, we apply a hash
+   function to extract a uniformly random secret from it.
 
    The output of the two component KEMs is to be combined as follows:
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 11]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 11]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -645,21 +645,18 @@ Internet-Draft              PQ Composite Keys               January 2023
 
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the the sender's brainpoolP256r1 public key as defied in
-   [RFC5639]. ss2 SHALL be the shared secret derived from applying
-   Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as
-   defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's
-   public key and one's own brainpoolP256r1 private key.  Since this
-   ECDH variant exports directly the the x-coordinate of the shared
-   point, we need to mask it with a KDF prior to combining it with the
-   other shared secret.
-
-   EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is
-   probably compatible, but is a bit weird.  Is there a BSI definition
-   of ECDH that we could reference instead?
+   [RFC5639]. ss2 SHALL be the shared secret derived from applying the
+   elliptic curve key agreement algorithm (ECKA) as defined in section
+   4.3.1 of [BSI-ECC] to the other party's public key and one's own
+   brainpoolP256r1 private key.  Note that [BSI-ECC] states: "The shared
+   secret value Z_AB MUST NOT be used directly for encryption or
+   integrity protection, key derivation functions are described in
+   Section 4.3.3." and therefore, unlike the NIST ECDH variant, we
+   concatenate ss2 directly with ss1.
 
    The output of the two component KEMs is to be combined as follows:
 
-   ss = SHAKE128( ss1 || SHAKE128(ss2, 256) , 256)
+   ss = SHAKE128( ss1 || ss2, 256)
 
    where SHAKE128(M, 256) describes the use of the SHAKE128 as specified
    in [SHA3] with a 256 bit output.
@@ -669,7 +666,10 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 12]
+
+
+
+Ounsworth & Gray          Expires 29 July 2023                 [Page 12]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 13]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 13]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 14]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 14]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -807,9 +807,9 @@ Internet-Draft              PQ Composite Keys               January 2023
    SHALL be the shared secret derived from applying Elliptic Curve
    Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section
    5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's
-   own secp256r1 private key.  Since this ECDH variant exports directly
-   the the x-coordinate of the shared point, we need to mask it with a
-   KDF prior to combining it with the other shared secret.
+   own secp256r1 private key.  Because this ECDH variant outputs
+   directly the x coordinate of the shared point, we apply a hash
+   function to extract a uniformly random secret from it.
 
    The output of the two component KEMs is to be combined as follows:
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 15]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 15]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -850,21 +850,18 @@ Internet-Draft              PQ Composite Keys               January 2023
 
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the the sender's brainpoolP256r1 public key as defied in
-   [RFC5639]. ss2 SHALL be the shared secret derived from applying
-   Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as
-   defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's
-   public key and one's own brainpoolP256r1 private key.  Since this
-   ECDH variant exports directly the the x-coordinate of the shared
-   point, we need to mask it with a KDF prior to combining it with the
-   other shared secret.
-
-   EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is
-   probably compatible, but is a bit weird.  Is there a BSI definition
-   of ECDH that we could reference instead?
+   [RFC5639]. ss2 SHALL be the shared secret derived from applying the
+   elliptic curve key agreement algorithm (ECKA) as defined in section
+   4.3.1 of [BSI-ECC] to the other party's public key and one's own
+   brainpoolP256r1 private key.  Note that [BSI-ECC] states: "The shared
+   secret value Z_AB MUST NOT be used directly for encryption or
+   integrity protection, key derivation functions are described in
+   Section 4.3.3." and therefore, unlike the NIST ECDH variant, we
+   concatenate ss2 directly with ss1.
 
    The output of the two component KEMs is to be combined as follows:
 
-   ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+   ss = SHAKE256( ss1 || ss2, 384)
 
    where SHAKE256(M, 384) describes the use of the SHAKE256 as specified
    in [SHA3] with a 384 bit output.
@@ -893,7 +890,10 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 16]
+
+
+
+Ounsworth & Gray          Expires 29 July 2023                 [Page 16]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -906,7 +906,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
    The output of the two component KEMs is to be combined as follows:
 
-   ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+   ss = SHAKE256( ss1 || ss2, 384)
 
    where SHAKE256(M, 384) describes the use of the SHAKE256 as specified
    in [SHA3] with a 384 bit output.
@@ -940,16 +940,16 @@ Internet-Draft              PQ Composite Keys               January 2023
    SHALL be the shared secret derived from applying Elliptic Curve
    Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section
    5.7.1.2 of [SP.800-56Ar3] to the other party's public key and one's
-   own secp384r1 private key.  Since this ECDH variant exports directly
-   the the x-coordinate of the shared point, we need to mask it with a
-   KDF prior to combining it with the other shared secret.
+   own secp384r1 private key.  Because this ECDH variant outputs
+   directly the x coordinate of the shared point, we apply a hash
+   function to extract a uniformly random secret from it.
 
    The output of the two component KEMs is to be combined as follows:
 
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 17]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 17]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -984,28 +984,28 @@ Internet-Draft              PQ Composite Keys               January 2023
 
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the the sender's brainpoolP384r1 public key as defied in
-   [RFC5639]. ss2 SHALL be the shared secret derived from applying
-   Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as
-   defined in section 5.7.1.2 of [SP.800-56Ar3] to the other party's
-   public key and one's own brainpoolP384r1 private key.  Since this
-   ECDH variant exports directly the the x-coordinate of the shared
-   point, we need to mask it with a KDF prior to combining it with the
-   other shared secret.
-
-   EDNOTE: Referencing the BSI brainpool curve with NIST ECDH alg is
-   probably compatible, but is a bit weird.  Is there a BSI definition
-   of ECDH that we could reference instead?
+   [RFC5639]. ss2 SHALL be the shared secret derived from applying the
+   elliptic curve key agreement algorithm (ECKA) as defined in section
+   4.3.1 of [BSI-ECC] to the other party's public key and one's own
+   brainpoolP384r1 private key.  Note that [BSI-ECC] states: "The shared
+   secret value Z_AB MUST NOT be used directly for encryption or
+   integrity protection, key derivation functions are described in
+   Section 4.3.3." and therefore, unlike the NIST ECDH variant, we
+   concatenate ss2 directly with ss1.
 
    The output of the two component KEMs is to be combined as follows:
 
-   ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
+   ss = SHAKE256( ss1 || ss2, 512)
 
    where SHAKE256(M, 512) describes the use of the SHAKE256 as specified
    in [SHA3] with a 512 bit output.
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 18]
+
+
+
+Ounsworth & Gray          Expires 29 July 2023                 [Page 18]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 19]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 19]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 20]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 20]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 21]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 21]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1229,7 +1229,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 22]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 22]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1285,7 +1285,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 23]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 23]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1341,7 +1341,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 24]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 24]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1397,7 +1397,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 25]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 25]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1415,6 +1415,10 @@ Internet-Draft              PQ Composite Keys               January 2023
 8.  References
 
 8.1.  Normative References
+
+   [BSI-ECC]  Federal Office for Information Security (BSI), "Technical
+              Guideline BSI TR-03111: Elliptic Curve Cryptography.
+              Version 2.10", 1 June 2018.
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
@@ -1447,16 +1451,16 @@ Internet-Draft              PQ Composite Keys               January 2023
               Information", RFC 5480, DOI 10.17487/RFC5480, March 2009,
               <https://www.rfc-editor.org/info/rfc5480>.
 
-   [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
-              RFC 5652, DOI 10.17487/RFC5652, September 2009,
-              <https://www.rfc-editor.org/info/rfc5652>.
 
 
-
-Ounsworth & Gray          Expires 26 July 2023                 [Page 26]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 26]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
+
+   [RFC5652]  Housley, R., "Cryptographic Message Syntax (CMS)", STD 70,
+              RFC 5652, DOI 10.17487/RFC5652, September 2009,
+              <https://www.rfc-editor.org/info/rfc5652>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1503,17 +1507,16 @@ Internet-Draft              PQ Composite Keys               January 2023
               and Applications to TLS.", n.d.,
               <https://eprint.iacr.org/2022/065>.
 
-   [I-D.driscoll-pqt-hybrid-terminology]
-              D, F., "Terminology for Post-Quantum Traditional Hybrid
-              Schemes", Work in Progress, Internet-Draft, draft-
 
 
-
-Ounsworth & Gray          Expires 26 July 2023                 [Page 27]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 27]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
 
+   [I-D.driscoll-pqt-hybrid-terminology]
+              D, F., "Terminology for Post-Quantum Traditional Hybrid
+              Schemes", Work in Progress, Internet-Draft, draft-
               driscoll-pqt-hybrid-terminology-01, 20 October 2022,
               <https://www.ietf.org/archive/id/draft-driscoll-pqt-
               hybrid-terminology-01.txt>.
@@ -1562,10 +1565,7 @@ Internet-Draft              PQ Composite Keys               January 2023
 
 
 
-
-
-
-Ounsworth & Gray          Expires 26 July 2023                 [Page 28]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 28]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1621,7 +1621,7 @@ Appendix B.  ASN.1 Module
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 29]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 29]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1677,7 +1677,7 @@ Appendix D.  Contributors and Acknowledgements
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 30]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 30]
 
 Internet-Draft              PQ Composite Keys               January 2023
 
@@ -1733,4 +1733,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray          Expires 26 July 2023                 [Page 31]
+Ounsworth & Gray          Expires 29 July 2023                 [Page 31]
