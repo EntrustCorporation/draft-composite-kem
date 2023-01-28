@@ -321,6 +321,9 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 ## KEM Combiner {#sec-kem-combiner}
 
+TODO: read and cite the ETSI doc "Quantum-safe Hybrid Key Exchanges"
+https://www.etsi.org/deliver/etsi_ts/103700_103799/103744/01.01.01_60/ts_103744v010101p.pdf
+
 This document follows the advice of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
 
 TODO: Aron Wussler has a better version of the KEM combiner that should probably be rolled into {{I-D.ounsworth-cfrg-kem-combiners}} and then included here: `KMAC256(domainSeparation, 0x00000001 || K1 || K2 || fixedInfo, outputBits, “KDF”)`. TODO: update that doc, then take the new version here.
