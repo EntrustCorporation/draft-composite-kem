@@ -379,20 +379,20 @@ Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1
 
 2.16.840.1.114027.80.5.2	entrust-Algorithm-ExplicitComposite-KEM
 
-KEM type                                    | Section                                         | OID           | First KEM Alg   | Second KEM Alg |  KEM Combiner     |
----------                                   | -----------                                        | ---------- | ----------      | ----------     | ----------    |
-id-Kyber512-ECDH-P256-SHAKE128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD        | Kyber512        | TODO           | SHAKE128/256  |
-id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD        | Kyber512        | TODO           | SHAKE128/256 |
-id-Kyber512-X25519-SHAKE128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD        | Kyber512        | X25519         | SHAKE128/256 |
-id-Kyber768-RSA-SHAKE256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD        | Kyber768        | TODO           | SHAKE256/384 |
-id-Kyber768-ECDH-P256-SHAKE256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD        | Kyber768        | TODO           | SHAKE256/384 |
-id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD        | Kyber768        | TODO           | SHAKE256/384 |
-id-Kyber768-X25519-SHAKE256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD        | Kyber768        | X25519         | SHAKE256/384 |
-id-Kyber1024-ECDH-P384-SHAKE256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD        | Kyber1024       | TODO           | SHAKE256/512 |
-id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD        | Kyber1024       | TODO           | SHAKE256/512 |
-id-Kyber1024-X448-SHAKE256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD        | Kyber1024       | X448           | SHAKE256/512 |
-id-composite-kem-shake128          | {{sec-generic-composite-kem-shake128}}                      | TBD        | Defined at runtime | Defined at runtime | SHAKE128/256 |
-id-composite-kem-SHAKE256          | {{sec-generic-composite-kem-shake256}}                      | TBD        | Definet at runtime | Definet at runtime | SHAKE256/512 |
+KEM type                                    | OID           | First KEM Alg   | Second KEM Alg |  KEM Combiner     |
+---------                                   | ---------- | ----------      | ----------     | ----------    |
+id-Kyber512-ECDH-P256-SHAKE128              | &lt;CompKEM&gt;.1 | Kyber512 | ECDH-P256      | SHAKE128/256  |
+id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | &lt;CompKEM&gt;.2 | Kyber512 | ECDH-brainpoolp256r1 | SHAKE128/256 |
+id-Kyber512-X25519-SHAKE128                 | &lt;CompKEM&gt;.3 | Kyber512 | X25519         | SHAKE128/256 |
+id-Kyber768-RSA-SHAKE256                    | &lt;CompKEM&gt;.4 | Kyber768 | RSA-KEM        | SHAKE256/384 |
+id-Kyber768-ECDH-P256-SHAKE256              | &lt;CompKEM&gt;.5 | Kyber768 | ECDH-P256      | SHAKE256/384 |
+id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | &lt;CompKEM&gt;.6 | Kyber768 | ECDH-brainpoolp256r1 | SHAKE256/384 |
+id-Kyber768-X25519-SHAKE256                 | &lt;CompKEM&gt;.7 | Kyber768 | X25519         | SHAKE256/384 |
+id-Kyber1024-ECDH-P384-SHAKE256             | &lt;CompKEM&gt;.8 | Kyber1024 | ECDH-P384     | SHAKE256/512 |
+id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | &lt;CompKEM&gt;.9 | Kyber1024 | ECDH-brainpoolP384r1 | SHAKE256/512 |
+id-Kyber1024-X448-SHAKE256                  | &lt;CompKEM&gt;.10 | Kyber1024 | X448          | SHAKE256/512 |
+id-composite-kem-shake128                   | &lt;CompKEM&gt;.11        | Defined at runtime | Defined at runtime | SHAKE128/256 |
+id-composite-kem-SHAKE256                   | &lt;CompKEM&gt;.12        | Definet at runtime | Definet at runtime | SHAKE256/512 |
 {: #tab-kem-algs title="Composite KEM key types"}
 
 These combinations were chosen according to the following rough guidelines:
@@ -513,6 +513,10 @@ where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in [SHA3] 
 
 
 ## id-Kyber768-RSA-shake256 {#sec-id-Kyber768-RSA-shake256}
+
+DO NOT DELETE!!!!
+
+This composite algorithm deserves a special explanation.
 
 
 This composite KEM algorithm MAY be used with a `id-Kyber768-RSA` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber768 and RSA keys from independant sources, for example independant certificates, software or hardware keystores.
