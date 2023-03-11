@@ -1584,9 +1584,6 @@ X509Certificate as defined in <span>[<a href="#RFC5280" class="xref">RFC5280</a>
 </pre><a href="#section-3.3.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3.3.1-3">Additional key usages SHOULD not be used.<a href="#section-3.3.1-3" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-4">EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
-parties are required to contribute to a key agreement verses a single party in keyEncipherment.<a href="#section-3.3.1-4" class="pilcrow">¶</a></p>
-<p id="section-3.3.1-5">EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key.<a href="#section-3.3.1-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -1622,30 +1619,87 @@ CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
         <h3 id="name-kem-combiner-2">
 <a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-kem-combiner-2" class="section-name selfRef">KEM Combiner</a>
         </h3>
-<p id="section-3.6-1">TODO: REDO IN LIGHT OF ARON / STAVROS' CHANGES TO CFRG-KEM-COMBINERS DRAFT<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">TODO: read and cite the ETSI doc "Quantum-safe Hybrid Key Exchanges"
-https://www.etsi.org/deliver/etsi_ts/103700_103799/103744/01.01.01_60/ts_103744v010101p.pdf<a href="#section-3.6-2" class="pilcrow">¶</a></p>
-<p id="section-3.6-3">TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
-<p id="section-3.6-4">This document follows the advice of <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>: the outputs of multiple KEMs are combined as<a href="#section-3.6-4" class="pilcrow">¶</a></p>
-<p id="section-3.6-5">TODO: Aron Wussler has a better version of the KEM combiner that should probably be rolled into <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> and then included here: <code>KMAC256(domainSeparation, 0x00000001 || K1 || K2 || fixedInfo, outputBits, "KDF")</code>. TODO: update that doc, then take the new version here.<a href="#section-3.6-5" class="pilcrow">¶</a></p>
-<p id="section-3.6-6">EDNOTE: should we add in a context string? Ex.: <code>KDF( "id-kem-Kyber512-ECDH-P256-SHAKE128" || H(ss1) || H(ss2) )</code>  ?<a href="#section-3.6-6" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.6-7">
+<p id="section-3.6-1">TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">This document follows the recommendation of <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>: the outputs of multiple KEMs are combined as<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.6-3">
 <pre>
-KDF( H(ss1) || H(ss2) )
-</pre><a href="#section-3.6-7" class="pilcrow">¶</a>
+KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
+
+where
+k_i = H(ss_i || ct_i)
+</pre><a href="#section-3.6-3" class="pilcrow">¶</a>
 </div>
-<p id="section-3.6-8">where <code>||</code> represents concatenation.<a href="#section-3.6-8" class="pilcrow">¶</a></p>
-<p id="section-3.6-9">Note that explicitly-defined algorithm combinations MAY opt to define the combiner without the inner hash on <code>H(ss1)</code> and <code>H(ss2)</code> the component KEMs use a KDF internally when producing its output.<a href="#section-3.6-9" class="pilcrow">¶</a></p>
-<p id="section-3.6-10">Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.<a href="#section-3.6-10" class="pilcrow">¶</a></p>
-<p id="section-3.6-11">Below we make the following pairings of kyber security level and KDF:<a href="#section-3.6-11" class="pilcrow">¶</a></p>
+<p id="section-3.6-4">where:<a href="#section-3.6-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-12.1">Kyber512: shake128/256<a href="#section-3.6-12.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.6-5.1">
+            <code>KDF</code> and <code>H</code>, and <code>outputBits</code> represent a hash functions suitable to the chosen KEMs,<a href="#section-3.6-5.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-12.2">Kyber768: shake256/384<a href="#section-3.6-12.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.6-5.2">
+            <code>fixedInfo</code> is the ASCI-encoded bytes of the KEM Type string from <a href="#tab-kem-algs" class="xref">Table 2</a> concatenated with any additional <code>contextInfo</code> provided by the protocol,<a href="#section-3.6-5.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-12.3">Kyber1024 shake256/512<a href="#section-3.6-12.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.6-5.3">
+            <code>counter</code> is fixed to the 32-bit value <code>0x00000001</code>,<a href="#section-3.6-5.3" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.6-5.4">
+            <code>||</code> represents concatenation.<a href="#section-3.6-5.4" class="pilcrow">¶</a>
 </li>
         </ul>
+<p id="section-3.6-6">Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.<a href="#section-3.6-6" class="pilcrow">¶</a></p>
+<p id="section-3.6-7">For convenience we define the following intantiations of KEM combiner:<a href="#section-3.6-7" class="pilcrow">¶</a></p>
+<span id="name-kem-combiners-2"></span><div id="tab-kem-combiners">
+<table class="center" id="table-1">
+          <caption>
+<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#name-kem-combiners-2" class="selfRef">KEM Combiners</a>
+          </caption>
+<thead>
+            <tr>
+              <th class="text-left" rowspan="1" colspan="1">KEM Combiner</th>
+              <th class="text-left" rowspan="1" colspan="1">KDF</th>
+              <th class="text-left" rowspan="1" colspan="1">H</th>
+              <th class="text-left" rowspan="1" colspan="1">outputBits</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE128/256</td>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE128</td>
+              <td class="text-left" rowspan="1" colspan="1">SHA3-256</td>
+              <td class="text-left" rowspan="1" colspan="1">256</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE256/384</td>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE256</td>
+              <td class="text-left" rowspan="1" colspan="1">SHA3-512</td>
+              <td class="text-left" rowspan="1" colspan="1">384</td>
+            </tr>
+            <tr>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
+              <td class="text-left" rowspan="1" colspan="1">SHAKE256</td>
+              <td class="text-left" rowspan="1" colspan="1">SHA3-512</td>
+              <td class="text-left" rowspan="1" colspan="1">512</td>
+            </tr>
+          </tbody>
+        </table>
+</div>
+<p id="section-3.6-9">~~~ BEGIN EDNOTE ~~~<a href="#section-3.6-9" class="pilcrow">¶</a></p>
+<p id="section-3.6-10">these choices are sorta arbitrary but aiming to match security level of the input KEMs. Feedback welcome.<a href="#section-3.6-10" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-3.6-11.1">Kyber512: shake128/256<a href="#section-3.6-11.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.6-11.2">Kyber768: shake256/384<a href="#section-3.6-11.2" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-3.6-11.3">Kyber1024 shake256/512<a href="#section-3.6-11.3" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-3.6-12">~~~ END EDNOTE ~~~<a href="#section-3.6-12" class="pilcrow">¶</a></p>
+<p id="section-3.6-13">For example, the KEM combiner instantiation of the first entry of <a href="#tab-kem-algs" class="xref">Table 2</a> would be:<a href="#section-3.6-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.6-14">
+<pre>
+ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
+                    || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
+</pre><a href="#section-3.6-14" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 </section>
@@ -1655,12 +1709,14 @@ KDF( H(ss1) || H(ss2) )
       <h2 id="name-algorithm-identifiers-2">
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-algorithm-identifiers-2" class="section-name selfRef">Algorithm Identifiers</a>
       </h2>
-<p id="section-4-1">This section defines algorithm identifiers, component algorithms and their ordering for composite combinations. The combinations registered in this section are intended to strike a balance between the overall number of combinations ("the combinatorial explosion problem"), while also covering the needs of a wide range of protocols, applications, and regulatory environments in which X.509-based technologies are used.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">This section is not intended to be exhaustive and other authors may define OIDs for new combinations so long as they are compatible with the structures and processes defined in this and the companion signature and encryption documents.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-1">This table summarizes the list of explicit composite Signature algorithms by the key and signature OID and the two component algorithms which make up the explicit composite algorithm.  These are denoted by First Signature Alg, and Second Signature Alg.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">The OID referenced are TBD and MUST be used only for prototyping and replaced with the final IANA-assigned OIDS. The following prefix is used for each: replace &lt;CompKEM&gt; with the String "2.16.840.1.114027.80.5.2"<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">2.16.840.1.114027.80.5.2        entrust-Algorithm-ExplicitComposite-KEM<a href="#section-4-4" class="pilcrow">¶</a></p>
 <span id="name-composite-kem-key-types-2"></span><div id="tab-kem-algs">
-<table class="center" id="table-1">
+<table class="center" id="table-2">
         <caption>
-<a href="#table-1" class="selfRef">Table 1</a>:
+<a href="#table-2" class="selfRef">Table 2</a>:
 <a href="#name-composite-kem-key-types-2" class="selfRef">Composite KEM key types</a>
         </caption>
 <thead>
@@ -1670,7 +1726,7 @@ KDF( H(ss1) || H(ss2) )
             <th class="text-left" rowspan="1" colspan="1">OID</th>
             <th class="text-left" rowspan="1" colspan="1">First KEM Alg</th>
             <th class="text-left" rowspan="1" colspan="1">Second KEM Alg</th>
-            <th class="text-left" rowspan="1" colspan="1">Combiner</th>
+            <th class="text-left" rowspan="1" colspan="1">KEM Combiner</th>
           </tr>
         </thead>
         <tbody>
@@ -1682,7 +1738,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber512</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE128( ss1 || SHAKE128(ss2, 256), 256)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE128/256</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber512-ECDH-brainpoolP256r1-SHAKE128</td>
@@ -1692,7 +1748,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber512</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE128( ss1 || SHAKE128(ss2, 256), 256)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE128/256</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber512-X25519-SHAKE128</td>
@@ -1702,7 +1758,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber512</td>
             <td class="text-left" rowspan="1" colspan="1">X25519</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE128( ss1 || ss2, 256)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE128/256</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber768-RSA-SHAKE256</td>
@@ -1712,7 +1768,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber768</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 384), 384)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/384</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber768-ECDH-P256-SHAKE256</td>
@@ -1722,7 +1778,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber768</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 384), 384)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/384</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber768-ECDH-brainpoolP256r1-SHAKE256</td>
@@ -1732,7 +1788,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber768</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 384), 384)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/384</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber768-X25519-SHAKE256</td>
@@ -1742,7 +1798,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber768</td>
             <td class="text-left" rowspan="1" colspan="1">X25519</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || ss2, 384)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/384</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-ECDH-P384-SHAKE256</td>
@@ -1752,7 +1808,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber1024</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 512), 512)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256</td>
@@ -1762,7 +1818,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber1024</td>
             <td class="text-left" rowspan="1" colspan="1">TODO</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 512), 512)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-Kyber1024-X448-SHAKE256</td>
@@ -1772,7 +1828,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Kyber1024</td>
             <td class="text-left" rowspan="1" colspan="1">X448</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( ss1 || SHAKE256(ss2, 512), 512)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-composite-kem-shake128</td>
@@ -1782,7 +1838,7 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Defined at runtime</td>
             <td class="text-left" rowspan="1" colspan="1">Defined at runtime</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE128( SHAKE128(ss1, 256) || SHAKE128(ss2, 256) , 256)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE128/256</td>
           </tr>
           <tr>
             <td class="text-left" rowspan="1" colspan="1">id-composite-kem-SHAKE256</td>
@@ -1792,23 +1848,23 @@ KDF( H(ss1) || H(ss2) )
             <td class="text-left" rowspan="1" colspan="1">TBD</td>
             <td class="text-left" rowspan="1" colspan="1">Definet at runtime</td>
             <td class="text-left" rowspan="1" colspan="1">Definet at runtime</td>
-            <td class="text-left" rowspan="1" colspan="1">SHAKE256( SHAKE256(ss1, 512) || SHAKE256(ss2, 512) , 512)</td>
+            <td class="text-left" rowspan="1" colspan="1">SHAKE256/512</td>
           </tr>
         </tbody>
       </table>
 </div>
-<p id="section-4-4">These combinations were chosen according to the following rough guidelines:<a href="#section-4-4" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4-5">
-<li id="section-4-5.1">One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-4-5.1" class="pilcrow">¶</a>
+<p id="section-4-6">These combinations were chosen according to the following rough guidelines:<a href="#section-4-6" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-4-7">
+<li id="section-4-7.1">One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.<a href="#section-4-7.1" class="pilcrow">¶</a>
 </li>
-        <li id="section-4-5.2">NIST <span>[<a href="#RFC6090" class="xref">RFC6090</a>]</span>, Edwards <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span>, and Brainpool <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span> elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-4-5.2" class="pilcrow">¶</a>
+        <li id="section-4-7.2">NIST <span>[<a href="#RFC6090" class="xref">RFC6090</a>]</span>, Edwards <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span>, and Brainpool <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span> elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-4-7.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-4-5.3">NIST level 1 candidates (Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-4-5.3" class="pilcrow">¶</a>
+        <li id="section-4-7.3">NIST level 1 candidates (Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-4-7.3" class="pilcrow">¶</a>
 </li>
-        <li id="section-4-5.4">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-4-5.4" class="pilcrow">¶</a>
+        <li id="section-4-7.4">A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-4-7.4" class="pilcrow">¶</a>
 </li>
       </ol>
-<p id="section-4-6">The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite algorithms specified in <a href="#sec-generic-composite-kem-shake128" class="xref">Section 4.11</a> and <a href="#sec-generic-composite-kem-shake256" class="xref">Section 4.12</a> of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-8">The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite algorithms specified in <a href="#sec-generic-composite-kem-shake128" class="xref">Section 4.11</a> and <a href="#sec-generic-composite-kem-shake256" class="xref">Section 4.12</a> of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-4-8" class="pilcrow">¶</a></p>
 <div id="sec-id-Kyber512-ECDH-P256-SHAKE128">
 <section id="section-4.1">
         <h3 id="name-id-kyber512-ecdh-p256-shake1">
@@ -2244,6 +2300,8 @@ In the context of encryption, K-of-N modes could mean one of two things:<a href=
 -- cat ../draft-ounsworth-pq-composite-keys/ASN1ModuleIncludes.asn ../draft-ounsworth-pq-composite-keys/Composite-Keys-2023.asn Composite-KEM-2023.asn | xclip -sel clip
 
 Composite-KEM-2023
+           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-kems(99)}
 
 DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
@@ -2252,11 +2310,13 @@ EXPORTS ALL;
 IMPORTS
 
 KEM-ALGORITHM
-    from KEMAlgorithmInformation-2023
+    FROM KEMAlgorithmInformation-2023
     { iso(1) identified-organization(3) dod(6) internet(1)
       security(5) mechanisms(5) pkix(7) id-mod(0)
-          id-mod-kemAlgorithmInformation-2023(TBD3) }
+          id-mod-kemAlgorithmInformation-2023(99) }
 
+id-composite-key,
+pk-composite-kem,
 id-Kyber512-ECDH-P256-SHAKE128,
 pk-Kyber512-ECDH-P256-SHAKE128,
 id-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
@@ -2279,16 +2339,7 @@ id-Kyber1024-X448-SHAKE256,
 pk-Kyber1024-X448-SHAKE256
     FROM CompositeKeys-2023
            {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
-
---
--- Object Identifiers
---
-
--- To be replaced by IANA
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-joint-iso-itu-t(2) country(16) us(840) organization(1)
-entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(98)};
 
 
 
@@ -2298,43 +2349,65 @@ entrust(114027) Algorithm(80) Composite(4) KEM (5) }
 
 CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
--- from draft-ietf-lamps-cms-kemri-00
---  KEM-ALGORITHM ::= CLASS {
---    &amp;id             OBJECT IDENTIFIER UNIQUE,
---    &amp;Value          OPTIONAL,
---    &amp;Params         OPTIONAL,
---    &amp;paramPresence  ParamOptions DEFAULT absent,
---    &amp;PublicKeySet   PUBLIC-KEY OPTIONAL,
---    &amp;Ukm            OPTIONAL,
---    &amp;ukmPresence    ParamOptions DEFAULT absent,
---    &amp;smimeCaps      SMIME-CAPS OPTIONAL
---  } WITH SYNTAX {
---    IDENTIFIER &amp;id
---    [VALUE &amp;Value]
---    [PARAMS [TYPE &amp;Params] ARE &amp;paramPresence]
---    [PUBLIC-KEYS &amp;PublicKeySet]
---    [UKM [TYPE &amp;Ukm] ARE &amp;ukmPresence]
---    [SMIME-CAPS &amp;smimeCaps]
---  }
 
-kema-CompositeKEM KEM-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite-kem
-    VALUE CompositeCiphertextValue
-    PARAMS TYPE Composite-kem-params ARE optional &lt;-- TODO: needed?
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
+kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject}
+      KEM-ALGORITHM ::=  {
+         IDENTIFIER id
+         VALUE CompositeCiphertextValue
+         PUBLIC-KEYS {publicKeyObject} }
 
 
 
+-- Generic Composite KEM
 
-kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
-    IDENTIFIER id-Kyber512-ECDH-P256-SHAKE128
-    VALUE CompositeCiphertextValue{BIT STRING, ECPoint}
-    PARAMS composite-kem-params
-    PUBLIC-KEYS { pk-Composite } WHERE pk-Composite.IDENTIFIER=id-Kyber512-ECDH-P256
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
+
+-- To be replaced by IANA
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1)
+entrust(114027) algorithm(80) composite(4) kem (5) }
+
+
+-- TODO: To be replaced by IANA
+id-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+  algorithm(80) tbd(98) }
+
+kema-Composite-kem-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
+
+
+-- TODO: To be replaced by IANA
+id-composite-kem-SHAKE256 OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+  algorithm(80) tbd(99) }
+
+kema-Composite-kem-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
+
+
+
+
+-- Explicit Composite KEMs
+
+
+kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-P256-SHAKE128, pk-Kyber512-ECDH-P256-SHAKE128}
+
+kema-Kyber512-ECDH-brainpoolP256r1-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-SHAKE128, pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128}
+
+kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-X25519-SHAKE128, pk-Kyber512-X25519-SHAKE128}
+
+kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-RSA-SHAKE256, pk-Kyber768-RSA-SHAKE256}
+
+kema-Kyber768-ECDH-P256-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-P256-SHAKE256, pk-Kyber768-ECDH-P256-SHAKE256}
+
+kema-Kyber768-ECDH-brainpoolP256r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-SHAKE256, pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256}
+
+kema-Kyber768-X25519-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-X25519-SHAKE256, pk-Kyber768-X25519-SHAKE256}
+
+kema-Kyber1024-ECDH-P384-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-SHAKE256, pk-Kyber1024-ECDH-P384-SHAKE256}
+
+kema-Kyber1024-ECDH-brainpoolP384r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256, pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256}
+
+kema-Kyber1024-X448-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-X448-SHAKE256, pk-Kyber1024-X448-SHAKE256}
+
 
 END
 
@@ -2349,7 +2422,13 @@ END
       <h2 id="name-iana-considerations-2">
 <a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations-2" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-7-1">The ASN.1 module OID is TBD.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">The following need to be assigned by IANA:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1">The OID for the ASN.1 module <code>Composite-KEM-2023</code>,<a href="#section-7-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-2.2">OIDs for <code>id-composite-kem-SHAKE128</code>, <code>id-composite-kem-SHAKE256</code><a href="#section-7-2.2" class="pilcrow">¶</a>
+</li>
+      </ul>
 </section>
 </div>
 <div id="security-considerations">

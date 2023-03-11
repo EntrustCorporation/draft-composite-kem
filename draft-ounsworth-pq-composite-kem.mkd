@@ -294,11 +294,6 @@ X509Certificate as defined in [RFC5280]), the following key usage MUST be used.
    
 Additional key usages SHOULD not be used.
 
-EDNOTE:  The main argument for using keyEncipherment verses keyAgreement is that multiple 
-parties are required to contribute to a key agreement verses a single party in keyEncipherment. 
-
-EDNOTE:  It is recognized that KEMS will be added into other PKIX and X509 standards and LAMPS needs to make sure they all make the same choice about the key usage of a KEM key. 
-
 
 ## CompositeCiphertextValue {#sec-CompositeCiphertextValue}
 
@@ -323,58 +318,81 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 ## KEM Combiner {#sec-kem-combiner}
 
-TODO: REDO IN LIGHT OF ARON / STAVROS' CHANGES TO CFRG-KEM-COMBINERS DRAFT
-
-TODO: read and cite the ETSI doc "Quantum-safe Hybrid Key Exchanges"
-https://www.etsi.org/deliver/etsi_ts/103700_103799/103744/01.01.01_60/ts_103744v010101p.pdf
-
 TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.
 
-This document follows the advice of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
+This document follows the recommendation of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
 
-TODO: Aron Wussler has a better version of the KEM combiner that should probably be rolled into {{I-D.ounsworth-cfrg-kem-combiners}} and then included here: `KMAC256(domainSeparation, 0x00000001 || K1 || K2 || fixedInfo, outputBits, “KDF”)`. TODO: update that doc, then take the new version here.
-
-EDNOTE: should we add in a context string? Ex.: `KDF( "id-kem-Kyber512-ECDH-P256-SHAKE128" || H(ss1) || H(ss2) )`  ?
 
 ~~~
-KDF( H(ss1) || H(ss2) )
+KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
+
+where
+k_i = H(ss_i || ct_i)
 ~~~
 
-where `||` represents concatenation.
+where:
 
-Note that explicitly-defined algorithm combinations MAY opt to define the combiner without the inner hash on `H(ss1)` and `H(ss2)` the component KEMs use a KDF internally when producing its output.
+* `KDF` and `H`, and `outputBits` represent a hash functions suitable to the chosen KEMs,
+* `fixedInfo` is the ASCI-encoded bytes of the KEM Type string from {{tab-kem-algs}} concatenated with any additional `contextInfo` provided by the protocol,
+* `counter` is fixed to the 32-bit value `0x00000001`,
+* `||` represents concatenation.
+
 
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
 
 
-Below we make the following pairings of kyber security level and KDF:
+For convenience we define the following intantiations of KEM combiner:
+
+KEM Combiner | KDF | H | outputBits |
+---      | --- |---|---         |
+SHAKE128/256 | SHAKE128 | SHA3-256 | 256 |
+SHAKE256/384 | SHAKE256 | SHA3-512 | 384 |
+SHAKE256/512 | SHAKE256 | SHA3-512 | 512 |
+{: #tab-kem-combiners title="KEM Combiners"}
+
+~~~ BEGIN EDNOTE ~~~
+
+these choices are sorta arbitrary but aiming to match security level of the input KEMs. Feedback welcome.
 
 * Kyber512: shake128/256
 * Kyber768: shake256/384
 * Kyber1024 shake256/512
 
+~~~ END EDNOTE ~~~
+
+
+For example, the KEM combiner instantiation of the first entry of {{tab-kem-algs}} would be:
+
+~~~
+ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
+                    || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
+~~~
 
 # Algorithm Identifiers {#sec-alg-ids}
 
-This section defines algorithm identifiers, component algorithms and their ordering for composite combinations. The combinations registered in this section are intended to strike a balance between the overall number of combinations ("the combinatorial explosion problem"), while also covering the needs of a wide range of protocols, applications, and regulatory environments in which X.509-based technologies are used. 
+This table summarizes the list of explicit composite Signature algorithms by the key and signature OID and the two component algorithms which make up the explicit composite algorithm.  These are denoted by First Signature Alg, and Second Signature Alg.  
 
-This section is not intended to be exhaustive and other authors may define OIDs for new combinations so long as they are compatible with the structures and processes defined in this and the companion signature and encryption documents.
+The OID referenced are TBD and MUST be used only for prototyping and replaced with the final IANA-assigned OIDS. The following prefix is used for each: replace &lt;CompKEM&gt; with the String "2.16.840.1.114027.80.5.2"
+
+Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1
 
 
-KEM type                                    | Section                                         | OID           | First KEM Alg   | Second KEM Alg |  Combiner     |
+2.16.840.1.114027.80.5.2	entrust-Algorithm-ExplicitComposite-KEM
+
+KEM type                                    | Section                                         | OID           | First KEM Alg   | Second KEM Alg |  KEM Combiner     |
 ---------                                   | -----------                                        | ---------- | ----------      | ----------     | ----------    |
-id-Kyber512-ECDH-P256-SHAKE128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD        | Kyber512        | TODO           | SHAKE128( ss1 \|\| SHAKE128(ss2, 256), 256) |
-id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD        | Kyber512        | TODO           | SHAKE128( ss1 \|\| SHAKE128(ss2, 256), 256) |
-id-Kyber512-X25519-SHAKE128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD        | Kyber512        | X25519         | SHAKE128( ss1 \|\| ss2, 256) |
-id-Kyber768-RSA-SHAKE256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
-id-Kyber768-ECDH-P256-SHAKE256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
-id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
-id-Kyber768-X25519-SHAKE256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD        | Kyber768        | X25519         | SHAKE256( ss1 \|\| ss2, 384) |
-id-Kyber1024-ECDH-P384-SHAKE256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD        | Kyber1024       | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
-id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD        | Kyber1024       | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
-id-Kyber1024-X448-SHAKE256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD        | Kyber1024       | X448           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
-id-composite-kem-shake128          | {{sec-generic-composite-kem-shake128}}                      | TBD        | Defined at runtime | Defined at runtime | SHAKE128( SHAKE128(ss1, 256) \|\| SHAKE128(ss2, 256) , 256) |
-id-composite-kem-SHAKE256          | {{sec-generic-composite-kem-shake256}}                      | TBD        | Definet at runtime | Definet at runtime | SHAKE256( SHAKE256(ss1, 512) \|\| SHAKE256(ss2, 512) , 512) |
+id-Kyber512-ECDH-P256-SHAKE128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD        | Kyber512        | TODO           | SHAKE128/256  |
+id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD        | Kyber512        | TODO           | SHAKE128/256 |
+id-Kyber512-X25519-SHAKE128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD        | Kyber512        | X25519         | SHAKE128/256 |
+id-Kyber768-RSA-SHAKE256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD        | Kyber768        | TODO           | SHAKE256/384 |
+id-Kyber768-ECDH-P256-SHAKE256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD        | Kyber768        | TODO           | SHAKE256/384 |
+id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD        | Kyber768        | TODO           | SHAKE256/384 |
+id-Kyber768-X25519-SHAKE256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD        | Kyber768        | X25519         | SHAKE256/384 |
+id-Kyber1024-ECDH-P384-SHAKE256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD        | Kyber1024       | TODO           | SHAKE256/512 |
+id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD        | Kyber1024       | TODO           | SHAKE256/512 |
+id-Kyber1024-X448-SHAKE256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD        | Kyber1024       | X448           | SHAKE256/512 |
+id-composite-kem-shake128          | {{sec-generic-composite-kem-shake128}}                      | TBD        | Defined at runtime | Defined at runtime | SHAKE128/256 |
+id-composite-kem-SHAKE256          | {{sec-generic-composite-kem-shake256}}                      | TBD        | Definet at runtime | Definet at runtime | SHAKE256/512 |
 {: #tab-kem-algs title="Composite KEM key types"}
 
 These combinations were chosen according to the following rough guidelines:
@@ -879,8 +897,10 @@ TBD -- UPDATE
 
 
 # IANA Considerations {#sec-iana}
-The ASN.1 module OID is TBD.  
+The following need to be assigned by IANA:
 
+* The OID for the ASN.1 module `Composite-KEM-2023`,
+* OIDs for `id-composite-kem-SHAKE128`, `id-composite-kem-SHAKE256`
 
 <!-- End of IANA Considerations section -->
 

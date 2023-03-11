@@ -99,13 +99,13 @@ Table of Contents
      3.2.  Specifying Composite KEM Algorithms . . . . . . . . . . .   7
      3.3.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   7
        3.3.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   7
-     3.4.  CompositeCiphertextValue  . . . . . . . . . . . . . . . .   8
+     3.4.  CompositeCiphertextValue  . . . . . . . . . . . . . . . .   7
      3.5.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
      3.6.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .   8
    4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .   9
      4.1.  id-Kyber512-ECDH-P256-SHAKE128  . . . . . . . . . . . . .  12
      4.2.  id-Kyber512-ECDH-brainpoolP256r1-shake128 . . . . . . . .  13
-     4.3.  id-Kyber512-X25519-shake128 . . . . . . . . . . . . . . .  13
+     4.3.  id-Kyber512-X25519-shake128 . . . . . . . . . . . . . . .  14
 
 
 
@@ -114,36 +114,36 @@ Ounsworth & Gray        Expires 11 September 2023               [Page 2]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-     4.4.  id-Kyber768-RSA-shake256  . . . . . . . . . . . . . . . .  14
-     4.5.  id-Kyber768-ECDH-P256-shake256  . . . . . . . . . . . . .  15
-     4.6.  id-Kyber768-ECDH-brainpoolP256r1-shake256 . . . . . . . .  16
+     4.4.  id-Kyber768-RSA-shake256  . . . . . . . . . . . . . . . .  15
+     4.5.  id-Kyber768-ECDH-P256-shake256  . . . . . . . . . . . . .  16
+     4.6.  id-Kyber768-ECDH-brainpoolP256r1-shake256 . . . . . . . .  17
      4.7.  id-Kyber768-X25519-shake256 . . . . . . . . . . . . . . .  17
      4.8.  id-Kyber1024-ECDH-P384-shake256 . . . . . . . . . . . . .  18
-     4.9.  id-Kyber1024-ECDH-brainpoolP384r1-shake256  . . . . . . .  18
-     4.10. id-Kyber1024-X448-shake256  . . . . . . . . . . . . . . .  19
-     4.11. id-alg-composite-kem-shake128 . . . . . . . . . . . . . .  20
-     4.12. id-alg-composite-kem-shake256 . . . . . . . . . . . . . .  21
-   5.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  22
+     4.9.  id-Kyber1024-ECDH-brainpoolP384r1-shake256  . . . . . . .  19
+     4.10. id-Kyber1024-X448-shake256  . . . . . . . . . . . . . . .  20
+     4.11. id-alg-composite-kem-shake128 . . . . . . . . . . . . . .  21
+     4.12. id-alg-composite-kem-shake256 . . . . . . . . . . . . . .  22
+   5.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  23
      5.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  23
-       5.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  23
+       5.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  24
        5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  24
-   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  24
+   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  25
    7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  27
    8.  Security Considerations . . . . . . . . . . . . . . . . . . .  27
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  27
-     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  27
-     8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  27
-       8.3.1.  Need for a KDF within the combiner  . . . . . . . . .  27
-       8.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  28
-       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  28
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  28
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  28
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  30
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  32
-   Appendix B.  Intellectual Property Considerations . . . . . . . .  32
-   Appendix C.  Contributors and Acknowledgements  . . . . . . . . .  32
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  28
+     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  28
+     8.3.  Cryptographic review of combiner  . . . . . . . . . . . .  28
+       8.3.1.  Need for a KDF within the combiner  . . . . . . . . .  28
+       8.3.2.  APOP Attack on concatenated keys  . . . . . . . . . .  29
+       8.3.3.  Aviram2022  . . . . . . . . . . . . . . . . . . . . .  29
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  29
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  29
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  31
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  33
+   Appendix B.  Intellectual Property Considerations . . . . . . . .  33
+   Appendix C.  Contributors and Acknowledgements  . . . . . . . . .  33
      C.1.  Making contributions  . . . . . . . . . . . . . . . . . .  33
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  33
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  34
 
 1.  Changes in version -01
 
@@ -377,13 +377,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    Additional key usages SHOULD not be used.
 
-   EDNOTE: The main argument for using keyEncipherment verses
-   keyAgreement is that multiple parties are required to contribute to a
-   key agreement verses a single party in keyEncipherment.
+3.4.  CompositeCiphertextValue
 
-   EDNOTE: It is recognized that KEMS will be added into other PKIX and
-   X509 standards and LAMPS needs to make sure they all make the same
-   choice about the key usage of a KEM key.
+   The compositeCipherTextValue is a concatenation of the ciphertexts of
+   the underlying component algorithms.  It is represented in ASN.1 as
+   follows:
+
+   CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
 
 
@@ -393,14 +393,6 @@ Ounsworth & Gray        Expires 11 September 2023               [Page 7]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
-
-3.4.  CompositeCiphertextValue
-
-   The compositeCipherTextValue is a concatenation of the ciphertexts of
-   the underlying component algorithms.  It is represented in ASN.1 as
-   follows:
-
-   CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
 3.5.  Encoding Rules
 
@@ -426,21 +418,29 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 3.6.  KEM Combiner
 
-   TODO: REDO IN LIGHT OF ARON / STAVROS' CHANGES TO CFRG-KEM-COMBINERS
-   DRAFT
-
-   TODO: read and cite the ETSI doc "Quantum-safe Hybrid Key Exchanges"
-   https://www.etsi.org/deliver/
-   etsi_ts/103700_103799/103744/01.01.01_60/ts_103744v010101p.pdf
-
    TODO: as per https://www.enisa.europa.eu/publications/post-quantum-
    cryptography-integration-study section 4.2, might need to specify
    behaviour in light of KEMs with a non-zero failure probility.
 
-   This document follows the advice of
+   This document follows the recommendation of
    [I-D.ounsworth-cfrg-kem-combiners]: the outputs of multiple KEMs are
    combined as
 
+   KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
+
+   where
+   k_i = H(ss_i || ct_i)
+
+   where:
+
+   *  KDF and H, and outputBits represent a hash functions suitable to
+      the chosen KEMs,
+
+   *  fixedInfo is the ASCI-encoded bytes of the KEM Type string from
+      Table 2 concatenated with any additional contextInfo provided by
+      the protocol,
+
+   *  counter is fixed to the 32-bit value 0x00000001,
 
 
 
@@ -450,27 +450,30 @@ Ounsworth & Gray        Expires 11 September 2023               [Page 8]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   TODO: Aron Wussler has a better version of the KEM combiner that
-   should probably be rolled into [I-D.ounsworth-cfrg-kem-combiners] and
-   then included here: KMAC256(domainSeparation, 0x00000001 || K1 ||
-   K2 || fixedInfo, outputBits, "KDF").  TODO: update that doc, then
-   take the new version here.
-
-   EDNOTE: should we add in a context string?  Ex.: KDF( "id-kem-
-   Kyber512-ECDH-P256-SHAKE128" || H(ss1) || H(ss2) ) ?
-
-   KDF( H(ss1) || H(ss2) )
-
-   where || represents concatenation.
-
-   Note that explicitly-defined algorithm combinations MAY opt to define
-   the combiner without the inner hash on H(ss1) and H(ss2) the
-   component KEMs use a KDF internally when producing its output.
+   *  || represents concatenation.
 
    Each registered composite KEM algorithm must specify the exact KEM
    combiner construction that is to be used.
 
-   Below we make the following pairings of kyber security level and KDF:
+   For convenience we define the following intantiations of KEM
+   combiner:
+
+            +==============+==========+==========+============+
+            | KEM Combiner | KDF      | H        | outputBits |
+            +==============+==========+==========+============+
+            | SHAKE128/256 | SHAKE128 | SHA3-256 | 256        |
+            +--------------+----------+----------+------------+
+            | SHAKE256/384 | SHAKE256 | SHA3-512 | 384        |
+            +--------------+----------+----------+------------+
+            | SHAKE256/512 | SHAKE256 | SHA3-512 | 512        |
+            +--------------+----------+----------+------------+
+
+                           Table 1: KEM Combiners
+
+   ~~~ BEGIN EDNOTE ~~~
+
+   these choices are sorta arbitrary but aiming to match security level
+   of the input KEMs.  Feedback welcome.
 
    *  Kyber512: shake128/256
 
@@ -478,23 +481,20 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    *  Kyber1024 shake256/512
 
+   ~~~ END EDNOTE ~~~
+
+   For example, the KEM combiner instantiation of the first entry of
+   Table 2 would be:
+
+ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
+                    || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
+
 4.  Algorithm Identifiers
 
-   This section defines algorithm identifiers, component algorithms and
-   their ordering for composite combinations.  The combinations
-   registered in this section are intended to strike a balance between
-   the overall number of combinations ("the combinatorial explosion
-   problem"), while also covering the needs of a wide range of
-   protocols, applications, and regulatory environments in which
-   X.509-based technologies are used.
-
-   This section is not intended to be exhaustive and other authors may
-   define OIDs for new combinations so long as they are compatible with
-   the structures and processes defined in this and the companion
-   signature and encryption documents.
-
-
-
+   This table summarizes the list of explicit composite Signature
+   algorithms by the key and signature OID and the two component
+   algorithms which make up the explicit composite algorithm.  These are
+   denoted by First Signature Alg, and Second Signature Alg.
 
 
 
@@ -506,54 +506,54 @@ Ounsworth & Gray        Expires 11 September 2023               [Page 9]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   +========================+=======+===+=========+=======+=============+
-   |KEM type                |Section|OID|First KEM|Second |Combiner     |
-   |                        |       |   |Alg      |KEM Alg|             |
-   +========================+=======+===+=========+=======+=============+
-   |id-Kyber512-ECDH-       |Section|TBD|Kyber512 |TODO   |SHAKE128(    |
-   |P256-SHAKE128           |4.1    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE128(ss2,|
-   |                        |       |   |         |       |256), 256)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber512-ECDH-       |Section|TBD|Kyber512 |TODO   |SHAKE128(    |
-   |brainpoolP256r1-SHAKE128|4.2    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE128(ss2,|
-   |                        |       |   |         |       |256), 256)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-                     |Section|TBD|Kyber512 |X25519 |SHAKE128(    |
-   |Kyber512-X25519-SHAKE128|4.3    |   |         |       |ss1 || ss2,  |
-   |                        |       |   |         |       |256)         |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber768-RSA-SHAKE256|Section|TBD|Kyber768 |TODO   |SHAKE256(    |
-   |                        |4.4    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |384), 384)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber768-ECDH-       |Section|TBD|Kyber768 |TODO   |SHAKE256(    |
-   |P256-SHAKE256           |4.5    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |384), 384)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber768-ECDH-       |Section|TBD|Kyber768 |TODO   |SHAKE256(    |
-   |brainpoolP256r1-SHAKE256|4.6    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |384), 384)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-                     |Section|TBD|Kyber768 |X25519 |SHAKE256(    |
-   |Kyber768-X25519-SHAKE256|4.7    |   |         |       |ss1 || ss2,  |
-   |                        |       |   |         |       |384)         |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber1024-ECDH-      |Section|TBD|Kyber1024|TODO   |SHAKE256(    |
-   |P384-SHAKE256           |4.8    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |512), 512)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-Kyber1024-ECDH-      |Section|TBD|Kyber1024|TODO   |SHAKE256(    |
-   |brainpoolP384r1-SHAKE256|4.9    |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |512), 512)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-                     |Section|TBD|Kyber1024|X448   |SHAKE256(    |
+   The OID referenced are TBD and MUST be used only for prototyping and
+   replaced with the final IANA-assigned OIDS.  The following prefix is
+   used for each: replace <CompKEM> with the String
+   "2.16.840.1.114027.80.5.2"
+
+   Therefore <CompKEM>.1 is equal to 2.16.840.1.114027.80.5.2.1
+
+   2.16.840.1.114027.80.5.2 entrust-Algorithm-ExplicitComposite-KEM
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -562,27 +562,61 @@ Ounsworth & Gray        Expires 11 September 2023              [Page 10]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   |Kyber1024-X448-SHAKE256 |4.10   |   |         |       |ss1 ||       |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |512), 512)   |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-composite-kem-       |Section|TBD|Defined  |Defined|SHAKE128(    |
-   |shake128                |4.11   |   |at       |at     |SHAKE128(ss1,|
-   |                        |       |   |runtime  |runtime|256) ||      |
-   |                        |       |   |         |       |SHAKE128(ss2,|
-   |                        |       |   |         |       |256) , 256)  |
-   +------------------------+-------+---+---------+-------+-------------+
-   |id-composite-kem-       |Section|TBD|Definet  |Definet|SHAKE256(    |
-   |SHAKE256                |4.12   |   |at       |at     |SHAKE256(ss1,|
-   |                        |       |   |runtime  |runtime|512) ||      |
-   |                        |       |   |         |       |SHAKE256(ss2,|
-   |                        |       |   |         |       |512) , 512)  |
-   +------------------------+-------+---+---------+-------+-------------+
+   +========================+=======+===+=========+=======+============+
+   |KEM type                |Section|OID|First KEM|Second |KEM Combiner|
+   |                        |       |   |Alg      |KEM Alg|            |
+   +========================+=======+===+=========+=======+============+
+   |id-Kyber512-ECDH-       |Section|TBD|Kyber512 |TODO   |SHAKE128/256|
+   |P256-SHAKE128           |4.1    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber512-ECDH-       |Section|TBD|Kyber512 |TODO   |SHAKE128/256|
+   |brainpoolP256r1-SHAKE128|4.2    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-                     |Section|TBD|Kyber512 |X25519 |SHAKE128/256|
+   |Kyber512-X25519-SHAKE128|4.3    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber768-RSA-SHAKE256|Section|TBD|Kyber768 |TODO   |SHAKE256/384|
+   |                        |4.4    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber768-ECDH-       |Section|TBD|Kyber768 |TODO   |SHAKE256/384|
+   |P256-SHAKE256           |4.5    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber768-ECDH-       |Section|TBD|Kyber768 |TODO   |SHAKE256/384|
+   |brainpoolP256r1-SHAKE256|4.6    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-                     |Section|TBD|Kyber768 |X25519 |SHAKE256/384|
+   |Kyber768-X25519-SHAKE256|4.7    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber1024-ECDH-      |Section|TBD|Kyber1024|TODO   |SHAKE256/512|
+   |P384-SHAKE256           |4.8    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-Kyber1024-ECDH-      |Section|TBD|Kyber1024|TODO   |SHAKE256/512|
+   |brainpoolP384r1-SHAKE256|4.9    |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-                     |Section|TBD|Kyber1024|X448   |SHAKE256/512|
+   |Kyber1024-X448-SHAKE256 |4.10   |   |         |       |            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-composite-kem-       |Section|TBD|Defined  |Defined|SHAKE128/256|
+   |shake128                |4.11   |   |at       |at     |            |
+   |                        |       |   |runtime  |runtime|            |
+   +------------------------+-------+---+---------+-------+------------+
+   |id-composite-kem-       |Section|TBD|Definet  |Definet|SHAKE256/512|
+   |SHAKE256                |4.12   |   |at       |at     |            |
+   |                        |       |   |runtime  |runtime|            |
+   +------------------------+-------+---+---------+-------+------------+
 
-                      Table 1: Composite KEM key types
+                      Table 2: Composite KEM key types
 
    These combinations were chosen according to the following rough
    guidelines:
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 11]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    1.  One RSA combination is provided (but RSA modulus size not
        mandated), matched with NIST PQC Level 3 algorithms.
@@ -611,13 +645,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    arbitrary number of components.  This also does not preclude future
    specification of explicit combinations with three or more components.
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 11]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
 4.1.  id-Kyber512-ECDH-P256-SHAKE128
 
    This composite KEM algorithm MAY be used with a id-Kyber512-ECDH-P256
@@ -634,6 +661,18 @@ Internet-Draft              PQ Composite Keys                 March 2023
    are requesting IANA to assign a permanent OID, see Section 6.
 
    AlgorithmIdentifier paramaters are ABSENT.
+
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 12]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
     IDENTIFIER id-Kyber512-ECDH-P256-SHAKE128
@@ -667,13 +706,6 @@ kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
    where SHAKE128(M, 256) describes the use of the SHAKE128 as specified
    in [SHA3] with a 256 bit output.
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 12]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
 4.2.  id-Kyber512-ECDH-brainpoolP256r1-shake128
 
    This composite KEM algorithm MAY be used with a id-Kyber512-ECDH-
@@ -690,6 +722,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
    are requesting IANA to assign a permanent OID, see Section 6.
 
    AlgorithmIdentifier paramaters are ABSENT.
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 13]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    The first componet BIT STRING within CompositeCiphertextValue SHALL
    be the 256-bit encapsulated key (ciphertext) of the Kyber512
@@ -723,13 +762,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
      joint-iso-itu-t(2) country(16) us(840) organization(1)
      entrust(114027) Algorithm(80) TBD }
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 13]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    EDNOTE: this is a temporary OID for the purposes of prototyping.  We
    are requesting IANA to assign a permanent OID, see Section 6.
 
@@ -745,6 +777,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    be the shared secret derived from applying X25519 as defined in
    [RFC7748] to the other party's public key and one's own X25519
    private key.
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 14]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    The output of the two component KEMs is to be combined as follows:
 
@@ -775,17 +815,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    We need to carry the RSA-KEM params:
 
-
-
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 14]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
      GenericHybridParameters ::= {
         kem  KeyEncapsulationMechanism,
         dem  DataEncapsulationMechanism
@@ -804,6 +833,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS
    spec. ss1 SHALL be the shared secret corresponding to the first
    ciphertext.
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 15]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the ciphertext C as defined in [RFC5990] appendix A.2. ss2 SHALL
@@ -835,13 +872,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    AlgorithmIdentifier paramaters are ABSENT.
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 15]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    The first componet BIT STRING within CompositeCiphertextValue SHALL
    be the X-bit ?? (TODO: I assume it's 384?) encapsulated key
    (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS
@@ -860,6 +890,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
    The output of the two component KEMs is to be combined as follows:
 
    ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 16]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    where SHAKE256(M, 384) describes the use of the SHAKE256 as specified
    in [SHA3] with a 384 bit output.
@@ -890,14 +927,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the the sender's brainpoolP256r1 public key as defied in
    [RFC5639]. ss2 SHALL be the shared secret derived from applying the
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 16]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    elliptic curve key agreement algorithm (ECKA) as defined in section
    4.3.1 of [BSI-ECC] to the other party's public key and one's own
    brainpoolP256r1 private key.  Because this ECDH variant outputs
@@ -917,6 +946,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
    composite key as defined in [I-D.ounsworth-pq-composite-keys], or MAY
    be used with Kyber768 and X25519 keys from independant sources, for
    example independant certificates, software or hardware keystores.
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 17]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    id-alg-composite-kem OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1)
@@ -946,14 +982,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    where SHAKE256(M, 384) describes the use of the SHAKE256 as specified
    in [SHA3] with a 384 bit output.
 
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 17]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
 4.8.  id-Kyber1024-ECDH-P384-shake256
 
    This composite KEM algorithm MAY be used with a id-
@@ -971,6 +999,16 @@ Internet-Draft              PQ Composite Keys                 March 2023
    are requesting IANA to assign a permanent OID, see Section 6.
 
    AlgorithmIdentifier paramaters are ABSENT.
+
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 18]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    The first componet BIT STRING within CompositeCiphertextValue SHALL
    be the X-bit ?? (TODO: I assume it's 512?) encapsulated key
@@ -1002,14 +1040,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    EC P256 keys from independant sources, for example independant
    certificates, software or hardware keystores.
 
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 18]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    id-alg-composite-kem OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1)
      entrust(114027) Algorithm(80) TBD }
@@ -1028,6 +1058,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    The second componet BIT STRING within CompositeCiphertextValue SHALL
    be the the sender's brainpoolP384r1 public key as defied in
    [RFC5639]. ss2 SHALL be the shared secret derived from applying the
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 19]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    elliptic curve key agreement algorithm (ECKA) as defined in section
    4.3.1 of [BSI-ECC] to the other party's public key and one's own
    brainpoolP384r1 private key.  Because this ECDH variant outputs
@@ -1057,15 +1095,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    AlgorithmIdentifier paramaters are ABSENT.
 
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 19]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    The first componet BIT STRING within CompositeCiphertextValue SHALL
    be the X-bit ?? (TODO: I assume it's 512?) encapsulated key
    (ciphertext) of the Kyber1024 algorithm as per TODO: cite NIST FIPS
@@ -1083,6 +1112,15 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    where SHAKE256(M, 512) describes the use of the SHAKE256 as specified
    in [SHA3] with a 512 bit output.
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 20]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 4.11.  id-alg-composite-kem-shake128
 
@@ -1112,16 +1150,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    wrong alg.  So the question is: is it useful as a hint to the
    decrypter?
 
-
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 20]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    This composite KEM algorithm MAY be used with a id-composite-key
    composite key as defined in [I-D.ounsworth-pq-composite-keys],
    prodived that it carries a carries a keyUsage of keyEncipherment or
@@ -1142,6 +1170,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    where SHAKE128(M, 256) describes the use of the SHAKE128 as specified
    in [SHA3] with a 256 bit output.
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 21]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 4.12.  id-alg-composite-kem-shake256
 
@@ -1169,15 +1204,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    wrong alg.  So the question is: is it useful as a hint to the
    decrypter?
 
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 21]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    This composite KEM algorithm MAY be used with a id-composite-key
    composite key as defined in [I-D.ounsworth-pq-composite-keys],
    prodived that it carries a carries a keyUsage of keyEncipherment or
@@ -1198,6 +1224,15 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    where SHAKE256(M, 512) describes the use of the SHAKE256 as specified
    in [SHA3] with a 512 bit output.
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 22]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 5.  In Practice
 
@@ -1225,15 +1260,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    *  We could include a subsection about implementation considerations.
 
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 22]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
 5.1.  Backwards Compatibility
 
    As noted in the introduction, the post-quantum cryptographic
@@ -1256,6 +1282,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    X.509 and PKIX with relation to key establishment and content
    encryption, from online negotiated protocols such as TLS 1.3
    [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 23]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    protocols such as S/MIME signed email [RFC8551], as well as myriad
    other standardized and proprietary protocols and applications that
    leverage CMS [RFC5652] encrypted structures.
@@ -1279,16 +1313,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    subset that are still considered safe.
 
    Type 2: receiver uses a subset
-
-
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 23]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
 
    This would mean that the sender (encrypter) uses all N of the
    component keys within the receiver's public key in such a way that
@@ -1315,6 +1339,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
    would have the flexibility to choose which public key(s) or
    certificate(s) to use in a given signature operation.
 
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 24]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    For negotiated protocols, the client could choose which public key(s)
    or certificate(s) to use based on the negotiated algorithms.
 
@@ -1338,13 +1369,8 @@ Internet-Draft              PQ Composite Keys                 March 2023
    -- cat ../draft-ounsworth-pq-composite-keys/ASN1ModuleIncludes.asn ../draft-ounsworth-pq-composite-keys/Composite-Keys-2023.asn Composite-KEM-2023.asn | xclip -sel clip
 
    Composite-KEM-2023
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 24]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
+              {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-kems(99)}
 
    DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
@@ -1353,11 +1379,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
    IMPORTS
 
    KEM-ALGORITHM
-       from KEMAlgorithmInformation-2023
+       FROM KEMAlgorithmInformation-2023
        { iso(1) identified-organization(3) dod(6) internet(1)
          security(5) mechanisms(5) pkix(7) id-mod(0)
-             id-mod-kemAlgorithmInformation-2023(TBD3) }
+             id-mod-kemAlgorithmInformation-2023(99) }
 
+   id-composite-key,
+   pk-composite-kem,
    id-Kyber512-ECDH-P256-SHAKE128,
    pk-Kyber512-ECDH-P256-SHAKE128,
    id-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
@@ -1366,6 +1394,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    pk-Kyber512-X25519-SHAKE128,
    id-Kyber768-RSA-SHAKE256,
    pk-Kyber768-RSA-SHAKE256,
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 25]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    id-Kyber768-ECDH-P256-SHAKE256,
    pk-Kyber768-ECDH-P256-SHAKE256,
    id-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
@@ -1380,76 +1416,40 @@ Internet-Draft              PQ Composite Keys                 March 2023
    pk-Kyber1024-X448-SHAKE256
        FROM CompositeKeys-2023
               {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(TBD)};
-
-   --
-   -- Object Identifiers
-   --
-
-   -- To be replaced by IANA
-   id-alg-composite-kem OBJECT IDENTIFIER ::= {
-   joint-iso-itu-t(2) country(16) us(840) organization(1)
-   entrust(114027) Algorithm(80) Composite(4) KEM (5) }
+          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(98)};
 
 
 
    --
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 25]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    -- Composite structures
    --
 
    CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
-   -- from draft-ietf-lamps-cms-kemri-00
-   --  KEM-ALGORITHM ::= CLASS {
-   --    &id             OBJECT IDENTIFIER UNIQUE,
-   --    &Value          OPTIONAL,
-   --    &Params         OPTIONAL,
-   --    &paramPresence  ParamOptions DEFAULT absent,
-   --    &PublicKeySet   PUBLIC-KEY OPTIONAL,
-   --    &Ukm            OPTIONAL,
-   --    &ukmPresence    ParamOptions DEFAULT absent,
-   --    &smimeCaps      SMIME-CAPS OPTIONAL
-   --  } WITH SYNTAX {
-   --    IDENTIFIER &id
-   --    [VALUE &Value]
-   --    [PARAMS [TYPE &Params] ARE &paramPresence]
-   --    [PUBLIC-KEYS &PublicKeySet]
-   --    [UKM [TYPE &Ukm] ARE &ukmPresence]
-   --    [SMIME-CAPS &smimeCaps]
-   --  }
 
-   kema-CompositeKEM KEM-ALGORITHM ::= {
-       IDENTIFIER id-alg-composite-kem
-       VALUE CompositeCiphertextValue
-       PARAMS TYPE Composite-kem-params ARE optional <-- TODO: needed?
-       PUBLIC-KEYS { pk-Composite }
-       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-   }
+   kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject}
+         KEM-ALGORITHM ::=  {
+            IDENTIFIER id
+            VALUE CompositeCiphertextValue
+            PUBLIC-KEYS {publicKeyObject} }
 
 
 
-
-   kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
-       IDENTIFIER id-Kyber512-ECDH-P256-SHAKE128
-       VALUE CompositeCiphertextValue{BIT STRING, ECPoint}
-       PARAMS composite-kem-params
-       PUBLIC-KEYS { pk-Composite } WHERE pk-Composite.IDENTIFIER=id-Kyber512-ECDH-P256
-       SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-   }
-
-   END
-
-   <CODE ENDS>
+   -- Generic Composite KEM
 
 
+   -- To be replaced by IANA
+   id-alg-composite-kem OBJECT IDENTIFIER ::= {
+   joint-iso-itu-t(2) country(16) us(840) organization(1)
+   entrust(114027) algorithm(80) composite(4) kem (5) }
+
+
+   -- TODO: To be replaced by IANA
+   id-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) tbd(98) }
+
+   kema-Composite-kem-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
 
 
 
@@ -1458,11 +1458,61 @@ Ounsworth & Gray        Expires 11 September 2023              [Page 26]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
+   -- TODO: To be replaced by IANA
+   id-composite-kem-SHAKE256 OBJECT IDENTIFIER ::= {
+     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+     algorithm(80) tbd(99) }
+
+   kema-Composite-kem-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
+
+
+
+
+   -- Explicit Composite KEMs
+
+
+   kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-P256-SHAKE128, pk-Kyber512-ECDH-P256-SHAKE128}
+
+   kema-Kyber512-ECDH-brainpoolP256r1-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-SHAKE128, pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128}
+
+   kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-X25519-SHAKE128, pk-Kyber512-X25519-SHAKE128}
+
+   kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-RSA-SHAKE256, pk-Kyber768-RSA-SHAKE256}
+
+   kema-Kyber768-ECDH-P256-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-P256-SHAKE256, pk-Kyber768-ECDH-P256-SHAKE256}
+
+   kema-Kyber768-ECDH-brainpoolP256r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-SHAKE256, pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256}
+
+   kema-Kyber768-X25519-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-X25519-SHAKE256, pk-Kyber768-X25519-SHAKE256}
+
+   kema-Kyber1024-ECDH-P384-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-SHAKE256, pk-Kyber1024-ECDH-P384-SHAKE256}
+
+   kema-Kyber1024-ECDH-brainpoolP384r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256, pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256}
+
+   kema-Kyber1024-X448-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-X448-SHAKE256, pk-Kyber1024-X448-SHAKE256}
+
+
+   END
+
+   <CODE ENDS>
+
 7.  IANA Considerations
 
-   The ASN.1 module OID is TBD.
+   The following need to be assigned by IANA:
+
+   *  The OID for the ASN.1 module Composite-KEM-2023,
+
+   *  OIDs for id-composite-kem-SHAKE128, id-composite-kem-SHAKE256
 
 8.  Security Considerations
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 27]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 8.1.  Policy for Deprecated and Acceptable Algorithms
 
@@ -1507,17 +1557,18 @@ Internet-Draft              PQ Composite Keys                 March 2023
    for this purpose we have included a KDF in the composite KEM
    construction.
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 27]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    In protocols where the KEM output will be supplied to a KDF, it
    should be safe to use a NULL KDF within the composite KEM -- ie the
    KDF where KDF(m) = m -- but we leave the details of any such security
    analysis to the protocol designers who wish to implement it.
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 28]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 8.3.2.  APOP Attack on concatenated keys
 
@@ -1563,16 +1614,17 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 9.1.  Normative References
 
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 28]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    [BSI-ECC]  Federal Office for Information Security (BSI), "Technical
               Guideline BSI TR-03111: Elliptic Curve Cryptography.
               Version 2.10", 1 June 2018.
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 29]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [I-D.housley-lamps-cms-kemri]
               Housley, R., Gray, J., and T. Okubo, "Using Key
@@ -1617,18 +1669,18 @@ Internet-Draft              PQ Composite Keys                 March 2023
               RFC 5652, DOI 10.17487/RFC5652, September 2009,
               <https://www.rfc-editor.org/info/rfc5652>.
 
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 29]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/info/rfc8174>.
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 30]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [RFC8410]  Josefsson, S. and J. Schaad, "Algorithm Identifiers for
               Ed25519, Ed448, X25519, and X448 for Use in the Internet
@@ -1674,17 +1726,17 @@ Internet-Draft              PQ Composite Keys                 March 2023
    [I-D.driscoll-pqt-hybrid-terminology]
               D, F., "Terminology for Post-Quantum Traditional Hybrid
               Schemes", Work in Progress, Internet-Draft, draft-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 30]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
               driscoll-pqt-hybrid-terminology-01, 20 October 2022,
               <https://datatracker.ietf.org/doc/html/draft-driscoll-pqt-
               hybrid-terminology-01>.
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 31]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [I-D.ietf-tls-hybrid-design]
               Stebila, D., Fluhrer, S., and S. Gueron, "Hybrid key
@@ -1728,19 +1780,19 @@ Internet-Draft              PQ Composite Keys                 March 2023
               (IKEv2)", STD 79, RFC 7296, DOI 10.17487/RFC7296, October
               2014, <https://www.rfc-editor.org/info/rfc7296>.
 
-
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 31]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
               for Security", RFC 7748, DOI 10.17487/RFC7748, January
               2016, <https://www.rfc-editor.org/info/rfc7748>.
+
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 32]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
@@ -1784,22 +1836,19 @@ Appendix C.  Contributors and Acknowledgements
    "Copying always makes things easier and less error prone" -
    [RFC8411].
 
-
-
-
-
-
-Ounsworth & Gray        Expires 11 September 2023              [Page 32]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
 C.1.  Making contributions
 
    Additional contributions to this draft are welcome.  Please see the
    working copy of this draft at, as well as open issues at:
 
    https://github.com/EntrustCorporation/draft-composite-kem/
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 33]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 Authors' Addresses
 
@@ -1845,4 +1894,11 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray        Expires 11 September 2023              [Page 33]
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires 11 September 2023              [Page 34]
