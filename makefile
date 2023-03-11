@@ -14,8 +14,9 @@ $(docName).txt: $(docName).mkd
 xml: $(docName).xml
 
 $(docName).xml: $(docName).mkd
-	 kramdown-rfc2629 $(docName).mkd > $(docName).xml
-
+	./insertFileIncludes.sh $(docName).mkd "." > $(docName)_tmp.mkd
+	kramdown-rfc2629 $(docName)_tmp.mkd > $(docName).xml
+	rm $(docName)_tmp.mkd
 
 
 

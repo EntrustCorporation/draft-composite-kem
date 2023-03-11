@@ -6,6 +6,7 @@ docname: draft-ounsworth-pq-composite-kem-01
 # <!-- stand_alone: true -->
 ipr: trust200902
 area: Security
+stream: IETF
 wg: LAMPS
 kw: Internet-Draft
 cat: std
@@ -46,6 +47,7 @@ normative:
   #<!-- I-D.draft-ietf-lamps-kyber-certificates-00: -->
   I-D.draft-ounsworth-pq-composite-keys-01:
   I-D.draft-perret-prat-lamps-cms-pq-kem-00:
+  I-D.draft-housley-lamps-cms-kemri-02:
   SHA3:
     title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions, FIPS PUB 202, DOI 10.6028/NIST.FIPS.202"
     author: 
@@ -146,6 +148,7 @@ structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEM-TRANS me
 # Changes in version -01
 
 * Sycronized terminology with I-D.draft-driscoll-pqt-hybrid-terminology-01.
+* Changed CompositeCiphertextValue from BIT STRING to OCTET STRING.
 
 # Introduction {#sec-intro}
 
@@ -262,18 +265,17 @@ The following is the mandatory to specify information when specifying a composit
 * A KEM combiner appropriate to the specific choice of component algorithms (see {{sec-kem-combiner}}).
 
 
-
-TODO - LAMPS needs to define a KEM-ALGORITHM  -  extension to RFC 5912 - Bring to IETF. We just made up the prefix "kema" (for "KEM algorithm") is that the right prefix?   
-
 ~~~
 kema-CompositeKEM KEM-ALGORITHM ::= {
     IDENTIFIER id-alg-composite-kem
     VALUE CompositeCiphertextValue
-    PARAMS composite-kem-params  
+    PARAMS TYPE Composite-kem-params ARE optional
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 ~~~
+
+where `KEM-ALGORITHM` is defined in {{I-D.housley-lamps-cms-kemri}}.
 
 
 ## Composite Keys
@@ -304,7 +306,7 @@ The compositeCipherTextValue is a concatenation of the ciphertexts of the
 underlying component algorithms.  It is represented in ASN.1 as follows:
 
 ~~~
-CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
+CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 ~~~
 
 ## Encoding Rules
@@ -321,8 +323,12 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 ## KEM Combiner {#sec-kem-combiner}
 
+TODO: REDO IN LIGHT OF ARON / STAVROS' CHANGES TO CFRG-KEM-COMBINERS DRAFT
+
 TODO: read and cite the ETSI doc "Quantum-safe Hybrid Key Exchanges"
 https://www.etsi.org/deliver/etsi_ts/103700_103799/103744/01.01.01_60/ts_103744v010101p.pdf
+
+TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.
 
 This document follows the advice of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
 
@@ -355,23 +361,21 @@ This section defines algorithm identifiers, component algorithms and their order
 This section is not intended to be exhaustive and other authors may define OIDs for new combinations so long as they are compatible with the structures and processes defined in this and the companion signature and encryption documents.
 
 
-KEM type                                    | Definition                                         | OID
----------                                   | -----------                                        | ----------
-id-Kyber512-ECDH-P256-shake128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD
-id-Kyber512-ECDH-brainpoolP256r1-shake128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD
-id-Kyber512-X25519-shake128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD
-id-Kyber768-RSA-shake256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD
-id-Kyber768-ECDH-P256-shake256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD
-id-Kyber768-ECDH-brainpoolP256r1-shake256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD
-id-Kyber768-X25519-shake256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD
-id-Kyber1024-ECDH-P384-shake256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD
-id-Kyber1024-ECDH-brainpoolP384r1-shake256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD
-id-Kyber1024-X448-shake256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD
-id-composite-key-shake128          | {{sec-generic-composite-kem-shake128}}        | TBD
-id-composite-key-shake256          | {{sec-generic-composite-kem-shake256}}        | TBD
-{: #tab-kem-agls title="Composite KEM key types"}
-
-
+KEM type                                    | Section                                         | OID           | First KEM Alg   | Second KEM Alg |  Combiner     |
+---------                                   | -----------                                        | ---------- | ----------      | ----------     | ----------    |
+id-Kyber512-ECDH-P256-SHAKE128              | {{sec-id-Kyber512-ECDH-P256-SHAKE128}}             | TBD        | Kyber512        | TODO           | SHAKE128( ss1 \|\| SHAKE128(ss2, 256), 256) |
+id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | {{sec-id-Kyber512-ECDH-brainpoolP256r1-shake128}}  | TBD        | Kyber512        | TODO           | SHAKE128( ss1 \|\| SHAKE128(ss2, 256), 256) |
+id-Kyber512-X25519-SHAKE128                 | {{sec-id-Kyber512-X25519-shake128}}                | TBD        | Kyber512        | X25519         | SHAKE128( ss1 \|\| ss2, 256) |
+id-Kyber768-RSA-SHAKE256                    | {{sec-id-Kyber768-RSA-shake256}}                   | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
+id-Kyber768-ECDH-P256-SHAKE256              | {{sec-id-Kyber768-ECDH-P256-shake256}}             | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
+id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | {{sec-id-Kyber768-ECDH-brainpoolP256r1-shake256}}  | TBD        | Kyber768        | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 384), 384) |
+id-Kyber768-X25519-SHAKE256                 | {{sec-id-Kyber768-X25519-shake256}}                | TBD        | Kyber768        | X25519         | SHAKE256( ss1 \|\| ss2, 384) |
+id-Kyber1024-ECDH-P384-SHAKE256             | {{sec-id-Kyber1024-ECDH-P384-shake256}}            | TBD        | Kyber1024       | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
+id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | {{sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256}} | TBD        | Kyber1024       | TODO           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
+id-Kyber1024-X448-SHAKE256                  | {{sec-id-Kyber1024-X448-shake256}}                 | TBD        | Kyber1024       | X448           | SHAKE256( ss1 \|\| SHAKE256(ss2, 512), 512) |
+id-composite-kem-shake128          | {{sec-generic-composite-kem-shake128}}                      | TBD        | Defined at runtime | Defined at runtime | SHAKE128( SHAKE128(ss1, 256) \|\| SHAKE128(ss2, 256) , 256) |
+id-composite-kem-SHAKE256          | {{sec-generic-composite-kem-shake256}}                      | TBD        | Definet at runtime | Definet at runtime | SHAKE256( SHAKE256(ss1, 512) \|\| SHAKE256(ss2, 512) , 512) |
+{: #tab-kem-algs title="Composite KEM key types"}
 
 These combinations were chosen according to the following rough guidelines:
 
@@ -388,7 +392,7 @@ The authors wish to note that although the CompositePublicKey and CompositePriva
 This composite KEM algorithm MAY be used with a `id-Kyber512-ECDH-P256` composite key as defined in {{I-D.ounsworth-pq-composite-keys}}, or MAY be used with Kyber512 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.
 
 ~~~
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
+id-Kyber512-ECDH-P256-SHAKE128 OBJECT IDENTIFIER ::= {
   joint-iso-itu-t(2) country(16) us(840) organization(1) 
   entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2) 
   TBD }
@@ -398,6 +402,19 @@ EDNOTE: this is a temporary OID for the purposes of prototyping.  We
    are requesting IANA to assign a permanent OID, see Section 6.
 
 AlgorithmIdentifier paramaters are ABSENT.
+
+
+~~~
+kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
+    IDENTIFIER id-Kyber512-ECDH-P256-SHAKE128
+    VALUE CompositeCiphertextValue{BIT STRING, ECPoint}
+    PARAMS composite-kem-params  
+    PUBLIC-KEYS { pk-Composite } WHERE pk-Composite.IDENTIFIER=id-Kyber512-ECDH-P256
+    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+}
+~~~
+
+TODO: align this with KEM-ALGORITHM defined in draft-housley-lamps-cms-kemri-01.
 
 
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
@@ -845,6 +862,22 @@ EDNOTE: I copied and pruned this text from {{I-D.ounsworth-pq-composite-sigs}}. 
 
 <!-- End of In Practice section -->
 
+
+# ASN.1 Module
+
+TBD -- UPDATE
+
+~~~ ASN.1
+
+<CODE STARTS>
+
+!!Composite-KEM-2023.asn
+
+<CODE ENDS>
+
+~~~
+
+
 # IANA Considerations {#sec-iana}
 The ASN.1 module OID is TBD.  
 
@@ -911,66 +944,6 @@ We believe the construction offered in this document meets this definition of a 
 # Examples {#appdx-examples}
 
 TBD
-
-# ASN.1 Module
-
-TBD -- UPDATE
-
-~~~ ASN.1
-
-<CODE STARTS>
-
-Composite-Keys-2022
-  { TBD }
-
-DEFINITIONS IMPLICIT TAGS ::= BEGIN
-
-EXPORTS ALL;
-
-IMPORTS
--- any?
-
---
--- Object Identifiers
---
-
--- To be replaced by IANA
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-joint-iso-itu-t(2) country(16) us(840) organization(1) 
-entrust(114027) Algorithm(80) Composite(4) KEM (5) }
-
-id-composite-kdf-combiner OBJECT IDENTIFIER ::= { TBD }
-
-
---
--- Composite structures
---
-
-CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF BIT STRING
-
-kema-CompositeKEM KEM-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite-kem
-    VALUE CompositeCiphertextValue
-    PARAMS composite-kem-params  
-    PUBLIC-KEYS { pk-Composite }
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-
-TODO: this assumes that KEM-ALGORITHM is defined, which it currently is not.
-
-composite-kem-params  ::= {
-    combiner     AlgorithmIdentifier
-}
-
-alg-composite-kdf-combiner-params ::= {
-        kdf     AlgorithmIdentifier
-}
-
-END
-
-<CODE ENDS>
-
-~~~
 
 
 # Intellectual Property Considerations

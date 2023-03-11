@@ -1,0 +1,113 @@
+
+-- command for easily copying it into a compiler (ubuntu with xclip)
+-- cat ../draft-ounsworth-pq-composite-keys/ASN1ModuleIncludes.asn ../draft-ounsworth-pq-composite-keys/Composite-Keys-2023.asn Composite-KEM-2023.asn | xclip -sel clip
+
+Composite-KEM-2023
+
+DEFINITIONS IMPLICIT TAGS ::= BEGIN
+
+EXPORTS ALL;
+
+IMPORTS
+
+KEM-ALGORITHM
+    FROM KEMAlgorithmInformation-2023
+    { iso(1) identified-organization(3) dod(6) internet(1)
+      security(5) mechanisms(5) pkix(7) id-mod(0)
+          id-mod-kemAlgorithmInformation-2023(99) }
+
+id-composite-key,
+pk-composite-kem,
+id-Kyber512-ECDH-P256-SHAKE128,
+pk-Kyber512-ECDH-P256-SHAKE128,
+id-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
+pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
+id-Kyber512-X25519-SHAKE128,
+pk-Kyber512-X25519-SHAKE128,
+id-Kyber768-RSA-SHAKE256,
+pk-Kyber768-RSA-SHAKE256,
+id-Kyber768-ECDH-P256-SHAKE256,
+pk-Kyber768-ECDH-P256-SHAKE256,
+id-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
+pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
+id-Kyber768-X25519-SHAKE256,
+pk-Kyber768-X25519-SHAKE256,
+id-Kyber1024-ECDH-P384-SHAKE256,
+pk-Kyber1024-ECDH-P384-SHAKE256,
+id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
+pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
+id-Kyber1024-X448-SHAKE256,
+pk-Kyber1024-X448-SHAKE256
+    FROM CompositeKeys-2023
+           {iso(1) identified-organization(3) dod(6) internet(1) security(5)
+       mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(98)};
+
+
+
+--
+-- Composite structures
+--
+
+CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
+
+
+kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject}
+      KEM-ALGORITHM ::=  {
+         IDENTIFIER id
+         VALUE CompositeCiphertextValue
+         PUBLIC-KEYS {publicKeyObject} }
+
+
+
+-- Generic Composite KEM
+
+
+-- To be replaced by IANA
+id-alg-composite-kem OBJECT IDENTIFIER ::= {
+joint-iso-itu-t(2) country(16) us(840) organization(1) 
+entrust(114027) algorithm(80) composite(4) kem (5) }
+
+
+-- TODO: To be replaced by IANA
+id-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+  algorithm(80) tbd(98) }
+
+kema-Composite-kem-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
+
+
+-- TODO: To be replaced by IANA
+id-composite-kem-SHAKE256 OBJECT IDENTIFIER ::= {
+  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
+  algorithm(80) tbd(99) }
+
+kema-Composite-kem-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-alg-composite-kem, pk-Composite}
+
+
+
+
+-- Explicit Composite KEMs
+
+
+kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-P256-SHAKE128, pk-Kyber512-ECDH-P256-SHAKE128}
+
+kema-Kyber512-ECDH-brainpoolP256r1-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-SHAKE128, pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128}
+
+kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber512-X25519-SHAKE128, pk-Kyber512-X25519-SHAKE128}
+
+kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-RSA-SHAKE256, pk-Kyber768-RSA-SHAKE256}
+
+kema-Kyber768-ECDH-P256-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-P256-SHAKE256, pk-Kyber768-ECDH-P256-SHAKE256}
+
+kema-Kyber768-ECDH-brainpoolP256r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-SHAKE256, pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256}
+
+kema-Kyber768-X25519-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber768-X25519-SHAKE256, pk-Kyber768-X25519-SHAKE256}
+
+kema-Kyber1024-ECDH-P384-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-SHAKE256, pk-Kyber1024-ECDH-P384-SHAKE256}
+
+kema-Kyber1024-ECDH-brainpoolP384r1-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256, pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256}
+
+kema-Kyber1024-X448-SHAKE256 KEM-ALGORITHM ::= kema-explicitCompositeKEM{id-Kyber1024-X448-SHAKE256, pk-Kyber1024-X448-SHAKE256}
+
+
+END
