@@ -20,6 +20,12 @@ id-rsa-kem, GenericHybridParameters
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0) cms-rsa-kem(21) }
 
+id-RSASSA-PSS, RSASSA-PSS-Params
+    FROM PKCS-1 {
+       iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)
+       modules(0) pkcs-1(1)
+   }
+
 id-composite-key,
 pk-composite-kem,
 id-Kyber512-ECDH-P256-SHAKE128,
@@ -53,6 +59,8 @@ pk-Kyber1024-X448-SHAKE256
 --
 
 CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
+
+CompositeKEMParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
 
 kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject}
@@ -110,11 +118,10 @@ kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::=
 
 -- This one is defined the long-hand way to include params, 
 --   which the one-liner doesn't support.
-
 kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::= {
        IDENTIFIER id-Kyber768-RSA-SHAKE256
        VALUE CompositeCihprtextValue
-       PARAMS TYPE GenericHybridParameters ARE required
+       PARAMS TYPE CompositeKemParams ARE required
        PUBLIC-KEYS {pk-Kyber768-RSA-SHAKE256}
      }
 

@@ -1295,7 +1295,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-key-encapsulation-mechanisms" class="xref">Key Encapsulation Mechanisms (KEMs)</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
-                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-specifying-composite-kem-alg" class="xref">Specifying Composite KEM Algorithms</a></p>
+                <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-kema-compositekem-2" class="xref">kema-CompositeKEM</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-composite-keys-2" class="xref">Composite Keys</a></p>
@@ -1309,10 +1309,13 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-compositeciphertextvalue-2" class="xref">CompositeCiphertextValue</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
-                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
+                <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-compositkemparameters-2" class="xref">CompositKemParameters</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
-                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="xref">3.6</a>.  <a href="#name-kem-combiner-2" class="xref">KEM Combiner</a></p>
+                <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="xref">3.6</a>.  <a href="#name-encoding-rules-2" class="xref">Encoding Rules</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
+                <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="xref">3.7</a>.  <a href="#name-kem-combiner-3" class="xref">KEM Combiner</a></p>
 </li>
             </ul>
 </li>
@@ -1320,40 +1323,10 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-algorithm-identifiers-2" class="xref">Algorithm Identifiers</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
-                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-id-kyber512-ecdh-p256-shake1" class="xref">id-Kyber512-ECDH-P256-SHAKE128</a></p>
+                <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-notes-on-id-kyber768-rsa-sha" class="xref">Notes on id-Kyber768-RSA-SHAKE256</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-id-kyber512-ecdh-brainpoolp2" class="xref">id-Kyber512-ECDH-brainpoolP256r1-shake128</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.3">
-                <p id="section-toc.1-1.4.2.3.1"><a href="#section-4.3" class="xref">4.3</a>.  <a href="#name-id-kyber512-x25519-shake128-2" class="xref">id-Kyber512-X25519-shake128</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.4">
-                <p id="section-toc.1-1.4.2.4.1"><a href="#section-4.4" class="xref">4.4</a>.  <a href="#name-id-kyber768-rsa-shake256-2" class="xref">id-Kyber768-RSA-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.5">
-                <p id="section-toc.1-1.4.2.5.1"><a href="#section-4.5" class="xref">4.5</a>.  <a href="#name-id-kyber768-ecdh-p256-shake2" class="xref">id-Kyber768-ECDH-P256-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.6">
-                <p id="section-toc.1-1.4.2.6.1"><a href="#section-4.6" class="xref">4.6</a>.  <a href="#name-id-kyber768-ecdh-brainpoolp2" class="xref">id-Kyber768-ECDH-brainpoolP256r1-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.7">
-                <p id="section-toc.1-1.4.2.7.1"><a href="#section-4.7" class="xref">4.7</a>.  <a href="#name-id-kyber768-x25519-shake256-2" class="xref">id-Kyber768-X25519-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.8">
-                <p id="section-toc.1-1.4.2.8.1"><a href="#section-4.8" class="xref">4.8</a>.  <a href="#name-id-kyber1024-ecdh-p384-shake" class="xref">id-Kyber1024-ECDH-P384-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.9">
-                <p id="section-toc.1-1.4.2.9.1"><a href="#section-4.9" class="xref">4.9</a>.  <a href="#name-id-kyber1024-ecdh-brainpoolp" class="xref">id-Kyber1024-ECDH-brainpoolP384r1-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.10">
-                <p id="section-toc.1-1.4.2.10.1"><a href="#section-4.10" class="xref">4.10</a>. <a href="#name-id-kyber1024-x448-shake256-2" class="xref">id-Kyber1024-X448-shake256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.11">
-                <p id="section-toc.1-1.4.2.11.1"><a href="#section-4.11" class="xref">4.11</a>. <a href="#name-id-alg-composite-kem-shake12" class="xref">id-alg-composite-kem-shake128</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.12">
-                <p id="section-toc.1-1.4.2.12.1"><a href="#section-4.12" class="xref">4.12</a>. <a href="#name-id-alg-composite-kem-shake25" class="xref">id-alg-composite-kem-shake256</a></p>
+                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-notes-on-generic-composite-2" class="xref">Notes on Generic Composite</a></p>
 </li>
             </ul>
 </li>
@@ -1389,18 +1362,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-or-modes-2" class="xref">OR Modes</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-cryptographic-review-of-comb" class="xref">Cryptographic review of combiner</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.1">
-                    <p id="section-toc.1-1.8.2.3.2.1.1"><a href="#section-8.3.1" class="xref">8.3.1</a>.  <a href="#name-need-for-a-kdf-within-the-co" class="xref">Need for a KDF within the combiner</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.2">
-                    <p id="section-toc.1-1.8.2.3.2.2.1"><a href="#section-8.3.2" class="xref">8.3.2</a>.  <a href="#name-apop-attack-on-concatenated-" class="xref">APOP Attack on concatenated keys</a></p>
-</li>
-                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3.2.3">
-                    <p id="section-toc.1-1.8.2.3.2.3.1"><a href="#section-8.3.3" class="xref">8.3.3</a>.  <a href="#name-aviram2022-2" class="xref">Aviram2022</a></p>
-</li>
-                </ul>
+                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="xref">8.3</a>.  <a href="#name-kem-combiner-4" class="xref">KEM Combiner</a></p>
 </li>
             </ul>
 </li>
@@ -1445,6 +1407,8 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
 <li class="normal" id="section-1-1.1">Sycronized terminology with I-D.draft-driscoll-pqt-hybrid-terminology-01.<a href="#section-1-1.1" class="pilcrow">¶</a>
 </li>
         <li class="normal" id="section-1-1.2">Changed CompositeCiphertextValue from BIT STRING to OCTET STRING.<a href="#section-1-1.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-1-1.3">Explicit composite combinations defined and ASN.1 module updated<a href="#section-1-1.3" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1547,45 +1511,37 @@ secret ss, or in some cases a distinguished error value.<a href="#section-3.1-2.
 <p id="section-3.1-9">The main security property for KEMs is indistinguishability under
 adaptive chosen ciphertext attack (IND-CCA2), which means that shared
 secret values should be indistinguishable from random strings even
-given the ability to have other arbitrary ciphertexts decapsulated.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
-<p id="section-3.1-10">EDNOTE: it would be really nice for security proofs if definition of KEM included that the bits of the shared secret output need to be uniformly distributed (ie IND-CCA), because for example it would then be safe to XOR or truncate them. While the NIST PQC candidates all seem to do this, we could not find a definition of "KEM" that includes it as a requirement.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
-<p id="section-3.1-11">A weaker security notion is indistinguishability under chosen
-plaintext attack (IND-CPA), which means that the shared secret values
-should be indistinguishable from random strings given a copy of the
-public key.  IND-CPA roughly corresponds to security against a
-passive attacker, and sometimes corresponds to one-time key exchange.<a href="#section-3.1-11" class="pilcrow">¶</a></p>
-<p id="section-3.1-12">The composite KEM mechanisms meets these security properties if and only if the component primitives meet them.<a href="#section-3.1-12" class="pilcrow">¶</a></p>
-<p id="section-3.1-13">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.<a href="#section-3.1-13" class="pilcrow">¶</a></p>
-<p id="section-3.1-14">EDNOTE:  Discussed use of ASN.1 to combine the shared secrets. ASN.1 is nice because it embeds the length values for
-us. Decided instead to run each component shared secret through the supplied KDF which will normalize all the lengths.<a href="#section-3.1-14" class="pilcrow">¶</a></p>
+given the ability to have other arbitrary ciphertexts decapsulated.
+By using the KEM combiner defined in <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>, the composite KEMs defined in this document inherit the IND-CCA2 security from the general combiner.<a href="#section-3.1-9" class="pilcrow">¶</a></p>
+<p id="section-3.1-10">TODO: needs more formal analysis that the methods of transforming KeyTrans and KeyAgree meet this.<a href="#section-3.1-10" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="specifying-composite-kem-algorithms">
+<div id="sec-kema-CompositeKEM">
 <section id="section-3.2">
-        <h3 id="name-specifying-composite-kem-alg">
-<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-specifying-composite-kem-alg" class="section-name selfRef">Specifying Composite KEM Algorithms</a>
+        <h3 id="name-kema-compositekem-2">
+<a href="#section-3.2" class="section-number selfRef">3.2. </a><a href="#name-kema-compositekem-2" class="section-name selfRef">kema-CompositeKEM</a>
         </h3>
-<p id="section-3.2-1">The following is the mandatory to specify information when specifying a composite KEM type:<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-1">TODO: Align this with section 4.2 in -sigs.<a href="#section-3.2-1" class="pilcrow">¶</a></p>
+<p id="section-3.2-2">The following is the mandatory to specify information when specifying a composite KEM type:<a href="#section-3.2-2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.2-2.1">An AlgorithmIdentifier OID for the composite KEM type.<a href="#section-3.2-2.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.2-3.1">An AlgorithmIdentifier OID for the composite KEM type.<a href="#section-3.2-3.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.2-2.2">Component algorithms that will correspond to each position within the <code>CompositeCiphertextValue</code>. (see <a href="#sec-CompositeCiphertextValue" class="xref">Section 3.4</a>).<a href="#section-3.2-2.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.2-3.2">Component algorithms that will correspond to each position within the <code>CompositeCiphertextValue</code>. (see <a href="#sec-CompositeCiphertextValue" class="xref">Section 3.4</a>).<a href="#section-3.2-3.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.2-2.3">A KEM combiner appropriate to the specific choice of component algorithms (see <a href="#sec-kem-combiner" class="xref">Section 3.6</a>).<a href="#section-3.2-2.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.2-3.3">A KEM combiner appropriate to the specific choice of component algorithms (see <a href="#sec-kem-combiner" class="xref">Section 3.7</a>).<a href="#section-3.2-3.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<div class="alignLeft art-text artwork" id="section-3.2-3">
+<div class="alignLeft art-text artwork" id="section-3.2-4">
 <pre>
 kema-CompositeKEM KEM-ALGORITHM ::= {
     IDENTIFIER id-alg-composite-kem
     VALUE CompositeCiphertextValue
-    PARAMS TYPE Composite-kem-params ARE optional
+    PARAMS TYPE CompositeKemParams ARE optional
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
-}
-</pre><a href="#section-3.2-3" class="pilcrow">¶</a>
+</pre><a href="#section-3.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-3.2-4">where <code>KEM-ALGORITHM</code> is defined in <span>[<a href="#I-D.housley-lamps-cms-kemri" class="xref">I-D.housley-lamps-cms-kemri</a>]</span>.<a href="#section-3.2-4" class="pilcrow">¶</a></p>
+<p id="section-3.2-5">where <code>KEM-ALGORITHM</code> is defined in <span>[<a href="#I-D.housley-lamps-cms-kemri" class="xref">I-D.housley-lamps-cms-kemri</a>]</span>.<a href="#section-3.2-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="composite-keys">
@@ -1625,50 +1581,65 @@ CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 </div>
 </section>
 </div>
-<div id="encoding-rules">
+<div id="sec-compositeKemParameters">
 <section id="section-3.5">
-        <h3 id="name-encoding-rules-2">
-<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
+        <h3 id="name-compositkemparameters-2">
+<a href="#section-3.5" class="section-number selfRef">3.5. </a><a href="#name-compositkemparameters-2" class="section-name selfRef">CompositKemParameters</a>
         </h3>
-<p id="section-3.5-1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.<a href="#section-3.5-1" class="pilcrow">¶</a></p>
-<p id="section-3.5-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-3.5-2" class="pilcrow">¶</a></p>
-<p id="section-3.5-3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.5-4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
-<p id="section-3.5-5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-3.5-5" class="pilcrow">¶</a></p>
+<p id="section-3.5-1">Composite KEM parameters are defined as follows and MAY be included when a composite KEM algorithm is used with an AlgorithmIdentifier:<a href="#section-3.5-1" class="pilcrow">¶</a></p>
+<div id="section-3.5-2">
+<pre class="lang-asn.1 sourcecode">
+CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+</pre><a href="#section-3.5-2" class="pilcrow">¶</a>
+</div>
+<p id="section-3.5-3">When composite KEM parameters are used, the KEM's CompositeKemParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
+<p id="section-3.5-4">For explicit algorithms, it is not necessary to carry a CompositeKemParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSA-KEM as defined in <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>. <a href="#sec-kema-CompositeKEM" class="xref">Section 3.2</a> defines <code>PARAMS ARE optional</code> so that explicit algorithms may define params as <code>absent</code> when they are not necessary, or use <code>CompositeKemParams</code> as defined in <a href="#sec-asn1-module" class="xref">Section 6</a>.  For generic compsite algorithms, CompositeSignatureParams MUST be included as described in <a href="#sec-generic-composite-kem" class="xref">Section 4.2</a>.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="encoding-rules">
+<section id="section-3.6">
+        <h3 id="name-encoding-rules-2">
+<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-encoding-rules-2" class="section-name selfRef">Encoding Rules</a>
+        </h3>
+<p id="section-3.6-1">Many protocol specifications will require that composite KEM data structures be represented by an octet string or bit string.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
+<p id="section-3.6-2">When an octet string is required, the DER encoding of the composite data structure SHALL be used directly.<a href="#section-3.6-2" class="pilcrow">¶</a></p>
+<p id="section-3.6-3">EDNOTE: will this definition include an ASN.1 tag and length byte inside the OCTET STRING object? If so, that's probably an extra unnecessary layer.<a href="#section-3.6-3" class="pilcrow">¶</a></p>
+<p id="section-3.6-4">When a bit string is required, the octets of the DER encoded composite data structure SHALL be used as the bits of the bit string, with the most significant bit of the first octet becoming the first bit, and so on, ending with the least significant bit of the last octet becoming the last bit of the bit string.<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<p id="section-3.6-5">In the interests of simplicity and avoiding compatibility issues, implementations that parse these structures MAY accept both BER and DER.<a href="#section-3.6-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-kem-combiner">
-<section id="section-3.6">
-        <h3 id="name-kem-combiner-2">
-<a href="#section-3.6" class="section-number selfRef">3.6. </a><a href="#name-kem-combiner-2" class="section-name selfRef">KEM Combiner</a>
+<section id="section-3.7">
+        <h3 id="name-kem-combiner-3">
+<a href="#section-3.7" class="section-number selfRef">3.7. </a><a href="#name-kem-combiner-3" class="section-name selfRef">KEM Combiner</a>
         </h3>
-<p id="section-3.6-1">TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.<a href="#section-3.6-1" class="pilcrow">¶</a></p>
-<p id="section-3.6-2">This document follows the recommendation of <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>: the outputs of multiple KEMs are combined as<a href="#section-3.6-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.6-3">
+<p id="section-3.7-1">TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.<a href="#section-3.7-1" class="pilcrow">¶</a></p>
+<p id="section-3.7-2">This document follows the recommendation of <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span>: the outputs of multiple KEMs are combined as<a href="#section-3.7-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.7-3">
 <pre>
 KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
 
 where
 k_i = H(ss_i || ct_i)
-</pre><a href="#section-3.6-3" class="pilcrow">¶</a>
+</pre><a href="#section-3.7-3" class="pilcrow">¶</a>
 </div>
-<p id="section-3.6-4">where:<a href="#section-3.6-4" class="pilcrow">¶</a></p>
+<p id="section-3.7-4">where:<a href="#section-3.7-4" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-5.1">
-            <code>KDF</code> and <code>H</code>, and <code>outputBits</code> represent a hash functions suitable to the chosen KEMs,<a href="#section-3.6-5.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.7-5.1">
+            <code>KDF</code> and <code>H</code>, and <code>outputBits</code> represent a hash functions suitable to the chosen KEMs,<a href="#section-3.7-5.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-5.2">
-            <code>fixedInfo</code> is the ASCI-encoded bytes of the KEM Type string from <a href="#tab-kem-algs" class="xref">Table 2</a> concatenated with any additional <code>contextInfo</code> provided by the protocol,<a href="#section-3.6-5.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.7-5.2">
+            <code>fixedInfo</code> is the ASCI-encoded bytes of the KEM Type string from <a href="#tab-kem-algs" class="xref">Table 2</a> concatenated with any additional <code>contextInfo</code> provided by the protocol,<a href="#section-3.7-5.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-5.3">
-            <code>counter</code> is fixed to the 32-bit value <code>0x00000001</code>,<a href="#section-3.6-5.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.7-5.3">
+            <code>counter</code> is fixed to the 32-bit value <code>0x00000001</code>,<a href="#section-3.7-5.3" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-5.4">
-            <code>||</code> represents concatenation.<a href="#section-3.6-5.4" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.7-5.4">
+            <code>||</code> represents concatenation.<a href="#section-3.7-5.4" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.6-6">Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.<a href="#section-3.6-6" class="pilcrow">¶</a></p>
-<p id="section-3.6-7">For convenience we define the following intantiations of KEM combiner:<a href="#section-3.6-7" class="pilcrow">¶</a></p>
+<p id="section-3.7-6">Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.<a href="#section-3.7-6" class="pilcrow">¶</a></p>
+<p id="section-3.7-7">For convenience we define the following intantiations of KEM combiner:<a href="#section-3.7-7" class="pilcrow">¶</a></p>
 <span id="name-kem-combiners-2"></span><div id="tab-kem-combiners">
 <table class="center" id="table-1">
           <caption>
@@ -1705,23 +1676,23 @@ k_i = H(ss_i || ct_i)
           </tbody>
         </table>
 </div>
-<p id="section-3.6-9">~~~ BEGIN EDNOTE ~~~<a href="#section-3.6-9" class="pilcrow">¶</a></p>
-<p id="section-3.6-10">these choices are sorta arbitrary but aiming to match security level of the input KEMs. Feedback welcome.<a href="#section-3.6-10" class="pilcrow">¶</a></p>
+<p id="section-3.7-9">~~~ BEGIN EDNOTE ~~~<a href="#section-3.7-9" class="pilcrow">¶</a></p>
+<p id="section-3.7-10">these choices are somewhat arbitrary but aiming to match security level of the input KEMs. Feedback welcome.<a href="#section-3.7-10" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="section-3.6-11.1">Kyber512: shake128/256<a href="#section-3.6-11.1" class="pilcrow">¶</a>
+<li class="normal" id="section-3.7-11.1">Kyber512: shake128/256<a href="#section-3.7-11.1" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-11.2">Kyber768: shake256/384<a href="#section-3.6-11.2" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.7-11.2">Kyber768: shake256/384<a href="#section-3.7-11.2" class="pilcrow">¶</a>
 </li>
-          <li class="normal" id="section-3.6-11.3">Kyber1024 shake256/512<a href="#section-3.6-11.3" class="pilcrow">¶</a>
+          <li class="normal" id="section-3.7-11.3">Kyber1024 shake256/512<a href="#section-3.7-11.3" class="pilcrow">¶</a>
 </li>
         </ul>
-<p id="section-3.6-12">~~~ END EDNOTE ~~~<a href="#section-3.6-12" class="pilcrow">¶</a></p>
-<p id="section-3.6-13">For example, the KEM combiner instantiation of the first entry of <a href="#tab-kem-algs" class="xref">Table 2</a> would be:<a href="#section-3.6-13" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-3.6-14">
+<p id="section-3.7-12">~~~ END EDNOTE ~~~<a href="#section-3.7-12" class="pilcrow">¶</a></p>
+<p id="section-3.7-13">For example, the KEM combiner instantiation of the first entry of <a href="#tab-kem-algs" class="xref">Table 2</a> would be:<a href="#section-3.7-13" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-3.7-14">
 <pre>
 ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
                     || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
-</pre><a href="#section-3.6-14" class="pilcrow">¶</a>
+</pre><a href="#section-3.7-14" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
@@ -1735,7 +1706,7 @@ ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
 <p id="section-4-1">This table summarizes the list of explicit composite Signature algorithms by the key and signature OID and the two component algorithms which make up the explicit composite algorithm.  These are denoted by First Signature Alg, and Second Signature Alg.<a href="#section-4-1" class="pilcrow">¶</a></p>
 <p id="section-4-2">The OID referenced are TBD and MUST be used only for prototyping and replaced with the final IANA-assigned OIDS. The following prefix is used for each: replace &lt;CompKEM&gt; with the String "2.16.840.1.114027.80.5.2"<a href="#section-4-2" class="pilcrow">¶</a></p>
 <p id="section-4-3">Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1<a href="#section-4-3" class="pilcrow">¶</a></p>
-<p id="section-4-4">The "KEM Combiner" column refers to the definitions in <a href="#sec-kem-combiner" class="xref">Section 3.6</a>.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-4">The "KEM Combiner" column refers to the definitions in <a href="#sec-kem-combiner" class="xref">Section 3.7</a>.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <span id="name-composite-kem-key-types-2"></span><div id="tab-kem-algs">
 <table class="center" id="table-2">
         <caption>
@@ -1839,362 +1810,90 @@ ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
         </tbody>
       </table>
 </div>
-<div id="sec-id-Kyber512-ECDH-P256-SHAKE128">
+<p id="section-4-6">The table above contains everything needed to implement the listed explicit composite algorithms, with the exception of some special notes found below in this section. See the ASN.1 module in section <a href="#sec-asn1-module" class="xref">Section 6</a> for the explicit definitions of the above Composite signature algorithms.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">Full specifications for the referenced algorithms can be found as follows:<a href="#section-4-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-8.1">
+          <p id="section-4-8.1.1"><em>ECDH</em>: There does not appear to be a single IETF definition of ECDH, so we refer to the following:<a href="#section-4-8.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-8.1.2.1">
+              <em>ECDH NIST</em>: SHALL be Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of <span>[<a href="#SP.800-56Ar3" class="xref">SP.800-56Ar3</a>]</span>.<a href="#section-4-8.1.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="section-4-8.1.2.2">
+              <em>ECDH BSI / brainpool</em>: SHALL be Elliptic Curve Key Agreement algorithm (ECKA) as defined in section 4.3.1 of <span>[<a href="#BSI-ECC" class="xref">BSI-ECC</a>]</span><a href="#section-4-8.1.2.2" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="section-4-8.2">
+          <em>Kyber</em>: <span>[<a href="#I-D.ietf-lamps-kyber-certificates" class="xref">I-D.ietf-lamps-kyber-certificates</a>]</span><a href="#section-4-8.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-4-8.3">
+          <em>RSA-KEM</em>: <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span><a href="#section-4-8.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-4-8.4">
+          <em>X25519 / X448</em>: <span>[<a href="#RFC8410" class="xref">RFC8410</a>]</span><a href="#section-4-8.4" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-4-9">EDNOTE: I believe that <span>[<a href="#SP.800-56Ar3" class="xref">SP.800-56Ar3</a>]</span> and <span>[<a href="#BSI-ECC" class="xref">BSI-ECC</a>]</span> give equivalent and interoperable algorithms, so maybe this is extranuous detail to include?<a href="#section-4-9" class="pilcrow">¶</a></p>
+<div id="notes-on-id-kyber768-rsa-shake256">
 <section id="section-4.1">
-        <h3 id="name-id-kyber512-ecdh-p256-shake1">
-<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-id-kyber512-ecdh-p256-shake1" class="section-name selfRef">id-Kyber512-ECDH-P256-SHAKE128</a>
+        <h3 id="name-notes-on-id-kyber768-rsa-sha">
+<a href="#section-4.1" class="section-number selfRef">4.1. </a><a href="#name-notes-on-id-kyber768-rsa-sha" class="section-name selfRef">Notes on id-Kyber768-RSA-SHAKE256</a>
         </h3>
-<p id="section-4.1-1">This composite KEM algorithm MAY be used with a <code>id-Kyber512-ECDH-P256</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber512 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.1-2">
+<p id="section-4.1-1">Use of RSA-KEM <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span> deserves a special explanation.<a href="#section-4.1-1" class="pilcrow">¶</a></p>
+<p id="section-4.1-2">When the <code>id-Kyber768-RSA-SHAKE256</code> object identifier is used with an <code>AlgorithmIdentifier</code>, the <code>AlgorithmIdentifier.parameters</code> MUST be of type `CompositeKemParams as follows:<a href="#section-4.1-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-3">
 <pre>
-id-Kyber512-ECDH-P256-SHAKE128 OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2)
-  TBD }
-</pre><a href="#section-4.1-2" class="pilcrow">¶</a>
+SEQUENCE {
+    AlgorithmIdentifier {
+        id-Kyber768TBD
+    },
+    AlgorithmIdentifier {
+        id-RSASSA-PSS,
+        GenericHybridParamaters
+    }
+}
+</pre><a href="#section-4.1-3" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.1-3" class="pilcrow">¶</a></p>
-<p id="section-4.1-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.1-4" class="pilcrow">¶</a></p>
+<p id="section-4.1-4"><code>GenericHybridParameters</code> is defined in <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>, repeated here for clarity:<a href="#section-4.1-4" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1-5">
 <pre>
-kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
-    IDENTIFIER id-Kyber512-ECDH-P256-SHAKE128
-    VALUE CompositeCiphertextValue{BIT STRING, ECPoint}
-    PARAMS composite-kem-params
-    PUBLIC-KEYS { pk-Composite } WHERE pk-Composite.IDENTIFIER=id-Kyber512-ECDH-P256
-    SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
+GenericHybridParameters ::= {
+    kem  KeyEncapsulationMechanism,
+    dem  DataEncapsulationMechanism
 }
 </pre><a href="#section-4.1-5" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-6">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.1-6" class="pilcrow">¶</a></p>
-<p id="section-4.1-7">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's secp256r1 public key as defied in <span>[<a href="#RFC5480" class="xref">RFC5480</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of <span>[<a href="#SP.800-56Ar3" class="xref">SP.800-56Ar3</a>]</span> to the other party's public key and one's own secp256r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.1-7" class="pilcrow">¶</a></p>
-<p id="section-4.1-8">The output of the two component KEMs is to be combined as follows:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
+<p id="section-4.1-6">The <code>GenericHybridParameters.kem</code> MUST be <code>id-kem-rsa</code> as defined in <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>:<a href="#section-4.1-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.1-7">
+<pre>
+id-kem-rsa OID ::= {
+    is18033-2 key-encapsulation-mechanism(2) rsa(4)
+}
+</pre><a href="#section-4.1-7" class="pilcrow">¶</a>
+</div>
+<p id="section-4.1-8">The associated parameters for id-kem-rsa have type
+RsaKemParameters:<a href="#section-4.1-8" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4.1-9">
 <pre>
-ss = SHAKE128( ss1 || SHAKE128(ss2, 256) , 256)
+RsaKemParameters ::= {
+    keyDerivationFunction  KeyDerivationFunction,
+    keyLength              KeyLength
+}
 </pre><a href="#section-4.1-9" class="pilcrow">¶</a>
 </div>
-<p id="section-4.1-10">where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 256 bit output.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
+<p id="section-4.1-10">For use with <code>id-Kyber768-RSA-SHAKE256</code>, the <code>keyDerivationFunction</code> SHALL be <code>id-sha3-384</code> and <code>keyLength</code> SHALL be <code>384</code>.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
+<p id="section-4.1-11">EDNOTE: I'm borrowing <code>id-sha3-384</code> from draft-turner-lamps-adding-sha3-to-pkix-00, which looks ilke was abandoned. Do we have PKIX OIDs for SHA3?<a href="#section-4.1-11" class="pilcrow">¶</a></p>
+<p id="section-4.1-12">TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?<a href="#section-4.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sec-id-Kyber512-ECDH-brainpoolP256r1-shake128">
+<div id="sec-generic-composite-kem">
 <section id="section-4.2">
-        <h3 id="name-id-kyber512-ecdh-brainpoolp2">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-id-kyber512-ecdh-brainpoolp2" class="section-name selfRef">id-Kyber512-ECDH-brainpoolP256r1-shake128</a>
+        <h3 id="name-notes-on-generic-composite-2">
+<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-notes-on-generic-composite-2" class="section-name selfRef">Notes on Generic Composite</a>
         </h3>
-<p id="section-4.2-1">This composite KEM algorithm MAY be used with a <code>id-Kyber512-ECDH-brainpoolP256r1</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber512 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.2-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.2-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.2-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.2-3" class="pilcrow">¶</a></p>
-<p id="section-4.2-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.2-4" class="pilcrow">¶</a></p>
-<p id="section-4.2-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.2-5" class="pilcrow">¶</a></p>
-<p id="section-4.2-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the the sender's brainpoolP256r1 public key as defied in <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of <span>[<a href="#BSI-ECC" class="xref">BSI-ECC</a>]</span> to the other party's public key and one's own brainpoolP256r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.2-6" class="pilcrow">¶</a></p>
-<p id="section-4.2-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.2-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.2-8">
-<pre>
-ss = SHAKE128( ss1 || SHAKE128(ss2, 256), 256)
-</pre><a href="#section-4.2-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.2-9">where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 256 bit output.<a href="#section-4.2-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber512-X25519-shake128">
-<section id="section-4.3">
-        <h3 id="name-id-kyber512-x25519-shake128-2">
-<a href="#section-4.3" class="section-number selfRef">4.3. </a><a href="#name-id-kyber512-x25519-shake128-2" class="section-name selfRef">id-Kyber512-X25519-shake128</a>
-        </h3>
-<p id="section-4.3-1">This composite KEM algorithm MAY be used with a <code>id-Kyber512-X25519</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber512 and X25519 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.3-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.3-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.3-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.3-3" class="pilcrow">¶</a></p>
-<p id="section-4.3-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.3-4" class="pilcrow">¶</a></p>
-<p id="section-4.3-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.3-5" class="pilcrow">¶</a></p>
-<p id="section-4.3-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's X25519 public key as defied in <span>[<a href="#RFC8410" class="xref">RFC8410</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying X25519 as defined in <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span> to the other party's public key and one's own X25519 private key.<a href="#section-4.3-6" class="pilcrow">¶</a></p>
-<p id="section-4.3-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.3-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-8">
-<pre>
-ss = SHAKE128( ss1 || ss2, 256)
-</pre><a href="#section-4.3-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.3-9">where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 256 bit output.<a href="#section-4.3-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber768-RSA-shake256">
-<section id="section-4.4">
-        <h3 id="name-id-kyber768-rsa-shake256-2">
-<a href="#section-4.4" class="section-number selfRef">4.4. </a><a href="#name-id-kyber768-rsa-shake256-2" class="section-name selfRef">id-Kyber768-RSA-shake256</a>
-        </h3>
-<p id="section-4.4-1">DO NOT DELETE!!!!<a href="#section-4.4-1" class="pilcrow">¶</a></p>
-<p id="section-4.4-2">This composite algorithm deserves a special explanation.<a href="#section-4.4-2" class="pilcrow">¶</a></p>
-<p id="section-4.4-3">This composite KEM algorithm MAY be used with a <code>id-Kyber768-RSA</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and RSA keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.4-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.4-4">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.4-4" class="pilcrow">¶</a>
-</div>
-<p id="section-4.4-5">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.4-5" class="pilcrow">¶</a></p>
-<p id="section-4.4-6">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.4-6" class="pilcrow">¶</a></p>
-<p id="section-4.4-7">--- BEGIN EDNOTE ---
-TODO: this needs some thought. We probably want to just point to RSA-KEM RFC5990, but we don't have an existing key to transport, so we only need steps 1 - 3 as defined in RFC5990 A.2.<a href="#section-4.4-7" class="pilcrow">¶</a></p>
-<p id="section-4.4-8">We need to carry the RSA-KEM params:<a href="#section-4.4-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.4-9">
-<pre>
-  GenericHybridParameters ::= {
-     kem  KeyEncapsulationMechanism,
-     dem  DataEncapsulationMechanism
-  }
-</pre><a href="#section-4.4-9" class="pilcrow">¶</a>
-</div>
-<p id="section-4.4-10">We should probably set the KDF params to implicitely to match the KEM combiner: KDF=SHAKE256, keyLength=384 and omit the params.<a href="#section-4.4-10" class="pilcrow">¶</a></p>
-<p id="section-4.4-11">RsaKemParameters ::= {
-               keyDerivationFunction  KeyDerivationFunction,
-               keyLength              KeyLength
-            }<a href="#section-4.4-11" class="pilcrow">¶</a></p>
-<p id="section-4.4-12">--- END EDNOTE ---<a href="#section-4.4-12" class="pilcrow">¶</a></p>
-<p id="section-4.4-13">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.4-13" class="pilcrow">¶</a></p>
-<p id="section-4.4-14">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the ciphertext <code>C</code> as defined in <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span> appendix A.2. <code>ss2</code> SHALL be the shared secret <code>Z</code> as defined in <span>[<a href="#RFC5990" class="xref">RFC5990</a>]</span>. Since <code>Z</code> variant is directly a field element, we need to mask it with a KDF prior to combining it with the other shared secret.<a href="#section-4.4-14" class="pilcrow">¶</a></p>
-<p id="section-4.4-15">The output of the two component KEMs is to be combined as follows:<a href="#section-4.4-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.4-16">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
-</pre><a href="#section-4.4-16" class="pilcrow">¶</a>
-</div>
-<p id="section-4.4-17">where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 384 bit output.<a href="#section-4.4-17" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber768-ECDH-P256-shake256">
-<section id="section-4.5">
-        <h3 id="name-id-kyber768-ecdh-p256-shake2">
-<a href="#section-4.5" class="section-number selfRef">4.5. </a><a href="#name-id-kyber768-ecdh-p256-shake2" class="section-name selfRef">id-Kyber768-ECDH-P256-shake256</a>
-        </h3>
-<p id="section-4.5-1">This composite KEM algorithm MAY be used with a <code>id-Kyber768-ECDH-P256</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.5-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.5-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2)
-  TBD }
-</pre><a href="#section-4.5-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.5-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.5-3" class="pilcrow">¶</a></p>
-<p id="section-4.5-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.5-4" class="pilcrow">¶</a></p>
-<p id="section-4.5-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.5-5" class="pilcrow">¶</a></p>
-<p id="section-4.5-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's secp256r1 public key as defied in <span>[<a href="#RFC5480" class="xref">RFC5480</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of <span>[<a href="#SP.800-56Ar3" class="xref">SP.800-56Ar3</a>]</span> to the other party's public key and one's own secp256r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.5-6" class="pilcrow">¶</a></p>
-<p id="section-4.5-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.5-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.5-8">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
-</pre><a href="#section-4.5-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.5-9">where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 384 bit output.<a href="#section-4.5-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber768-ECDH-brainpoolP256r1-shake256">
-<section id="section-4.6">
-        <h3 id="name-id-kyber768-ecdh-brainpoolp2">
-<a href="#section-4.6" class="section-number selfRef">4.6. </a><a href="#name-id-kyber768-ecdh-brainpoolp2" class="section-name selfRef">id-Kyber768-ECDH-brainpoolP256r1-shake256</a>
-        </h3>
-<p id="section-4.6-1">This composite KEM algorithm MAY be used with a <code>id-Kyber768-ECDH-brainpoolP256r1</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.6-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.6-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.6-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.6-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.6-3" class="pilcrow">¶</a></p>
-<p id="section-4.6-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.6-4" class="pilcrow">¶</a></p>
-<p id="section-4.6-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.6-5" class="pilcrow">¶</a></p>
-<p id="section-4.6-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the the sender's brainpoolP256r1 public key as defied in <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of <span>[<a href="#BSI-ECC" class="xref">BSI-ECC</a>]</span> to the other party's public key and one's own brainpoolP256r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.6-6" class="pilcrow">¶</a></p>
-<p id="section-4.6-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.6-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.6-8">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 384), 384)
-</pre><a href="#section-4.6-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.6-9">where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 384 bit output.<a href="#section-4.6-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber768-X25519-shake256">
-<section id="section-4.7">
-        <h3 id="name-id-kyber768-x25519-shake256-2">
-<a href="#section-4.7" class="section-number selfRef">4.7. </a><a href="#name-id-kyber768-x25519-shake256-2" class="section-name selfRef">id-Kyber768-X25519-shake256</a>
-        </h3>
-<p id="section-4.7-1">This composite KEM algorithm MAY be used with a <code>id-Kyber768-X25519</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and X25519 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.7-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.7-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.7-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.7-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.7-3" class="pilcrow">¶</a></p>
-<p id="section-4.7-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.7-4" class="pilcrow">¶</a></p>
-<p id="section-4.7-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.7-5" class="pilcrow">¶</a></p>
-<p id="section-4.7-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's X25519 public key as defied in <span>[<a href="#RFC8410" class="xref">RFC8410</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying X25519 as defined in <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span> to the other party's public key and one's own X25519 private key.<a href="#section-4.7-6" class="pilcrow">¶</a></p>
-<p id="section-4.7-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.7-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.7-8">
-<pre>
-ss = SHAKE256( ss1 || ss2, 384)
-</pre><a href="#section-4.7-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.7-9">where SHAKE256(M, 384) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 384 bit output.<a href="#section-4.7-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber1024-ECDH-P384-shake256">
-<section id="section-4.8">
-        <h3 id="name-id-kyber1024-ecdh-p384-shake">
-<a href="#section-4.8" class="section-number selfRef">4.8. </a><a href="#name-id-kyber1024-ecdh-p384-shake" class="section-name selfRef">id-Kyber1024-ECDH-P384-shake256</a>
-        </h3>
-<p id="section-4.8-1">This composite KEM algorithm MAY be used with a <code>id-Kyber1024-ECDH-P384</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.8-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.8-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) ExplicitComposite(5) KEM5(2)
-  TBD }
-</pre><a href="#section-4.8-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.8-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.8-3" class="pilcrow">¶</a></p>
-<p id="section-4.8-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.8-4" class="pilcrow">¶</a></p>
-<p id="section-4.8-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 512?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.8-5" class="pilcrow">¶</a></p>
-<p id="section-4.8-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's secp384r1 public key as defied in <span>[<a href="#RFC5480" class="xref">RFC5480</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying Elliptic Curve Cryptography Cofactor Diffie-Hellman (ECC CDH) as defined in section 5.7.1.2 of <span>[<a href="#SP.800-56Ar3" class="xref">SP.800-56Ar3</a>]</span> to the other party's public key and one's own secp384r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.8-6" class="pilcrow">¶</a></p>
-<p id="section-4.8-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.8-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.8-8">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
-</pre><a href="#section-4.8-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.8-9">where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 512 bit output.<a href="#section-4.8-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber1024-ECDH-brainpoolP384r1-shake256">
-<section id="section-4.9">
-        <h3 id="name-id-kyber1024-ecdh-brainpoolp">
-<a href="#section-4.9" class="section-number selfRef">4.9. </a><a href="#name-id-kyber1024-ecdh-brainpoolp" class="section-name selfRef">id-Kyber1024-ECDH-brainpoolP384r1-shake256</a>
-        </h3>
-<p id="section-4.9-1">This composite KEM algorithm MAY be used with a <code>id-Kyber1024-ECDH-brainpoolP384r1</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber768 and EC P256 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.9-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.9-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.9-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.9-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.9-3" class="pilcrow">¶</a></p>
-<p id="section-4.9-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.9-4" class="pilcrow">¶</a></p>
-<p id="section-4.9-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 384?) encapsulated key (ciphertext) of the Kyber768 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.9-5" class="pilcrow">¶</a></p>
-<p id="section-4.9-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the the sender's brainpoolP384r1 public key as defied in <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying the elliptic curve key agreement algorithm (ECKA) as defined in section 4.3.1 of <span>[<a href="#BSI-ECC" class="xref">BSI-ECC</a>]</span> to the other party's public key and one's own brainpoolP384r1 private key. Because this ECDH variant outputs directly the x coordinate of the shared point, we apply a hash function to extract a uniformly random secret from it.<a href="#section-4.9-6" class="pilcrow">¶</a></p>
-<p id="section-4.9-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.9-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.9-8">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
-</pre><a href="#section-4.9-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.9-9">where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 512 bit output.<a href="#section-4.9-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-id-Kyber1024-X448-shake256">
-<section id="section-4.10">
-        <h3 id="name-id-kyber1024-x448-shake256-2">
-<a href="#section-4.10" class="section-number selfRef">4.10. </a><a href="#name-id-kyber1024-x448-shake256-2" class="section-name selfRef">id-Kyber1024-X448-shake256</a>
-        </h3>
-<p id="section-4.10-1">This composite KEM algorithm MAY be used with a <code>id-Kyber1024-X448</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, or MAY be used with Kyber1024 and X448 keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.10-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.10-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) TBD }
-</pre><a href="#section-4.10-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.10-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.10-3" class="pilcrow">¶</a></p>
-<p id="section-4.10-4">AlgorithmIdentifier paramaters are ABSENT.<a href="#section-4.10-4" class="pilcrow">¶</a></p>
-<p id="section-4.10-5">The first componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the X-bit ?? (TODO: I assume it's 512?) encapsulated key (ciphertext) of the Kyber1024 algorithm as per TODO: cite NIST FIPS spec. <code>ss1</code> SHALL be the shared secret corresponding to the first ciphertext.<a href="#section-4.10-5" class="pilcrow">¶</a></p>
-<p id="section-4.10-6">The second componet BIT STRING within <code>CompositeCiphertextValue</code> SHALL be the sender's X448 public key as defied in <span>[<a href="#RFC8410" class="xref">RFC8410</a>]</span>. <code>ss2</code> SHALL be the shared secret derived from applying X448 as defined in <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span> to the other party's public key and one's own X448 private key.<a href="#section-4.10-6" class="pilcrow">¶</a></p>
-<p id="section-4.10-7">The output of the two component KEMs is to be combined as follows:<a href="#section-4.10-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.10-8">
-<pre>
-ss = SHAKE256( ss1 || SHAKE256(ss2, 512), 512)
-</pre><a href="#section-4.10-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.10-9">where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 512 bit output.<a href="#section-4.10-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-generic-composite-kem-shake128">
-<section id="section-4.11">
-        <h3 id="name-id-alg-composite-kem-shake12">
-<a href="#section-4.11" class="section-number selfRef">4.11. </a><a href="#name-id-alg-composite-kem-shake12" class="section-name selfRef">id-alg-composite-kem-shake128</a>
-        </h3>
-<p id="section-4.11-1">The <code>id-alg-composite-kem-SHAKE128</code> object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. This generic KEM composite algorithm uses SHAKE128 as the KEM combiner and so is intended for use with component KEM algorithms that target the 128 bit security level. For combining KEM algorithms at higher security levels, it is recommended to use <code>id-alg-composite-kem-shake256</code> defined in <a href="#sec-generic-composite-kem-shake256" class="xref">Section 4.12</a>.<a href="#section-4.11-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.11-2">
-<pre>
-id-alg-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) Composite(4) KEM (5) }
-</pre><a href="#section-4.11-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.11-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.11-3" class="pilcrow">¶</a></p>
-<p id="section-4.11-4">EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg. So the question is: is it useful as a hint to the decrypter?<a href="#section-4.11-4" class="pilcrow">¶</a></p>
-<p id="section-4.11-5">This composite KEM algorithm MAY be used with a <code>id-composite-key</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, prodived that it carries a carries a <code>keyUsage</code> of <code>keyEncipherment</code> or <code>keyAgreement</code> and contains component keys of corresponding approriate types. This composite KEM algorithm MAY also be used with <code>keyEncipherment</code> or <code>keyAgreement</code> type keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.11-5" class="pilcrow">¶</a></p>
-<p id="section-4.11-6">When using this generic composite mode, the application is responsible for determining the contents and order of the <code>CompositeCihprtextValue</code>s.<a href="#section-4.11-6" class="pilcrow">¶</a></p>
-<p id="section-4.11-7">In general we do not know if it is safe to use the component shared secrets directly, so we wrap both with a KDF in the following KEM combiner:<a href="#section-4.11-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.11-8">
-<pre>
-ss = SHAKE128( SHAKE128(ss1, 256) || SHAKE128(ss2, 256) , 256)
-</pre><a href="#section-4.11-8" class="pilcrow">¶</a>
-</div>
-<p id="section-4.11-9">where SHAKE128(M, 256) describes the use of the SHAKE128 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 256 bit output.<a href="#section-4.11-9" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-generic-composite-kem-shake256">
-<section id="section-4.12">
-        <h3 id="name-id-alg-composite-kem-shake25">
-<a href="#section-4.12" class="section-number selfRef">4.12. </a><a href="#name-id-alg-composite-kem-shake25" class="section-name selfRef">id-alg-composite-kem-shake256</a>
-        </h3>
-<p id="section-4.12-1">The id-alg-composite-kem object identifier is used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized.<a href="#section-4.12-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.12-2">
-<pre>
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1)
-  entrust(114027) Algorithm(80) Composite(4) KEM (??) }
-</pre><a href="#section-4.12-2" class="pilcrow">¶</a>
-</div>
-<p id="section-4.12-3">EDNOTE: this is a temporary OID for the purposes of prototyping.  We
-   are requesting IANA to assign a permanent OID, see Section 6.<a href="#section-4.12-3" class="pilcrow">¶</a></p>
-<p id="section-4.12-4">TODO: update the Entrust registry to make this <code>KEM-SHAKE128 / KEM-SHAKE256</code>.<a href="#section-4.12-4" class="pilcrow">¶</a></p>
-<p id="section-4.12-5">EDNOTE: does the (generic) params need to also carry a list of AlgorithmIdentifiers that were used in the encryption? With signatures we need this to prevent the verifier from coming up with false validity by using the wrong verification algorithm(s). With encryption I think it's less important because either your private key works or it doesn't, no harm done by trying to decrypt with the wrong alg. So the question is: is it useful as a hint to the decrypter?<a href="#section-4.12-5" class="pilcrow">¶</a></p>
-<p id="section-4.12-6">This composite KEM algorithm MAY be used with a <code>id-composite-key</code> composite key as defined in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span>, prodived that it carries a carries a <code>keyUsage</code> of <code>keyEncipherment</code> or <code>keyAgreement</code> and contains component keys of corresponding approriate types. This composite KEM algorithm MAY also be used with <code>keyEncipherment</code> or <code>keyAgreement</code> type keys from independant sources, for example independant certificates, software or hardware keystores.<a href="#section-4.12-6" class="pilcrow">¶</a></p>
-<p id="section-4.12-7">When using this generic composite mode, the application is responsible for determining the contents and order of the <code>CompositeCihprtextValue</code>s.<a href="#section-4.12-7" class="pilcrow">¶</a></p>
-<p id="section-4.12-8">In general we do not know if it is safe to use the component shared secrets directly, so we wrap both with a KDF in the following KEM combiner:<a href="#section-4.12-8" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.12-9">
-<pre>
-ss = SHAKE256( SHAKE256(ss1, 512) || SHAKE256(ss2, 512) , 512)
-</pre><a href="#section-4.12-9" class="pilcrow">¶</a>
-</div>
-<p id="section-4.12-10">where SHAKE256(M, 512) describes the use of the SHAKE256 as specified in <span>[<a href="#SHA3" class="xref">SHA3</a>]</span> with a 512 bit output.<a href="#section-4.12-10" class="pilcrow">¶</a></p>
+<p id="section-4.2-1">The <code>id-alg-composite-kem-SHAKE128</code> and <code>id-alg-composite-kem-SHAKE256</code> object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use SHAKE128 and SHAKE256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
+<p id="section-4.2-2">When the <code>id-alg-composite-kem-SHAKE128</code> or <code>id-alg-composite-kem-SHAKE256</code> object identifiers are used with an <code>AlgorithmIdentifier</code>, the <code>AlgorithmIdentifier.parameters</code> MUST be of type <code>CompositeKemParams</code> containing an <code>AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding </code>CompositeCiphertextValue`.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2260,7 +1959,7 @@ In the context of encryption, K-of-N modes could mean one of two things:<a href=
 </div>
 </section>
 </div>
-<div id="asn1-module">
+<div id="sec-asn1-module">
 <section id="section-6">
       <h2 id="name-asn1-module-2">
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-asn1-module-2" class="section-name selfRef">ASN.1 Module</a>
@@ -2291,6 +1990,12 @@ id-rsa-kem, GenericHybridParameters
     FROM CMS-RSA-KEM
       { iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1)
         pkcs-9(9) smime(16) modules(0) cms-rsa-kem(21) }
+
+id-RSASSA-PSS, RSASSA-PSS-Params
+    FROM PKCS-1 {
+       iso(1) member-body(2) us(840) rsadsi(113549) pkcs(1) pkcs-1(1)
+       modules(0) pkcs-1(1)
+   }
 
 id-composite-key,
 pk-composite-kem,
@@ -2325,6 +2030,8 @@ pk-Kyber1024-X448-SHAKE256
 --
 
 CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
+
+CompositeKEMParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 
 
 kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject}
@@ -2382,11 +2089,10 @@ kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::=
 
 -- This one is defined the long-hand way to include params,
 --   which the one-liner doesn't support.
-
 kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::= {
        IDENTIFIER id-Kyber768-RSA-SHAKE256
        VALUE CompositeCihprtextValue
-       PARAMS TYPE GenericHybridParameters ARE required
+       PARAMS TYPE CompositeKemParams ARE required
        PUBLIC-KEYS {pk-Kyber768-RSA-SHAKE256}
      }
 
@@ -2462,44 +2168,12 @@ END
 <p id="section-8.2-1">TODO -- we'll need security consideration analysis of whatever OR modes we choose.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="cryptographic-review-of-combiner">
+<div id="kem-combiner">
 <section id="section-8.3">
-        <h3 id="name-cryptographic-review-of-comb">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-cryptographic-review-of-comb" class="section-name selfRef">Cryptographic review of combiner</a>
+        <h3 id="name-kem-combiner-4">
+<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-kem-combiner-4" class="section-name selfRef">KEM Combiner</a>
         </h3>
-<p id="section-8.3-1">EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that the combiner is resistant to all known cryptographic attacks.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
-<div id="need-for-a-kdf-within-the-combiner">
-<section id="section-8.3.1">
-          <h4 id="name-need-for-a-kdf-within-the-co">
-<a href="#section-8.3.1" class="section-number selfRef">8.3.1. </a><a href="#name-need-for-a-kdf-within-the-co" class="section-name selfRef">Need for a KDF within the combiner</a>
-          </h4>
-<p id="section-8.3.1-1">It is expected that the majority of uses of the KEM defined in this document will be within a construct such as the CMS KEMRecipientInfo <span>[<a href="#I-D.housley-lamps-cms-kemri" class="xref">I-D.housley-lamps-cms-kemri</a>]</span> which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.<a href="#section-8.3.1-1" class="pilcrow">¶</a></p>
-<p id="section-8.3.1-2">In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where <code>KDF(m) = m</code> -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.<a href="#section-8.3.1-2" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-apop-attack">
-<section id="section-8.3.2">
-          <h4 id="name-apop-attack-on-concatenated-">
-<a href="#section-8.3.2" class="section-number selfRef">8.3.2. </a><a href="#name-apop-attack-on-concatenated-" class="section-name selfRef">APOP Attack on concatenated keys</a>
-          </h4>
-<p id="section-8.3.2-1">See the attack analysis described in summary in <span>[<a href="#Aviram2021" class="xref">Aviram2021</a>]</span>.<a href="#section-8.3.2-1" class="pilcrow">¶</a></p>
-<p id="section-8.3.2-2">The pre-conditions for the described attack are quite strong: namely that the attacker has full control of both the content and length of the first shared secret in the combiner, and that the attacker can perform collision attacks against the underlying KDF.<a href="#section-8.3.2-2" class="pilcrow">¶</a></p>
-<p id="section-8.3.2-3">We believe that, in general, neither of these pre-conditions are met within PKIX protocols. First, any key transport, key agreement, or KEM primitive approved for use within PKIX sets a fixed length for the shared secret that it produces so that the attacker cannot change the shared secret length between subsequent runs of the same protocol. This justification aligns with the justification used for <span>[<a href="#I-D.ietf-tls-hybrid-design" class="xref">I-D.ietf-tls-hybrid-design</a>]</span>. Second, any non-deprecated KDF will not allow collision attacks.<a href="#section-8.3.2-3" class="pilcrow">¶</a></p>
-<p id="section-8.3.2-4">In addition, the combiner construction defined in this document aims to provide additional collision resistance on top of that provided by the underlying KDF.<a href="#section-8.3.2-4" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="aviram2022">
-<section id="section-8.3.3">
-          <h4 id="name-aviram2022-2">
-<a href="#section-8.3.3" class="section-number selfRef">8.3.3. </a><a href="#name-aviram2022-2" class="section-name selfRef">Aviram2022</a>
-          </h4>
-<p id="section-8.3.3-1">See the attack analysis described in summary in <span>[<a href="#Aviram2022" class="xref">Aviram2022</a>]</span>.<a href="#section-8.3.3-1" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-2">This paper is largely critiquing the use of HKDF (HMAC) as a dual-PRF combiner for two secrets. This is not exactly what we are doing here.<a href="#section-8.3.3-2" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-3"><span>[<a href="#Aviram2022" class="xref">Aviram2022</a>]</span> gives the following definition:
-"If we would like to combine two keys, either of which might be influenced by an attacker, we need a dual-PRF as the keycombiner: That is, a function which is a PRF when keyed by either input.<a href="#section-8.3.3-3" class="pilcrow">¶</a></p>
-<p id="section-8.3.3-4">We believe the construction offered in this document meets this definition of a dual-PRF so long as the chosen KDF is itself a PRF. This holds even if the chosen KDF is HKDF with the same key (salt) used in each KDF() operation.<a href="#section-8.3.3-4" class="pilcrow">¶</a></p>
-</section>
-</div>
+<p id="section-8.3-1">This document uses directly the KEM Combiner defined in <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for both explicit and generic composites.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2521,6 +2195,14 @@ END
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">T. Okubo</span>, <span class="refTitle">"Using Key Encapsulation Mechanism (KEM) Algorithms in the Cryptographic Message Syntax (CMS)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-housley-lamps-cms-kemri-02</span>, <time datetime="2023-02-20" class="refDate">20 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-housley-lamps-cms-kemri-02">https://datatracker.ietf.org/doc/html/draft-housley-lamps-cms-kemri-02</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="I-D.ietf-lamps-kyber-certificates">[I-D.ietf-lamps-kyber-certificates]</dt>
+        <dd>
+<span class="refAuthor">Turner, S.</span>, <span class="refAuthor">Kampanakis, P.</span>, <span class="refAuthor">Massimo, J.</span>, and <span class="refAuthor">B. Westerbaan</span>, <span class="refTitle">"Internet X.509 Public Key Infrastructure - Algorithm Identifiers for Kyber"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-lamps-kyber-certificates-00</span>, <time datetime="2022-09-26" class="refDate">26 September 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-00">https://datatracker.ietf.org/doc/html/draft-ietf-lamps-kyber-certificates-00</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ounsworth-cfrg-kem-combiners">[I-D.ounsworth-cfrg-kem-combiners]</dt>
+        <dd>
+<span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">A. Wussler</span>, <span class="refTitle">"Combiner function for hybrid key encapsulation mechanisms (Hybrid KEMs)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-cfrg-kem-combiners-01</span>, <time datetime="2023-03-06" class="refDate">6 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-01">https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-01</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</dt>
         <dd>
 <span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-01</span>, <time datetime="2022-02-14" class="refDate">14 February 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-01">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-01</a>&gt;</span>. </dd>
@@ -2540,6 +2222,14 @@ END
 <dt id="RFC5652">[RFC5652]</dt>
         <dd>
 <span class="refAuthor">Housley, R.</span>, <span class="refTitle">"Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">STD 70</span>, <span class="seriesInfo">RFC 5652</span>, <span class="seriesInfo">DOI 10.17487/RFC5652</span>, <time datetime="2009-09" class="refDate">September 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5652">https://www.rfc-editor.org/info/rfc5652</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5990">[RFC5990]</dt>
+        <dd>
+<span class="refAuthor">Randall, J.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Brainard, J.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 5990</span>, <span class="seriesInfo">DOI 10.17487/RFC5990</span>, <time datetime="2010-09" class="refDate">September 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5990">https://www.rfc-editor.org/info/rfc5990</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8017">[RFC8017]</dt>
+        <dd>
+<span class="refAuthor">Moriarty, K., Ed.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Jonsson, J.</span>, and <span class="refAuthor">A. Rusch</span>, <span class="refTitle">"PKCS #1: RSA Cryptography Specifications Version 2.2"</span>, <span class="seriesInfo">RFC 8017</span>, <span class="seriesInfo">DOI 10.17487/RFC8017</span>, <time datetime="2016-11" class="refDate">November 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8017">https://www.rfc-editor.org/info/rfc8017</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
         <dd>
@@ -2572,14 +2262,6 @@ END
 <a href="#section-9.2" class="section-number selfRef">9.2. </a><a href="#name-informative-references-2" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
-<dt id="Aviram2021">[Aviram2021]</dt>
-        <dd>
-<span class="refTitle">"Concatenating Secrets May Be Dangerous"</span>, <time datetime="2022" class="refDate">2022</time>, <span>&lt;<a href="https://github.com/nimia/kdf_public">https://github.com/nimia/kdf_public</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="Aviram2022">[Aviram2022]</dt>
-        <dd>
-<span class="refTitle">"Practical (Post-Quantum) Key Combiners from One-Wayness and Applications to TLS."</span>, <span>n.d.</span>, <span>&lt;<a href="https://eprint.iacr.org/2022/065">https://eprint.iacr.org/2022/065</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.driscoll-pqt-hybrid-terminology">[I-D.driscoll-pqt-hybrid-terminology]</dt>
         <dd>
 <span class="refAuthor">D, F.</span>, <span class="refTitle">"Terminology for Post-Quantum Traditional Hybrid Schemes"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-driscoll-pqt-hybrid-terminology-01</span>, <time datetime="2022-10-20" class="refDate">20 October 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-driscoll-pqt-hybrid-terminology-01">https://datatracker.ietf.org/doc/html/draft-driscoll-pqt-hybrid-terminology-01</a>&gt;</span>. </dd>
@@ -2588,10 +2270,6 @@ END
         <dd>
 <span class="refAuthor">Stebila, D.</span>, <span class="refAuthor">Fluhrer, S.</span>, and <span class="refAuthor">S. Gueron</span>, <span class="refTitle">"Hybrid key exchange in TLS 1.3"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-tls-hybrid-design-04</span>, <time datetime="2022-01-11" class="refDate">11 January 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-tls-hybrid-design-04">https://datatracker.ietf.org/doc/html/draft-ietf-tls-hybrid-design-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="I-D.ounsworth-cfrg-kem-combiners">[I-D.ounsworth-cfrg-kem-combiners]</dt>
-        <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refTitle">"Combiner function for hybrid key encapsulation mechanisms (Hybrid KEMs)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-cfrg-kem-combiners-00</span>, <time datetime="2022-11-25" class="refDate">25 November 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-00">https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-00</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-sigs">[I-D.ounsworth-pq-composite-sigs]</dt>
         <dd>
 <span class="refAuthor">Ounsworth, M.</span> and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Signatures For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-sigs-07</span>, <time datetime="2022-06-08" class="refDate">8 June 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-sigs-07">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-sigs-07</a>&gt;</span>. </dd>
@@ -2599,10 +2277,6 @@ END
 <dt id="RFC5639">[RFC5639]</dt>
         <dd>
 <span class="refAuthor">Lochter, M.</span> and <span class="refAuthor">J. Merkle</span>, <span class="refTitle">"Elliptic Curve Cryptography (ECC) Brainpool Standard Curves and Curve Generation"</span>, <span class="seriesInfo">RFC 5639</span>, <span class="seriesInfo">DOI 10.17487/RFC5639</span>, <time datetime="2010-03" class="refDate">March 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5639">https://www.rfc-editor.org/info/rfc5639</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC5990">[RFC5990]</dt>
-        <dd>
-<span class="refAuthor">Randall, J.</span>, <span class="refAuthor">Kaliski, B.</span>, <span class="refAuthor">Brainard, J.</span>, and <span class="refAuthor">S. Turner</span>, <span class="refTitle">"Use of the RSA-KEM Key Transport Algorithm in the Cryptographic Message Syntax (CMS)"</span>, <span class="seriesInfo">RFC 5990</span>, <span class="seriesInfo">DOI 10.17487/RFC5990</span>, <time datetime="2010-09" class="refDate">September 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5990">https://www.rfc-editor.org/info/rfc5990</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC6090">[RFC6090]</dt>
         <dd>
