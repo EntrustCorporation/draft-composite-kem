@@ -231,7 +231,7 @@ The ASN.1 algorithm object for a composite KEM is:
 kema-CompositeKEM KEM-ALGORITHM ::= {
     IDENTIFIER TYPE OBJECT IDENTIFIER
     VALUE CompositeCiphertextValue
-    PARAMS TYPE CompositeKemParams ARE optional
+    PARAMS TYPE CompositeKemParams ARE required
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 ~~~
@@ -284,9 +284,9 @@ Composite KEM parameters are defined as follows and MAY be included when a compo
 CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
 ~~~
 
-When composite KEM parameters are used, the KEM's CompositeKemParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
+The KEM's CompositeKemParams sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
 
-For explicit algorithms, it is not necessary to carry a CompositeKemParams with the list of component algorithms in the signature algorithm parameters because clients can infer the expected component algorithms from the algorithm identifier. The PARAMS is left optional because some types of component algorithms will require parameters to be carried, such as RSA-KEM as defined in [RFC5990]. {{sec-kema-CompositeKEM}} defines `PARAMS ARE optional` so that explicit algorithms may define params as `absent` when they are not necessary, or use `CompositeKemParams` as defined in {{sec-asn1-module}}.  For generic compsite algorithms, CompositeSignatureParams MUST be included as described in {{sec-generic-composite-kem}}.
+Generic composite algorithms must carry the list of component KEM algorithms so that the reciever knows which algorithms to use. For explicit composite algorithms, it is required in cases where one or both of the components themselves have parameters that need to be carried, however the authors have chosen to always carry it in order to simplify parsers. Implementation SHOULD NOT rely directly on the algorithmIDs contained in the `CompositeKemParams` and SHOULD verify that they match the algorithms expected from the overall composite AlgorithmIdentifier.
 
 
 ## Encoding Rules
@@ -398,19 +398,6 @@ EDNOTE: I believe that [SP.800-56Ar3] and [BSI-ECC] give equivalent and interope
 
 Use of RSA-KEM [RFC5990] deserves a special explanation.
 
-When the `id-Kyber768-RSA-SHAKE256` object identifier is used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams as follows:
-
-~~~
-SEQUENCE {
-    AlgorithmIdentifier {
-        id-Kyber768TBD
-    },
-    AlgorithmIdentifier {
-        id-RSASSA-PSS,
-        GenericHybridParamaters
-    }
-}
-~~~
 
 `GenericHybridParameters` is defined in [RFC5990], repeated here for clarity:
 
