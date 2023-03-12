@@ -225,25 +225,28 @@ TODO: needs more formal analysis that the methods of transforming KeyTrans and K
 
 ## kema-CompositeKEM {#sec-kema-CompositeKEM}
 
-TODO: Align this with section 4.2 in -sigs.
-
-The following is the mandatory to specify information when specifying a composite KEM type:
-
-* An AlgorithmIdentifier OID for the composite KEM type.
-* Component algorithms that will correspond to each position within the `CompositeCiphertextValue`. (see {{sec-CompositeCiphertextValue}}).
-* A KEM combiner appropriate to the specific choice of component algorithms (see {{sec-kem-combiner}}).
-
+The ASN.1 algorithm object for a composite KEM is:
 
 ~~~
 kema-CompositeKEM KEM-ALGORITHM ::= {
-    IDENTIFIER id-alg-composite-kem
+    IDENTIFIER TYPE OBJECT IDENTIFIER
     VALUE CompositeCiphertextValue
     PARAMS TYPE CompositeKemParams ARE optional
     PUBLIC-KEYS { pk-Composite }
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 ~~~
 
-where `KEM-ALGORITHM` is defined in {{I-D.housley-lamps-cms-kemri}}.
+
+The following is an explanation how KEM-ALGORITHM elements are used 
+to create Composite KEMs:
+
+| SIGNATURE-ALGORITHM element | Definition | 
+| ---------                   | ---------- |
+| IDENTIFIER                  | The Object ID used to identify the composite Signature Algorithm | 
+| VALUE                       | The Sequence of BIT STRINGS for each component signature value | 
+| PARAMS                      | Parameters of type CompositeKemParams may be provided when required | 
+| PUBLIC-KEYS                 | The composite key required to produce the composite signature | 
+| SMIME_CAPS                  | Not needed for composite | 
 
 
 ## Composite Keys

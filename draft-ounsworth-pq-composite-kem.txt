@@ -98,14 +98,14 @@ Table of Contents
    3.  Composite KEM Structures  . . . . . . . . . . . . . . . . . .   5
      3.1.  Key Encapsulation Mechanisms (KEMs) . . . . . . . . . . .   6
      3.2.  kema-CompositeKEM . . . . . . . . . . . . . . . . . . . .   7
-     3.3.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   7
+     3.3.  Composite Keys  . . . . . . . . . . . . . . . . . . . . .   8
        3.3.1.  Key Usage Bits  . . . . . . . . . . . . . . . . . . .   8
      3.4.  CompositeCiphertextValue  . . . . . . . . . . . . . . . .   8
      3.5.  CompositKemParameters . . . . . . . . . . . . . . . . . .   8
-     3.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   8
+     3.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
      3.7.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .   9
-   4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  10
-     4.1.  Notes on id-Kyber768-RSA-SHAKE256 . . . . . . . . . . . .  12
+   4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  11
+     4.1.  Notes on id-Kyber768-RSA-SHAKE256 . . . . . . . . . . . .  13
 
 
 
@@ -114,25 +114,25 @@ Ounsworth & Gray        Expires 13 September 2023               [Page 2]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-     4.2.  Notes on Generic Composite  . . . . . . . . . . . . . . .  13
-   5.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     5.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  14
-       5.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  15
-       5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  15
-   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  16
-   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  19
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
-     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  19
-     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  20
-     8.3.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .  20
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  20
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  20
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  22
-   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  23
-   Appendix B.  Intellectual Property Considerations . . . . . . . .  24
-   Appendix C.  Contributors and Acknowledgements  . . . . . . . . .  24
-     C.1.  Making contributions  . . . . . . . . . . . . . . . . . .  24
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  24
+     4.2.  Notes on Generic Composite  . . . . . . . . . . . . . . .  14
+   5.  In Practice . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     5.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  15
+       5.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  16
+       5.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  16
+   6.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  17
+   7.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  20
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  20
+     8.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  20
+     8.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  21
+     8.3.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .  21
+   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  21
+     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  21
+     9.2.  Informative References  . . . . . . . . . . . . . . . . .  23
+   Appendix A.  Examples . . . . . . . . . . . . . . . . . . . . . .  24
+   Appendix B.  Intellectual Property Considerations . . . . . . . .  25
+   Appendix C.  Contributors and Acknowledgements  . . . . . . . . .  25
+     C.1.  Making contributions  . . . . . . . . . . . . . . . . . .  25
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Changes in version -01
 
@@ -352,27 +352,47 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 3.2.  kema-CompositeKEM
 
-   TODO: Align this with section 4.2 in -sigs.
-
-   The following is the mandatory to specify information when specifying
-   a composite KEM type:
-
-   *  An AlgorithmIdentifier OID for the composite KEM type.
-
-   *  Component algorithms that will correspond to each position within
-      the CompositeCiphertextValue. (see Section 3.4).
-
-   *  A KEM combiner appropriate to the specific choice of component
-      algorithms (see Section 3.7).
+   The ASN.1 algorithm object for a composite KEM is:
 
    kema-CompositeKEM KEM-ALGORITHM ::= {
-       IDENTIFIER id-alg-composite-kem
+       IDENTIFIER TYPE OBJECT IDENTIFIER
        VALUE CompositeCiphertextValue
        PARAMS TYPE CompositeKemParams ARE optional
        PUBLIC-KEYS { pk-Composite }
        SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 
-   where KEM-ALGORITHM is defined in [I-D.housley-lamps-cms-kemri].
+   The following is an explanation how KEM-ALGORITHM elements are used
+   to create Composite KEMs:
+
+      +=====================+=======================================+
+      | SIGNATURE-ALGORITHM | Definition                            |
+      | element             |                                       |
+      +=====================+=======================================+
+      | IDENTIFIER          | The Object ID used to identify the    |
+      |                     | composite Signature Algorithm         |
+      +---------------------+---------------------------------------+
+      | VALUE               | The Sequence of BIT STRINGS for each  |
+      |                     | component signature value             |
+      +---------------------+---------------------------------------+
+      | PARAMS              | Parameters of type CompositeKemParams |
+      |                     | may be provided when required         |
+      +---------------------+---------------------------------------+
+      | PUBLIC-KEYS         | The composite key required to produce |
+      |                     | the composite signature               |
+      +---------------------+---------------------------------------+
+      | SMIME_CAPS          | Not needed for composite              |
+      +---------------------+---------------------------------------+
+
+                                  Table 1
+
+
+
+
+
+Ounsworth & Gray        Expires 13 September 2023               [Page 7]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 3.3.  Composite Keys
 
@@ -384,15 +404,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    mechanism for carrying multiple ciphertexts in a non-composite hybrid
    encryption equivalent of those described for digital signatures in
    [I-D.becker-guthrie-noncomposite-hybrid-auth].
-
-
-
-
-
-Ounsworth & Gray        Expires 13 September 2023               [Page 7]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
 
 3.3.1.  Key Usage Bits
 
@@ -431,6 +442,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
    parameters to be carried, such as RSA-KEM as defined in [RFC5990].
    Section 3.2 defines PARAMS ARE optional so that explicit algorithms
    may define params as absent when they are not necessary, or use
+
+
+
+Ounsworth & Gray        Expires 13 September 2023               [Page 8]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    CompositeKemParams as defined in Section 6.  For generic compsite
    algorithms, CompositeSignatureParams MUST be included as described in
    Section 4.2.
@@ -442,13 +461,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    When an octet string is required, the DER encoding of the composite
    data structure SHALL be used directly.
-
-
-
-Ounsworth & Gray        Expires 13 September 2023               [Page 8]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
 
    EDNOTE: will this definition include an ASN.1 tag and length byte
    inside the OCTET STRING object?  If so, that's probably an extra
@@ -484,8 +496,18 @@ Internet-Draft              PQ Composite Keys                 March 2023
    *  KDF and H, and outputBits represent a hash functions suitable to
       the chosen KEMs,
 
+
+
+
+
+
+Ounsworth & Gray        Expires 13 September 2023               [Page 9]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    *  fixedInfo is the ASCI-encoded bytes of the KEM Type string from
-      Table 2 concatenated with any additional contextInfo provided by
+      Table 3 concatenated with any additional contextInfo provided by
       the protocol,
 
    *  counter is fixed to the 32-bit value 0x00000001,
@@ -498,14 +520,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    For convenience we define the following intantiations of KEM
    combiner:
 
-
-
-
-Ounsworth & Gray        Expires 13 September 2023               [Page 9]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
             +==============+==========+==========+============+
             | KEM Combiner | KDF      | H        | outputBits |
             +==============+==========+==========+============+
@@ -516,7 +530,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
             | SHAKE256/512 | SHAKE256 | SHA3-512 | 512        |
             +--------------+----------+----------+------------+
 
-                           Table 1: KEM Combiners
+                           Table 2: KEM Combiners
 
    ~~~ BEGIN EDNOTE ~~~
 
@@ -532,10 +546,21 @@ Internet-Draft              PQ Composite Keys                 March 2023
    ~~~ END EDNOTE ~~~
 
    For example, the KEM combiner instantiation of the first entry of
-   Table 2 would be:
+   Table 3 would be:
 
 ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
                     || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires 13 September 2023              [Page 10]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
 4.  Algorithm Identifiers
 
@@ -557,7 +582,38 @@ ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 10]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ounsworth & Gray        Expires 13 September 2023              [Page 11]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -602,7 +658,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
    |SHAKE256                |            |         |               |            |
    +------------------------+------------+---------+---------------+------------+
 
-                      Table 2: Composite KEM key types
+                      Table 3: Composite KEM key types
 
    The table above contains everything needed to implement the listed
    explicit composite algorithms, with the exception of some special
@@ -613,7 +669,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 11]
+Ounsworth & Gray        Expires 13 September 2023              [Page 12]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -669,7 +725,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 12]
+Ounsworth & Gray        Expires 13 September 2023              [Page 13]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -725,7 +781,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 13]
+Ounsworth & Gray        Expires 13 September 2023              [Page 14]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -781,7 +837,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 14]
+Ounsworth & Gray        Expires 13 September 2023              [Page 15]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -837,7 +893,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 15]
+Ounsworth & Gray        Expires 13 September 2023              [Page 16]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -893,7 +949,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 16]
+Ounsworth & Gray        Expires 13 September 2023              [Page 17]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -949,7 +1005,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 17]
+Ounsworth & Gray        Expires 13 September 2023              [Page 18]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1005,7 +1061,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 18]
+Ounsworth & Gray        Expires 13 September 2023              [Page 19]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1061,7 +1117,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 19]
+Ounsworth & Gray        Expires 13 September 2023              [Page 20]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1117,7 +1173,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 20]
+Ounsworth & Gray        Expires 13 September 2023              [Page 21]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1173,7 +1229,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 21]
+Ounsworth & Gray        Expires 13 September 2023              [Page 22]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1229,7 +1285,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 22]
+Ounsworth & Gray        Expires 13 September 2023              [Page 23]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1285,7 +1341,7 @@ Appendix A.  Examples
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 23]
+Ounsworth & Gray        Expires 13 September 2023              [Page 24]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1341,7 +1397,7 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 24]
+Ounsworth & Gray        Expires 13 September 2023              [Page 25]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
@@ -1397,4 +1453,4 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-Ounsworth & Gray        Expires 13 September 2023              [Page 25]
+Ounsworth & Gray        Expires 13 September 2023              [Page 26]
