@@ -44,9 +44,7 @@ normative:
   RFC8174:
   RFC8410:
   RFC8411:
-  #<!-- I-D.draft-ietf-lamps-kyber-certificates-00: -->
   I-D.draft-ounsworth-pq-composite-keys-01:
-  I-D.draft-perret-prat-lamps-cms-pq-kem-00:
   I-D.draft-housley-lamps-cms-kemri-02:
   SHA3:
     title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions, FIPS PUB 202, DOI 10.6028/NIST.FIPS.202"
@@ -66,10 +64,6 @@ normative:
     author:
       org: "Federal Office for Information Security (BSI)"
     date: 2018-06-01
-  # SEC1:
-  #   title: "Standards for Efficient Cryptography Group, SEC1: Elliptic Curve Cryptography"
-  #   date: "May 2009"
-  #   target: <https://www.secg.org/sec1-v2.pdf>
   SP.800-56Ar3:
     title: "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography"
     date: April 2018
@@ -137,7 +131,7 @@ This document defines the structure CompositeCiphertextValue which is a sequence
 
 
 This document is intended to be coupled with the composite keys
-structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEM-TRANS mechanism in {{I-D.perret-prat-lamps-cms-pq-kem}}.
+structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEMRecipientInfo mechanism in {{I-D.housley-lamps-cms-kemri}}.
 
 
 <!-- End of Abstract -->
@@ -167,6 +161,17 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
 
 
+## Algorithm Selection Criteria
+
+The composite algorithm combinations defined in this document were chosen according to the following guidelines:
+
+1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
+1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
+1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
+1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
+1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
+
+The authors wish to note that although all the composite structures defined in this and the companion composite signatures {{I-D.ounsworth-pq-composite-sigs}} and composite signatures {{I-D.ounsworth-pq-composite-sigs}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite algorithm allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 <!-- End of Introduction section -->
 
@@ -280,8 +285,8 @@ where `KEM-ALGORITHM` is defined in {{I-D.housley-lamps-cms-kemri}}.
 
 ## Composite Keys
 
-A composite key is a single key object that performs an atomic cryptographic operation as
-defined in {{I-D.ounsworth-pq-composite-keys}}.
+A composite KEM MAY be associated with a composite public key as defined in [I-D.ounsworth-pq-composite-keys], but MAY also be associated with multiple public keys from different sources, for example multiple X.509 certificates, or multiple cryptographic modules. In the latter case, composite KEMs MAY be used as the mechanism for carrying multiple ciphertexts in a non-composite hybrid encryption equivalent of those described for digital signatures in [I-D.becker-guthrie-noncomposite-hybrid-auth].
+
 
 ### Key Usage Bits
 
@@ -337,7 +342,6 @@ where:
 * `counter` is fixed to the 32-bit value `0x00000001`,
 * `||` represents concatenation.
 
-
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
 
 
@@ -376,11 +380,10 @@ The OID referenced are TBD and MUST be used only for prototyping and replaced wi
 
 Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1
 
+The "KEM Combiner" column refers to the definitions in {{sec-kem-combiner}}.
 
-2.16.840.1.114027.80.5.2	entrust-Algorithm-ExplicitComposite-KEM
-
-KEM type                                    | OID           | First KEM Alg   | Second KEM Alg |  KEM Combiner     |
----------                                   | ---------- | ----------      | ----------     | ----------    |
+KEM type                                    | OID               | First Algorithm   | Second Algorithm |  KEM Combiner     |
+---------                                   | ----------------- | ----------      | ----------     | ----------    |
 id-Kyber512-ECDH-P256-SHAKE128              | &lt;CompKEM&gt;.1 | Kyber512 | ECDH-P256      | SHAKE128/256  |
 id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | &lt;CompKEM&gt;.2 | Kyber512 | ECDH-brainpoolp256r1 | SHAKE128/256 |
 id-Kyber512-X25519-SHAKE128                 | &lt;CompKEM&gt;.3 | Kyber512 | X25519         | SHAKE128/256 |
@@ -391,18 +394,11 @@ id-Kyber768-X25519-SHAKE256                 | &lt;CompKEM&gt;.7 | Kyber768 | X25
 id-Kyber1024-ECDH-P384-SHAKE256             | &lt;CompKEM&gt;.8 | Kyber1024 | ECDH-P384     | SHAKE256/512 |
 id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | &lt;CompKEM&gt;.9 | Kyber1024 | ECDH-brainpoolP384r1 | SHAKE256/512 |
 id-Kyber1024-X448-SHAKE256                  | &lt;CompKEM&gt;.10 | Kyber1024 | X448          | SHAKE256/512 |
-id-composite-kem-shake128                   | &lt;CompKEM&gt;.11        | Defined at runtime | Defined at runtime | SHAKE128/256 |
-id-composite-kem-SHAKE256                   | &lt;CompKEM&gt;.12        | Definet at runtime | Definet at runtime | SHAKE256/512 |
+id-composite-kem-shake128                   | &lt;CompKEM&gt;.11 | Any | Any | SHAKE128/256 |
+id-composite-kem-SHAKE256                   | &lt;CompKEM&gt;.12 | Any | Any | SHAKE256/512 |
 {: #tab-kem-algs title="Composite KEM key types"}
 
-These combinations were chosen according to the following rough guidelines:
 
-1. One RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
-1. NIST [RFC6090], Edwards [RFC7748], and Brainpool [RFC5639] elliptic curve algorithms are provided. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
-1. NIST level 1 candidates (Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
-1. A generic composite OID is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
-
-The authors wish to note that although the CompositePublicKey and CompositePrivateKey structures are defined in such a way as to easily allow 3 or more component keys, it was decided at the time of writing to only specify explicit pairs. The generic composite algorithms specified in {{sec-generic-composite-kem-shake128}} and {{sec-generic-composite-kem-shake256}} of course allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
 
 
 ## id-Kyber512-ECDH-P256-SHAKE128 {#sec-id-Kyber512-ECDH-P256-SHAKE128}
@@ -431,8 +427,6 @@ kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::= {
     SMIME-CAPS { IDENTIFIED BY id-alg-composite } }
 }
 ~~~
-
-TODO: align this with KEM-ALGORITHM defined in draft-housley-lamps-cms-kemri-01.
 
 
 The first componet BIT STRING within `CompositeCiphertextValue` SHALL be the 256-bit encapsulated key (ciphertext) of the Kyber512 algorithm as per TODO: cite NIST FIPS spec. `ss1` SHALL be the shared secret corresponding to the first ciphertext.
@@ -933,7 +927,7 @@ EDNOTE: LAMPS should probably request CFRG review of this draft to ensure that t
 
 ### Need for a KDF within the combiner
 
-It is expected that the majority of uses of the KEM defined in this document will be within a construct such as {{I-D.perret-prat-lamps-cms-pq-kem}} which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.
+It is expected that the majority of uses of the KEM defined in this document will be within a construct such as the CMS KEMRecipientInfo {{I-D.housley-lamps-cms-kemri}} which supplies the KEM output to a KDF in order to derive a wrapping key. In these cases it is redundant for the combiner within the composite KEM to also use a KDF. However, it is possible for protocol designers to want to use a KEM output -- or a truncation of it -- directly as a symmetric key; for this purpose we have included a KDF in the composite KEM construction.
 
 In protocols where the KEM output will be supplied to a KDF, it should be safe to use a NULL KDF within the composite KEM -- ie the KDF where `KDF(m) = m` -- but we leave the details of any such security analysis to the protocol designers who wish to implement it.
 
