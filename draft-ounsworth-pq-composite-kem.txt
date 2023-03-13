@@ -105,7 +105,7 @@ Table of Contents
      3.6.  Encoding Rules  . . . . . . . . . . . . . . . . . . . . .   9
      3.7.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .   9
    4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  11
-     4.1.  Notes on id-Kyber768-RSA-SHAKE256 . . . . . . . . . . . .  13
+     4.1.  Notes on id-Kyber768-RSA-KMAC256  . . . . . . . . . . . .  13
 
 
 
@@ -488,9 +488,9 @@ Internet-Draft              PQ Composite Keys                 March 2023
    cryptography-integration-study section 4.2, might need to specify
    behaviour in light of KEMs with a non-zero failure probility.
 
-   This document follows the recommendation of
-   [I-D.ounsworth-cfrg-kem-combiners]: the outputs of multiple KEMs are
-   combined as
+   This document follows the construction of
+   [I-D.ounsworth-cfrg-kem-combiners], which is repeated here for
+   clarity:
 
    KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
 
@@ -509,9 +509,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
    *  KDF and H, and outputBits represent a hash functions suitable to
       the chosen KEMs,
 
-   *  fixedInfo is the ASCI-encoded bytes of the KEM Type string from
-      Table 3 concatenated with any additional contextInfo provided by
-      the protocol,
+   *  fixedInfo any additional context string provided by the protocol,
 
    *  counter is fixed to the 32-bit value 0x00000001,
 
@@ -520,40 +518,42 @@ Internet-Draft              PQ Composite Keys                 March 2023
    Each registered composite KEM algorithm must specify the exact KEM
    combiner construction that is to be used.
 
-   For convenience we define the following intantiations of KEM
-   combiner:
+   For convenience we define the following KMAC-basid intantiations of
+   KEM combiner:
 
-            +==============+==========+==========+============+
-            | KEM Combiner | KDF      | H        | outputBits |
-            +==============+==========+==========+============+
-            | SHAKE128/256 | SHAKE128 | SHA3-256 | 256        |
-            +--------------+----------+----------+------------+
-            | SHAKE256/384 | SHAKE256 | SHA3-512 | 384        |
-            +--------------+----------+----------+------------+
-            | SHAKE256/512 | SHAKE256 | SHA3-512 | 512        |
-            +--------------+----------+----------+------------+
+            +==============+=========+==========+============+
+            | KEM Combiner | KDF     | H        | outputBits |
+            +==============+=========+==========+============+
+            | KMAC128/256  | KMAC128 | SHA3-256 | 256        |
+            +--------------+---------+----------+------------+
+            | KMAC256/384  | KMAC256 | SHA3-512 | 384        |
+            +--------------+---------+----------+------------+
+            | KMAC256/512  | KMAC256 | SHA3-512 | 512        |
+            +--------------+---------+----------+------------+
 
-                           Table 2: KEM Combiners
+                          Table 2: KEM Combiners
+
+   The KMAC(K, X, L, S) parameters are instantiated as follows:
+
+   *  K: the ASCI value of the name of the Kem Type OID.
+
+   *  X: the value 0x00000001 || k_1 || ... || k_n || fixedInfo, where
+      k_i = H(ss_i || ct_i), as defined above.
+
+   *  L: integer representation of outputBits.
+
+   *  S: empty string.
 
    ~~~ BEGIN EDNOTE ~~~
 
    these choices are somewhat arbitrary but aiming to match security
    level of the input KEMs.  Feedback welcome.
 
-   *  Kyber512: shake128/256
+   *  Kyber512: KMAC128/256
 
-   *  Kyber768: shake256/384
+   *  Kyber768: KMAC256/384
 
-   *  Kyber1024 shake256/512
-
-   ~~~ END EDNOTE ~~~
-
-   For example, the KEM combiner instantiation of the first entry of
-   Table 3 would be:
-
-ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
-                    || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
-
+   *  Kyber1024 KMAC256/512
 
 
 
@@ -561,6 +561,15 @@ Ounsworth & Gray        Expires 13 September 2023              [Page 10]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
+
+   ~~~ END EDNOTE ~~~
+
+   For example, the KEM combiner instantiation of the first entry of
+   Table 3 would be:
+
+ss = KMAC128("id-Kyber512-ECDH-P256-KMAC128",
+    0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2) || fixedInfo,
+    256, "")
 
 4.  Algorithm Identifiers
 
@@ -604,59 +613,50 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-
-
-
-
-
-
-
-
-
 Ounsworth & Gray        Expires 13 September 2023              [Page 11]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   +========================+============+=========+===============+============+
-   |KEM type                |OID         |First    |Second         |KEM Combiner|
-   |                        |            |Algorithm|Algorithm      |            |
-   +========================+============+=========+===============+============+
-   |id-Kyber512-ECDH-       |<CompKEM>.1 |Kyber512 |ECDH-P256      |SHAKE128/256|
-   |P256-SHAKE128           |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber512-ECDH-       |<CompKEM>.2 |Kyber512 |ECDH-          |SHAKE128/256|
-   |brainpoolP256r1-SHAKE128|            |         |brainpoolp256r1|            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-                     |<CompKEM>.3 |Kyber512 |X25519         |SHAKE128/256|
-   |Kyber512-X25519-SHAKE128|            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber768-RSA-SHAKE256|<CompKEM>.4 |Kyber768 |RSA-KEM        |SHAKE256/384|
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber768-ECDH-       |<CompKEM>.5 |Kyber768 |ECDH-P256      |SHAKE256/384|
-   |P256-SHAKE256           |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber768-ECDH-       |<CompKEM>.6 |Kyber768 |ECDH-          |SHAKE256/384|
-   |brainpoolP256r1-SHAKE256|            |         |brainpoolp256r1|            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-                     |<CompKEM>.7 |Kyber768 |X25519         |SHAKE256/384|
-   |Kyber768-X25519-SHAKE256|            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber1024-ECDH-      |<CompKEM>.8 |Kyber1024|ECDH-P384      |SHAKE256/512|
-   |P384-SHAKE256           |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-Kyber1024-ECDH-      |<CompKEM>.9 |Kyber1024|ECDH-          |SHAKE256/512|
-   |brainpoolP384r1-SHAKE256|            |         |brainpoolP384r1|            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-                     |<CompKEM>.10|Kyber1024|X448           |SHAKE256/512|
-   |Kyber1024-X448-SHAKE256 |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-composite-kem-       |<CompKEM>.11|Any      |Any            |SHAKE128/256|
-   |shake128                |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
-   |id-composite-kem-       |<CompKEM>.12|Any      |Any            |SHAKE256/512|
-   |SHAKE256                |            |         |               |            |
-   +------------------------+------------+---------+---------------+------------+
+   +=======================+============+=========+===============+===========+
+   |KEM Type OID           |OID         |First    |Second         |KEM        |
+   |                       |            |Algorithm|Algorithm      |Combiner   |
+   +=======================+============+=========+===============+===========+
+   |id-Kyber512-ECDH-      |<CompKEM>.1 |Kyber512 |ECDH-P256      |KMAC128/256|
+   |P256-KMAC128           |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber512-ECDH-      |<CompKEM>.2 |Kyber512 |ECDH-          |KMAC128/256|
+   |brainpoolP256r1-KMAC128|            |         |brainpoolp256r1|           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-                    |<CompKEM>.3 |Kyber512 |X25519         |KMAC128/256|
+   |Kyber512-X25519-KMAC128|            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber768-RSA-KMAC256|<CompKEM>.4 |Kyber768 |RSA-KEM        |KMAC256/384|
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber768-ECDH-      |<CompKEM>.5 |Kyber768 |ECDH-P256      |KMAC256/384|
+   |P256-KMAC256           |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber768-ECDH-      |<CompKEM>.6 |Kyber768 |ECDH-          |KMAC256/384|
+   |brainpoolP256r1-KMAC256|            |         |brainpoolp256r1|           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-                    |<CompKEM>.7 |Kyber768 |X25519         |KMAC256/384|
+   |Kyber768-X25519-KMAC256|            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber1024-ECDH-     |<CompKEM>.8 |Kyber1024|ECDH-P384      |KMAC256/512|
+   |P384-KMAC256           |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-Kyber1024-ECDH-     |<CompKEM>.9 |Kyber1024|ECDH-          |KMAC256/512|
+   |brainpoolP384r1-KMAC256|            |         |brainpoolP384r1|           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-                    |<CompKEM>.10|Kyber1024|X448           |KMAC256/512|
+   |Kyber1024-X448-KMAC256 |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-composite-kem-      |<CompKEM>.11|Any      |Any            |KMAC128/256|
+   |KMAC128                |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
+   |id-composite-kem-      |<CompKEM>.12|Any      |Any            |KMAC256/512|
+   |KMAC256                |            |         |               |           |
+   +-----------------------+------------+---------+---------------+-----------+
 
                       Table 3: Composite KEM key types
 
@@ -697,7 +697,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
    and interoperable algorithms, so maybe this is extranuous detail to
    include?
 
-4.1.  Notes on id-Kyber768-RSA-SHAKE256
+4.1.  Notes on id-Kyber768-RSA-KMAC256
 
    Use of RSA-KEM [RFC5990] deserves a special explanation.
 
@@ -730,8 +730,8 @@ Ounsworth & Gray        Expires 13 September 2023              [Page 13]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   For use with id-Kyber768-RSA-SHAKE256, the keyDerivationFunction
-   SHALL be id-sha3-384 and keyLength SHALL be 384.
+   For use with id-Kyber768-RSA-KMAC256, the keyDerivationFunction SHALL
+   be id-sha3-384 and keyLength SHALL be 384.
 
    EDNOTE: I'm borrowing id-sha3-384 from draft-turner-lamps-adding-
    sha3-to-pkix-00, which looks ilke was abandoned.  Do we have PKIX
@@ -742,17 +742,17 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 4.2.  Notes on Generic Composite
 
-   The id-alg-composite-kem-SHAKE128 and id-alg-composite-kem-SHAKE256
+   The id-alg-composite-kem-KMAC128 and id-alg-composite-kem-KMAC256
    object identifiers are used for identifying a generic composite KEM
    algorithm.  This allows arbitrary combinations of component key
    transport, key agreement and KEM algorithms without needing the
    combination to be pre-registered or standardized.  Thes generic KEM
-   composite algorithms use SHAKE128 and SHAKE256-based KEM combiners
-   and so are intended for use with component KEM algorithms that target
-   the 128 bit or 256 bit security levels respectively.
+   composite algorithms use KMAC128 and KMAC256-based KEM combiners and
+   so are intended for use with component KEM algorithms that target the
+   128 bit or 256 bit security levels respectively.
 
-   When the id-alg-composite-kem-SHAKE128 or id-alg-composite-kem-
-   SHAKE256 object identifiers are used with an AlgorithmIdentifier, the
+   When the id-alg-composite-kem-KMAC128 or id-alg-composite-kem-KMAC256
+   object identifiers are used with an AlgorithmIdentifier, the
    AlgorithmIdentifier.parameters MUST be of type CompositeKemParams
    containing an AlgorithmIdentifier for each component algorithm in the
    same order as the ciphertexts appear in the
@@ -939,13 +939,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    id-composite-key,
    pk-composite-kem,
-   id-Kyber512-ECDH-P256-SHAKE128,
-   pk-Kyber512-ECDH-P256-SHAKE128,
-   id-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
-   pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
-   id-Kyber512-X25519-SHAKE128,
-   pk-Kyber512-X25519-SHAKE128,
-   id-Kyber768-RSA-SHAKE256,
+   id-Kyber512-ECDH-P256-KMAC128,
+   pk-Kyber512-ECDH-P256-KMAC128,
+   id-Kyber512-ECDH-brainpoolP256r1-KMAC128,
+   pk-Kyber512-ECDH-brainpoolP256r1-KMAC128,
+   id-Kyber512-X25519-KMAC128,
+   pk-Kyber512-X25519-KMAC128,
+   id-Kyber768-RSA-KMAC256,
 
 
 
@@ -954,19 +954,19 @@ Ounsworth & Gray        Expires 13 September 2023              [Page 17]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   pk-Kyber768-RSA-SHAKE256,
-   id-Kyber768-ECDH-P256-SHAKE256,
-   pk-Kyber768-ECDH-P256-SHAKE256,
-   id-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
-   pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
-   id-Kyber768-X25519-SHAKE256,
-   pk-Kyber768-X25519-SHAKE256,
-   id-Kyber1024-ECDH-P384-SHAKE256,
-   pk-Kyber1024-ECDH-P384-SHAKE256,
-   id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
-   pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
-   id-Kyber1024-X448-SHAKE256,
-   pk-Kyber1024-X448-SHAKE256
+   pk-Kyber768-RSA-KMAC256,
+   id-Kyber768-ECDH-P256-KMAC256,
+   pk-Kyber768-ECDH-P256-KMAC256,
+   id-Kyber768-ECDH-brainpoolP256r1-KMAC256,
+   pk-Kyber768-ECDH-brainpoolP256r1-KMAC256,
+   id-Kyber768-X25519-KMAC256,
+   pk-Kyber768-X25519-KMAC256,
+   id-Kyber1024-ECDH-P384-KMAC256,
+   pk-Kyber1024-ECDH-P384-KMAC256,
+   id-Kyber1024-ECDH-brainpoolP384r1-KMAC256,
+   pk-Kyber1024-ECDH-brainpoolP384r1-KMAC256,
+   id-Kyber1024-X448-KMAC256,
+   pk-Kyber1024-X448-KMAC256
        FROM CompositeKeys-2023
               {iso(1) identified-organization(3) dod(6) internet(1) security(5)
           mechanisms(5) pkix(7) id-mod(0) id-mod-composite-keys(98)};
@@ -1017,24 +1017,24 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
    -- TODO: To be replaced by IANA
-   id-composite-kem-SHAKE128 OBJECT IDENTIFIER ::= {
+   id-composite-kem-KMAC128 OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
      algorithm(80) tbd(98) }
 
-   kema-Composite-kem-SHAKE128 KEM-ALGORITHM ::= {
-       IDENTIFIER id-composite-kem-SHAKE128
+   kema-Composite-kem-KMAC128 KEM-ALGORITHM ::= {
+       IDENTIFIER id-composite-kem-KMAC128
        VALUE CompositeCiphertextValue
        PARAMS TYPE CompositeKemParams ARE required
        PUBLIC-KEYS {publicKeyObject} }
 
 
    -- TODO: To be replaced by IANA
-   id-composite-kem-SHAKE256 OBJECT IDENTIFIER ::= {
+   id-composite-kem-KMAC256 OBJECT IDENTIFIER ::= {
      joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
      algorithm(80) tbd(99) }
 
-   kema-Composite-kem-SHAKE256 KEM-ALGORITHM ::= {
-       IDENTIFIER id-composite-kem-SHAKE256
+   kema-Composite-kem-KMAC256 KEM-ALGORITHM ::= {
+       IDENTIFIER id-composite-kem-KMAC256
        VALUE CompositeCiphertextValue
        PARAMS TYPE CompositeKemParams ARE required
        PUBLIC-KEYS {publicKeyObject} }
@@ -1045,17 +1045,17 @@ Internet-Draft              PQ Composite Keys                 March 2023
    -- Explicit Composite KEMs
 
 
-   kema-Kyber512-ECDH-P256-SHAKE128 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber512-ECDH-P256-SHAKE128,
-       pk-Kyber512-ECDH-P256-SHAKE128,
+   kema-Kyber512-ECDH-P256-KMAC128 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber512-ECDH-P256-KMAC128,
+       pk-Kyber512-ECDH-P256-KMAC128,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-ecdh-p256}} }
 
    --TODO: `kema-ecdh-p256` does not actually exist yet.
 
 
-   kema-Kyber512-ECDH-brainpoolP256r1-SHAKE128 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
-       pk-Kyber512-ECDH-brainpoolP256r1-SHAKE128,
+   kema-Kyber512-ECDH-brainpoolP256r1-KMAC128 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-KMAC128,
+       pk-Kyber512-ECDH-brainpoolP256r1-KMAC128,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-ecdh-brainpoolp256r1}} }
 
 
@@ -1069,48 +1069,48 @@ Internet-Draft              PQ Composite Keys                 March 2023
    --TODO: `kema-ecdh-brainpoolp256r1` does not actually exist yet.
 
 
-   kema-Kyber512-X25519-SHAKE128 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber512-X25519-SHAKE128,
-       pk-Kyber512-X25519-SHAKE128,
+   kema-Kyber512-X25519-KMAC128 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber512-X25519-KMAC128,
+       pk-Kyber512-X25519-KMAC128,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-x25519}} }
 
    --TODO: `kema-x25519` does not actually exist yet.
 
 
-   kema-Kyber768-RSA-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber768-RSA-SHAKE256,
-       pk-Kyber768-RSA-SHAKE256,
+   kema-Kyber768-RSA-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber768-RSA-KMAC256,
+       pk-Kyber768-RSA-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-kem-rsa}} }
 
 
-   kema-Kyber768-ECDH-P256-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber768-ECDH-P256-SHAKE256,
-       pk-Kyber768-ECDH-P256-SHAKE256,
+   kema-Kyber768-ECDH-P256-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber768-ECDH-P256-KMAC256,
+       pk-Kyber768-ECDH-P256-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber768TBD}, {kema-ecdh-p256}} }
 
    --TODO: `kema-ecdh-p256` does not actually exist yet.
 
 
 
-   kema-Kyber768-ECDH-brainpoolP256r1-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
-       pk-Kyber768-ECDH-brainpoolP256r1-SHAKE256,
+   kema-Kyber768-ECDH-brainpoolP256r1-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-KMAC256,
+       pk-Kyber768-ECDH-brainpoolP256r1-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber768TBD}, {kema-ecdh-brainpoolp256r1}} }
 
    --TODO: `kema-ecdh-brainpoolp256r1` does not actually exist yet.
 
 
-   kema-Kyber768-X25519-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber768-X25519-SHAKE256,
-       pk-Kyber768-X25519-SHAKE256,
+   kema-Kyber768-X25519-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber768-X25519-KMAC256,
+       pk-Kyber768-X25519-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber768TBD}, {kema-x25519}} }
 
    --TODO: `kema-x25519` does not actually exist yet.
 
 
-   kema-Kyber1024-ECDH-P384-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-SHAKE256,
-       pk-Kyber1024-ECDH-P384-SHAKE256,
+   kema-Kyber1024-ECDH-P384-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-KMAC256,
+       pk-Kyber1024-ECDH-P384-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber1024TBD}, {kema-ecdh-p384}} }
 
    --TODO: `kema-ecdh-p384` does not actually exist yet.
@@ -1122,17 +1122,17 @@ Ounsworth & Gray        Expires 13 September 2023              [Page 20]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   kema-Kyber1024-ECDH-brainpoolP384r1-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
-       pk-Kyber1024-ECDH-brainpoolP384r1-SHAKE256,
+   kema-Kyber1024-ECDH-brainpoolP384r1-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber1024-ECDH-brainpoolP384r1-KMAC256,
+       pk-Kyber1024-ECDH-brainpoolP384r1-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber1024TBD}, {kema-ecdh-brainpoolp384r1}}}
 
    --TODO: `kema-ecdh-brainpoolp384r1` does not actually exist yet.
 
 
-   kema-Kyber1024-X448-SHAKE256 KEM-ALGORITHM ::=
-       kema-explicitCompositeKEM{id-Kyber1024-X448-SHAKE256,
-       pk-Kyber1024-X448-SHAKE256,
+   kema-Kyber1024-X448-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber1024-X448-KMAC256,
+       pk-Kyber1024-X448-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber1024TBD}, {kema-x448}} }
 
    --TODO: `kema-x448` does not actually exist yet.
@@ -1147,7 +1147,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    *  The OID for the ASN.1 module Composite-KEM-2023,
 
-   *  OIDs for id-composite-kem-SHAKE128, id-composite-kem-SHAKE256
+   *  OIDs for id-composite-kem-KMAC128, id-composite-kem-KMAC256
 
 8.  Security Considerations
 

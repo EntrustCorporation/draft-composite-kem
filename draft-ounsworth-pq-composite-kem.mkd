@@ -305,8 +305,7 @@ In the interests of simplicity and avoiding compatibility issues, implementation
 
 TODO: as per https://www.enisa.europa.eu/publications/post-quantum-cryptography-integration-study section 4.2, might need to specify behaviour in light of KEMs with a non-zero failure probility.
 
-This document follows the recommendation of {{I-D.ounsworth-cfrg-kem-combiners}}: the outputs of multiple KEMs are combined as
-
+This document follows the construction of {{I-D.ounsworth-cfrg-kem-combiners}}, which is repeated here for clarity:
 
 ~~~
 KDF(counter || k_1 || ... || k_n || fixedInfo, outputBits)
@@ -318,29 +317,37 @@ k_i = H(ss_i || ct_i)
 where:
 
 * `KDF` and `H`, and `outputBits` represent a hash functions suitable to the chosen KEMs,
-* `fixedInfo` is the ASCI-encoded bytes of the KEM Type string from {{tab-kem-algs}} concatenated with any additional `contextInfo` provided by the protocol,
+* `fixedInfo` any additional context string provided by the protocol,
 * `counter` is fixed to the 32-bit value `0x00000001`,
 * `||` represents concatenation.
 
 Each registered composite KEM algorithm must specify the exact KEM combiner construction that is to be used.
 
 
-For convenience we define the following intantiations of KEM combiner:
 
-| KEM Combiner | KDF | H | outputBits |
-| ---      | --- |---|---         |
-| SHAKE128/256 | SHAKE128 | SHA3-256 | 256 |
-| SHAKE256/384 | SHAKE256 | SHA3-512 | 384 |
-| SHAKE256/512 | SHAKE256 | SHA3-512 | 512 |
+For convenience we define the following KMAC-basid intantiations of KEM combiner:
+
+| KEM Combiner | KDF | H   | outputBits |
+| ---          | --- |---  |---         |
+| KMAC128/256  | KMAC128   | SHA3-256 | 256 |
+| KMAC256/384  | KMAC256   | SHA3-512 | 384 |
+| KMAC256/512  | KMAC256   | SHA3-512 | 512 |
 {: #tab-kem-combiners title="KEM Combiners"}
+
+The `KMAC(K, X, L, S)` parameters are instantiated as follows:
+
+* `K`: the ASCI value of the name of the Kem Type OID.
+* `X`: the value `0x00000001 || k_1 || ... || k_n || fixedInfo`, where `k_i = H(ss_i || ct_i)`, as defined above.
+* `L`: integer representation of `outputBits`.
+* `S`: empty string.
 
 ~~~ BEGIN EDNOTE ~~~
 
 these choices are somewhat arbitrary but aiming to match security level of the input KEMs. Feedback welcome.
 
-* Kyber512: shake128/256
-* Kyber768: shake256/384
-* Kyber1024 shake256/512
+* Kyber512: KMAC128/256
+* Kyber768: KMAC256/384
+* Kyber1024 KMAC256/512
 
 ~~~ END EDNOTE ~~~
 
@@ -348,8 +355,9 @@ these choices are somewhat arbitrary but aiming to match security level of the i
 For example, the KEM combiner instantiation of the first entry of {{tab-kem-algs}} would be:
 
 ~~~
-ss = SHAKE128( 0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2)
-                    || "id-Kyber512-ECDH-P256-SHAKE128" || contextInfo, 256)
+ss = KMAC128("id-Kyber512-ECDH-P256-KMAC128", 
+    0x00000001 || SHA3-256(ss_1 || ct_1) || SHA3-256(ss_2 || ct_2) || fixedInfo,
+    256, "")
 ~~~
 
 # Algorithm Identifiers {#sec-alg-ids}
@@ -362,20 +370,20 @@ Therefore &lt;CompKEM&gt;.1 is equal to 2.16.840.1.114027.80.5.2.1
 
 The "KEM Combiner" column refers to the definitions in {{sec-kem-combiner}}.
 
-KEM type                                    | OID                | First Algorithm   | Second Algorithm |  KEM Combiner     |
----------                                   | -----------------  | ----------      | ----------     | ----------    |
-id-Kyber512-ECDH-P256-SHAKE128              | &lt;CompKEM&gt;.1  | Kyber512        | ECDH-P256      | SHAKE128/256  |
-id-Kyber512-ECDH-brainpoolP256r1-SHAKE128   | &lt;CompKEM&gt;.2  | Kyber512        | ECDH-brainpoolp256r1 | SHAKE128/256 |
-id-Kyber512-X25519-SHAKE128                 | &lt;CompKEM&gt;.3  | Kyber512        | X25519         | SHAKE128/256 |
-id-Kyber768-RSA-SHAKE256                    | &lt;CompKEM&gt;.4  | Kyber768        | RSA-KEM        | SHAKE256/384 |
-id-Kyber768-ECDH-P256-SHAKE256              | &lt;CompKEM&gt;.5  | Kyber768        | ECDH-P256      | SHAKE256/384 |
-id-Kyber768-ECDH-brainpoolP256r1-SHAKE256   | &lt;CompKEM&gt;.6  | Kyber768        | ECDH-brainpoolp256r1 | SHAKE256/384 |
-id-Kyber768-X25519-SHAKE256                 | &lt;CompKEM&gt;.7  | Kyber768        | X25519         | SHAKE256/384 |
-id-Kyber1024-ECDH-P384-SHAKE256             | &lt;CompKEM&gt;.8  | Kyber1024       | ECDH-P384     | SHAKE256/512 |
-id-Kyber1024-ECDH-brainpoolP384r1-SHAKE256  | &lt;CompKEM&gt;.9  | Kyber1024       | ECDH-brainpoolP384r1 | SHAKE256/512 |
-id-Kyber1024-X448-SHAKE256                  | &lt;CompKEM&gt;.10 | Kyber1024       | X448          | SHAKE256/512 |
-id-composite-kem-shake128                   | &lt;CompKEM&gt;.11 | Any             | Any  | SHAKE128/256 |
-id-composite-kem-SHAKE256                   | &lt;CompKEM&gt;.12 | Any             | Any  | SHAKE256/512 |
+| KEM Type OID                                     | OID                | First Algorithm   | Second Algorithm |  KEM Combiner     |
+|---------                                    | -----------------  | ----------      | ----------     | ----------    |
+| id-Kyber512-ECDH-P256-KMAC128              | &lt;CompKEM&gt;.1  | Kyber512        | ECDH-P256      | KMAC128/256  |
+| id-Kyber512-ECDH-brainpoolP256r1-KMAC128   | &lt;CompKEM&gt;.2  | Kyber512        | ECDH-brainpoolp256r1 | KMAC128/256 |
+| id-Kyber512-X25519-KMAC128                 | &lt;CompKEM&gt;.3  | Kyber512        | X25519         | KMAC128/256 |
+| id-Kyber768-RSA-KMAC256                    | &lt;CompKEM&gt;.4  | Kyber768        | RSA-KEM        | KMAC256/384 |
+| id-Kyber768-ECDH-P256-KMAC256              | &lt;CompKEM&gt;.5  | Kyber768        | ECDH-P256      | KMAC256/384 |
+| id-Kyber768-ECDH-brainpoolP256r1-KMAC256   | &lt;CompKEM&gt;.6  | Kyber768        | ECDH-brainpoolp256r1 | KMAC256/384 |
+| id-Kyber768-X25519-KMAC256                 | &lt;CompKEM&gt;.7  | Kyber768        | X25519         | KMAC256/384 |
+| id-Kyber1024-ECDH-P384-KMAC256             | &lt;CompKEM&gt;.8  | Kyber1024       | ECDH-P384     | KMAC256/512 |
+| id-Kyber1024-ECDH-brainpoolP384r1-KMAC256  | &lt;CompKEM&gt;.9  | Kyber1024       | ECDH-brainpoolP384r1 | KMAC256/512 |
+| id-Kyber1024-X448-KMAC256                  | &lt;CompKEM&gt;.10 | Kyber1024       | X448          | KMAC256/512 |
+| id-composite-kem-KMAC128                   | &lt;CompKEM&gt;.11 | Any             | Any  | KMAC128/256 |
+| id-composite-kem-KMAC256                   | &lt;CompKEM&gt;.12 | Any             | Any  | KMAC256/512 |
 {: #tab-kem-algs title="Composite KEM key types"}
 
 
@@ -394,7 +402,7 @@ EDNOTE: I believe that [SP.800-56Ar3] and [BSI-ECC] give equivalent and interope
 
 
 
-## Notes on id-Kyber768-RSA-SHAKE256
+## Notes on id-Kyber768-RSA-KMAC256
 
 Use of RSA-KEM [RFC5990] deserves a special explanation.
 
@@ -427,7 +435,7 @@ RsaKemParameters ::= {
 ~~~
 
 
-For use with `id-Kyber768-RSA-SHAKE256`, the `keyDerivationFunction` SHALL be `id-sha3-384` and `keyLength` SHALL be `384`.
+For use with `id-Kyber768-RSA-KMAC256`, the `keyDerivationFunction` SHALL be `id-sha3-384` and `keyLength` SHALL be `384`.
 
 EDNOTE: I'm borrowing `id-sha3-384` from draft-turner-lamps-adding-sha3-to-pkix-00, which looks ilke was abandoned. Do we have PKIX OIDs for SHA3?
 
@@ -436,9 +444,9 @@ TODO: there must be a way to put all this the ASN.1 Module rather than just spec
 
 ## Notes on Generic Composite {#sec-generic-composite-kem}
 
-The `id-alg-composite-kem-SHAKE128` and `id-alg-composite-kem-SHAKE256` object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use SHAKE128 and SHAKE256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.
+The `id-alg-composite-kem-KMAC128` and `id-alg-composite-kem-KMAC256` object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use KMAC128 and KMAC256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.
 
-When the `id-alg-composite-kem-SHAKE128` or `id-alg-composite-kem-SHAKE256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
+When the `id-alg-composite-kem-KMAC128` or `id-alg-composite-kem-KMAC256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
 
 
 # In Practice {#sec-in-pract}
@@ -517,7 +525,7 @@ TBD -- UPDATE
 The following need to be assigned by IANA:
 
 * The OID for the ASN.1 module `Composite-KEM-2023`,
-* OIDs for `id-composite-kem-SHAKE128`, `id-composite-kem-SHAKE256`
+* OIDs for `id-composite-kem-KMAC128`, `id-composite-kem-KMAC256`
 
 <!-- End of IANA Considerations section -->
 
