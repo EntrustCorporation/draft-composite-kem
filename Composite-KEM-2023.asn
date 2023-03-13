@@ -66,9 +66,9 @@ ExplicitCompositeKemParams{KEM-ALGORITHM:FirstKemAlg,
    KEM-ALGORITHM:SecondKemAlg}  ::=     
       SEQUENCE {
         kemAlgorithm1   AlgorithmIdentifier
-                        { KEM-ALGORITHM, {FirstSignatureAlg}},
+                        { KEM-ALGORITHM, {FirstKemAlg}},
 	    kemAlgorithm2   AlgorithmIdentifier
-                        { KEM-ALGORITHM, {SecondSignatureAlg}} }								 
+                        { KEM-ALGORITHM, {SecondKemAlg}} }								 
 							
 
 kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject, 
@@ -81,12 +81,6 @@ kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject,
 
 
 -- Generic Composite KEM
-
-
--- To be replaced by IANA
-id-alg-composite-kem OBJECT IDENTIFIER ::= {
-joint-iso-itu-t(2) country(16) us(840) organization(1) 
-entrust(114027) algorithm(80) composite(4) kem (5) }
 
 
 -- TODO: To be replaced by IANA

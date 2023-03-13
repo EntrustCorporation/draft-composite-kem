@@ -54,7 +54,13 @@ normative:
     author: 
       org: "National Institute of Standards and Technology (NIST)"
     date: August 2015
-    target: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf
+    target: https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf\
+  SP800-185:
+    title: "SHA-3 Derived Functions: cSHAKE, KMAC, TupleHash and ParallelHash"
+    author:
+      org: "National Institute of Standards and Technology (NIST)"
+    date: December 2016
+    target: https://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-185.pdf
   X.690:
       title: "Information technology - ASN.1 encoding Rules: Specification of Basic Encoding Rules (BER), Canonical Encoding Rules (CER) and Distinguished Encoding Rules (DER)"
       date: November 2015
@@ -88,7 +94,7 @@ informative:
   I-D.draft-ounsworth-pq-composite-sigs-07:
   I-D.draft-ietf-tls-hybrid-design-04:
   I-D.draft-driscoll-pqt-hybrid-terminology-01:
-  I-D.draft-ounsworth-cfrg-kem-combiners-02:
+  I-D.draft-ounsworth-cfrg-kem-combiners-03:
 
 
 
@@ -333,10 +339,10 @@ For convenience we define the following KMAC-basid intantiations of KEM combiner
 | KMAC256/512  | KMAC256   | SHA3-512 | 512 |
 {: #tab-kem-combiners title="KEM Combiners"}
 
-The `KMAC(K, X, L, S)` parameters are instantiated as follows:
+KMAC is defined in NIST SP 800-185 [SP800-185]. The `KMAC(K, X, L, S)` parameters are instantiated as follows:
 
 * `K`: the ASCI value of the name of the Kem Type OID.
-* `X`: the value `0x00000001 || k_1 || ... || k_n || fixedInfo`, where `k_i = H(ss_i || ct_i)`, as defined above.
+* `X`: the value "`0x00000001 || k_1 || ... || k_n || fixedInfo`", where `k_i = H(ss_i || ct_i)`, as defined above.
 * `L`: integer representation of `outputBits`.
 * `S`: empty string.
 
@@ -438,6 +444,8 @@ For use with `id-Kyber768-RSA-KMAC256`, the `keyDerivationFunction` SHALL be `id
 
 EDNOTE: I'm borrowing `id-sha3-384` from draft-turner-lamps-adding-sha3-to-pkix-00, which looks ilke was abandoned. Do we have PKIX OIDs for SHA3?
 
+EDNOTE: Since the crypto is fixed, we could omit the parameters entirely and expect implementations to re-constitute the params structures as necessary in order to call into lower-level crypto libraries.
+
 TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?
 
 
@@ -448,7 +456,61 @@ The `id-alg-composite-kem-KMAC128` and `id-alg-composite-kem-KMAC256` object ide
 When the `id-alg-composite-kem-KMAC128` or `id-alg-composite-kem-KMAC256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
 
 
-# In Practice {#sec-in-pract}
+
+# ASN.1 Module {#sec-asn1-module}
+
+~~~ ASN.1
+
+<CODE STARTS>
+
+!!Composite-KEM-2023.asn
+
+<CODE ENDS>
+
+~~~
+
+
+# IANA Considerations {#sec-iana}
+The following need to be assigned by IANA:
+
+* The OID for the ASN.1 module `Composite-KEM-2023`,
+* OIDs for `id-composite-kem-KMAC128`, `id-composite-kem-KMAC256`
+
+<!-- End of IANA Considerations section -->
+
+
+# Security Considerations
+
+
+## Policy for Deprecated and Acceptable Algorithms
+
+Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
+
+In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms. 
+
+Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.
+
+EDNOTE: Max is working on a CRL mechanism to accomplish this.
+
+## OR Modes
+
+TODO -- we'll need security consideration analysis of whatever OR modes we choose.
+
+
+## KEM Combiner
+
+This document uses directly the KEM Combiner defined in {{I-D.ounsworth-cfrg-kem-combiners}} and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for both explicit and generic composites.
+
+<!-- End of Security Considerations section -->
+
+--- back
+
+# Samples {#appdx-samples}
+
+TBD
+
+
+# Implementation Considerations {#sec-in-pract}
 
 This section addresses practical issues of how this draft affects other protocols and standards.
 
@@ -502,62 +564,7 @@ For non-negotiated protocols, the details for obtaining backwards compatibility 
 
 EDNOTE: I copied and pruned this text from {{I-D.ounsworth-pq-composite-sigs}}. It probably needs to be fleshed out more as we better understand the implementation concerns around composite encryption.
 
-<!-- End of In Practice section -->
-
-
-# ASN.1 Module {#sec-asn1-module}
-
-TBD -- UPDATE
-
-~~~ ASN.1
-
-<CODE STARTS>
-
-!!Composite-KEM-2023.asn
-
-<CODE ENDS>
-
-~~~
-
-
-# IANA Considerations {#sec-iana}
-The following need to be assigned by IANA:
-
-* The OID for the ASN.1 module `Composite-KEM-2023`,
-* OIDs for `id-composite-kem-KMAC128`, `id-composite-kem-KMAC256`
-
-<!-- End of IANA Considerations section -->
-
-
-# Security Considerations
-
-
-## Policy for Deprecated and Acceptable Algorithms
-
-Traditionally, a public key, certificate, or signature contains a single cryptographic algorithm. If and when an algorithm becomes deprecated (for example, RSA-512, or SHA1), it is obvious that structures using that algorithm are implicitly revoked.
-
-In the composite model this is less obvious since implementers may decide that certain cryptographic algorithms have complementary security properties and are acceptable in combination even though one or both algorithms are deprecated for individual use. As such, a single composite public key, certificate, signature, or ciphertext may contain a mixture of deprecated and non-deprecated algorithms. 
-
-Specifying behaviour in these cases is beyond the scope of this document, but should be considered by Implementers and potentially in additional standards.
-
-EDNOTE: Max is working on a CRL mechanism to accomplish this.
-
-## OR Modes
-
-TODO -- we'll need security consideration analysis of whatever OR modes we choose.
-
-
-## KEM Combiner
-
-This document uses directly the KEM Combiner defined in {{I-D.ounsworth-cfrg-kem-combiners}} and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for both explicit and generic composites.
-
-<!-- End of Security Considerations section -->
-
---- back
-
-# Examples {#appdx-examples}
-
-TBD
+<!-- End of Implementation Considerations section -->
 
 
 # Intellectual Property Considerations
