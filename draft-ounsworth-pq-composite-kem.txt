@@ -117,7 +117,7 @@ Internet-Draft              PQ Composite Keys                 March 2023
      4.2.  Notes on Generic Composite  . . . . . . . . . . . . . . .  14
    5.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  14
    6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
-   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  19
      7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  19
      7.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  19
      7.3.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .  19
@@ -428,12 +428,12 @@ Internet-Draft              PQ Composite Keys                 March 2023
    Composite KEM parameters are defined as follows and MAY be included
    when a composite KEM algorithm is used with an AlgorithmIdentifier:
 
-   CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+   CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier{
+       KEM-ALGORITHM, {KEMAlgSet} }
 
    The KEM's CompositeKemParams sequence MUST contain the same component
    algorithms listed in the same order as in the associated
    CompositePublicKey.
-
 
 
 
@@ -786,7 +786,13 @@ Ounsworth & Gray        Expires 14 September 2023              [Page 14]
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
-   KEM-ALGORITHM
+   AlgorithmIdentifier{}
+       FROM AlgorithmInformation-2009  -- RFC 5912 [X509ASN1]
+         { iso(1) identified-organization(3) dod(6) internet(1)
+           security(5) mechanisms(5) pkix(7) id-mod(0)
+           id-mod-algorithmInformation-02(58) }
+
+   KEM-ALGORITHM, KEMAlgSet
        FROM KEMAlgorithmInformation-2023
        { iso(1) identified-organization(3) dod(6) internet(1)
          security(5) mechanisms(5) pkix(7) id-mod(0)
@@ -831,20 +837,19 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
-   --
-   -- Composite structures
-   --
-
-
-
 Ounsworth & Gray        Expires 14 September 2023              [Page 15]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
 
+   --
+   -- Composite structures
+   --
+
    CompositeCiphertextValue ::= SEQUENCE SIZE (2..MAX) OF OCTET STRING
 
-   CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier
+   CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier{
+       KEM-ALGORITHM, {KEMAlgSet} }
 
    ExplicitCompositeKemParams{KEM-ALGORITHM:FirstKemAlg,
       KEM-ALGORITHM:SecondKemAlg}  ::=
@@ -885,17 +890,20 @@ Internet-Draft              PQ Composite Keys                 March 2023
      algorithm(80) tbd(99) }
 
    kema-Composite-kem-KMAC256 KEM-ALGORITHM ::= {
-       IDENTIFIER id-composite-kem-KMAC256
-       VALUE CompositeCiphertextValue
-       PARAMS TYPE CompositeKemParams ARE required
-       PUBLIC-KEYS {publicKeyObject} }
-
 
 
 
 Ounsworth & Gray        Expires 14 September 2023              [Page 16]
 
 Internet-Draft              PQ Composite Keys                 March 2023
+
+
+       IDENTIFIER id-composite-kem-KMAC256
+       VALUE CompositeCiphertextValue
+       PARAMS TYPE CompositeKemParams ARE required
+       PUBLIC-KEYS {publicKeyObject} }
+
+
 
 
    -- Explicit Composite KEMs
@@ -940,18 +948,18 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
 
 
+
+Ounsworth & Gray        Expires 14 September 2023              [Page 17]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
+
    kema-Kyber768-ECDH-brainpoolP256r1-KMAC256 KEM-ALGORITHM ::=
        kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-KMAC256,
        pk-Kyber768-ECDH-brainpoolP256r1-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber768TBD}, {kema-ecdh-brainpoolp256r1}} }
 
    --TODO: `kema-ecdh-brainpoolp256r1` does not actually exist yet.
-
-
-
-Ounsworth & Gray        Expires 14 September 2023              [Page 17]
-
-Internet-Draft              PQ Composite Keys                 March 2023
 
 
    kema-Kyber768-X25519-KMAC256 KEM-ALGORITHM ::=
@@ -995,20 +1003,16 @@ Internet-Draft              PQ Composite Keys                 March 2023
 
    *  The OID for the ASN.1 module Composite-KEM-2023,
 
-   *  OIDs for id-composite-kem-KMAC128, id-composite-kem-KMAC256
-
-7.  Security Considerations
-
-
-
-
-
 
 
 Ounsworth & Gray        Expires 14 September 2023              [Page 18]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
+
+   *  OIDs for id-composite-kem-KMAC128, id-composite-kem-KMAC256
+
+7.  Security Considerations
 
 7.1.  Policy for Deprecated and Acceptable Algorithms
 
@@ -1054,10 +1058,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    [I-D.housley-lamps-cms-kemri]
               Housley, R., Gray, J., and T. Okubo, "Using Key
               Encapsulation Mechanism (KEM) Algorithms in the
-              Cryptographic Message Syntax (CMS)", Work in Progress,
-              Internet-Draft, draft-housley-lamps-cms-kemri-02, 20
-              February 2023, <https://datatracker.ietf.org/doc/html/
-              draft-housley-lamps-cms-kemri-02>.
 
 
 
@@ -1065,6 +1065,11 @@ Ounsworth & Gray        Expires 14 September 2023              [Page 19]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
+
+              Cryptographic Message Syntax (CMS)", Work in Progress,
+              Internet-Draft, draft-housley-lamps-cms-kemri-02, 20
+              February 2023, <https://datatracker.ietf.org/doc/html/
+              draft-housley-lamps-cms-kemri-02>.
 
    [I-D.ietf-lamps-kyber-certificates]
               Turner, S., Kampanakis, P., Massimo, J., and B.
@@ -1107,11 +1112,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
               DOI 10.17487/RFC5990, September 2010,
               <https://www.rfc-editor.org/info/rfc5990>.
 
-   [RFC8017]  Moriarty, K., Ed., Kaliski, B., Jonsson, J., and A. Rusch,
-              "PKCS #1: RSA Cryptography Specifications Version 2.2",
-              RFC 8017, DOI 10.17487/RFC8017, November 2016,
-              <https://www.rfc-editor.org/info/rfc8017>.
-
 
 
 
@@ -1121,6 +1121,11 @@ Ounsworth & Gray        Expires 14 September 2023              [Page 20]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
+
+   [RFC8017]  Moriarty, K., Ed., Kaliski, B., Jonsson, J., and A. Rusch,
+              "PKCS #1: RSA Cryptography Specifications Version 2.2",
+              RFC 8017, DOI 10.17487/RFC8017, November 2016,
+              <https://www.rfc-editor.org/info/rfc8017>.
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
@@ -1164,11 +1169,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
               (DER)", ISO/IEC 8825-1:2015, November 2015.
 
 8.2.  Informative References
-
-
-
-
-
 
 
 
