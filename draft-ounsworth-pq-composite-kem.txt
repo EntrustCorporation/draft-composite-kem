@@ -1080,11 +1080,12 @@ Internet-Draft              PQ Composite Keys                 March 2023
               draft-ietf-lamps-kyber-certificates-00>.
 
    [I-D.ounsworth-pq-composite-keys]
-              Ounsworth, M. and M. Pala, "Composite Public and Private
-              Keys For Use In Internet PKI", Work in Progress, Internet-
-              Draft, draft-ounsworth-pq-composite-keys-01, 14 February
-              2022, <https://datatracker.ietf.org/doc/html/draft-
-              ounsworth-pq-composite-keys-01>.
+              Ounsworth, M., Gray, J., Pala, M., and J. Klaussner,
+              "Composite Public and Private Keys For Use In Internet
+              PKI", Work in Progress, Internet-Draft, draft-ounsworth-
+              pq-composite-keys-04, 13 March 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              ounsworth-pq-composite-keys/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -1111,7 +1112,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
               Cryptographic Message Syntax (CMS)", RFC 5990,
               DOI 10.17487/RFC5990, September 2010,
               <https://www.rfc-editor.org/info/rfc5990>.
-
 
 
 
@@ -1201,11 +1201,12 @@ Internet-Draft              PQ Composite Keys                 March 2023
               ounsworth-cfrg-kem-combiners/>.
 
    [I-D.ounsworth-pq-composite-sigs]
-              Ounsworth, M. and M. Pala, "Composite Signatures For Use
-              In Internet PKI", Work in Progress, Internet-Draft, draft-
-              ounsworth-pq-composite-sigs-07, 8 June 2022,
-              <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
-              composite-sigs-07>.
+              Ounsworth, M., Gray, J., and M. Pala, "Composite
+              Signatures For Use In Internet PKI", Work in Progress,
+              Internet-Draft, draft-ounsworth-pq-composite-sigs-08, 13
+              March 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              ounsworth-pq-composite-sigs/>.
 
    [RFC5639]  Lochter, M. and J. Merkle, "Elliptic Curve Cryptography
               (ECC) Brainpool Standard Curves and Curve Generation",
@@ -1225,7 +1226,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
    [RFC7748]  Langley, A., Hamburg, M., and S. Turner, "Elliptic Curves
               for Security", RFC 7748, DOI 10.17487/RFC7748, January
               2016, <https://www.rfc-editor.org/info/rfc7748>.
-
 
 
 

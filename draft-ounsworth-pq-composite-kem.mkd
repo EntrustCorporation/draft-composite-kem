@@ -46,7 +46,7 @@ normative:
   RFC8174:
   RFC8410:
   RFC8411:
-  I-D.draft-ounsworth-pq-composite-keys-01:
+  I-D.draft-ounsworth-pq-composite-keys-04:
   I-D.draft-housley-lamps-cms-kemri-02:
   I-D.draft-ietf-lamps-kyber-certificates-00:
   SHA3:
@@ -91,7 +91,7 @@ informative:
   RFC7748:
   RFC8446:
   RFC8551:
-  I-D.draft-ounsworth-pq-composite-sigs-07:
+  I-D.draft-ounsworth-pq-composite-sigs-08:
   I-D.draft-ietf-tls-hybrid-design-04:
   I-D.draft-driscoll-pqt-hybrid-terminology-01:
   I-D.draft-ounsworth-cfrg-kem-combiners-03:
