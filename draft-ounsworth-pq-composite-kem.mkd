@@ -49,7 +49,6 @@ normative:
   I-D.draft-ounsworth-pq-composite-keys-01:
   I-D.draft-housley-lamps-cms-kemri-02:
   I-D.draft-ietf-lamps-kyber-certificates-00:
-  I-D.draft-ounsworth-cfrg-kem-combiners-01:
   SHA3:
     title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions, FIPS PUB 202, DOI 10.6028/NIST.FIPS.202"
     author: 
@@ -89,7 +88,7 @@ informative:
   I-D.draft-ounsworth-pq-composite-sigs-07:
   I-D.draft-ietf-tls-hybrid-design-04:
   I-D.draft-driscoll-pqt-hybrid-terminology-01:
-
+  I-D.draft-ounsworth-cfrg-kem-combiners-02:
 
 
 

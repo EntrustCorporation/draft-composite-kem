@@ -1215,25 +1215,9 @@ Internet-Draft              PQ Composite Keys                 March 2023
               September 2022, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lamps-kyber-certificates-00>.
 
-   [I-D.ounsworth-cfrg-kem-combiners]
-              Ounsworth, M. and A. Wussler, "Combiner function for
-              hybrid key encapsulation mechanisms (Hybrid KEMs)", Work
-              in Progress, Internet-Draft, draft-ounsworth-cfrg-kem-
-              combiners-01, 6 March 2023,
-              <https://datatracker.ietf.org/doc/html/draft-ounsworth-
-              cfrg-kem-combiners-01>.
-
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M. and M. Pala, "Composite Public and Private
               Keys For Use In Internet PKI", Work in Progress, Internet-
-
-
-
-Ounsworth & Gray        Expires 13 September 2023              [Page 22]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
               Draft, draft-ounsworth-pq-composite-keys-01, 14 February
               2022, <https://datatracker.ietf.org/doc/html/draft-
               ounsworth-pq-composite-keys-01>.
@@ -1242,6 +1226,13 @@ Internet-Draft              PQ Composite Keys                 March 2023
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
+
+
+
+Ounsworth & Gray        Expires 13 September 2023              [Page 22]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [RFC5280]  Cooper, D., Santesson, S., Farrell, S., Boeyen, S.,
               Housley, R., and W. Polk, "Internet X.509 Public Key
@@ -1279,17 +1270,6 @@ Internet-Draft              PQ Composite Keys                 March 2023
               DOI 10.17487/RFC8410, August 2018,
               <https://www.rfc-editor.org/info/rfc8410>.
 
-
-
-
-
-
-
-Ounsworth & Gray        Expires 13 September 2023              [Page 23]
-
-Internet-Draft              PQ Composite Keys                 March 2023
-
-
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
               RFC 8411, DOI 10.17487/RFC8411, August 2018,
@@ -1301,6 +1281,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
               NIST.FIPS.202", August 2015,
               <https://nvlpubs.nist.gov/nistpubs/FIPS/
               NIST.FIPS.202.pdf>.
+
+
+
+
+Ounsworth & Gray        Expires 13 September 2023              [Page 23]
+
+Internet-Draft              PQ Composite Keys                 March 2023
+
 
    [SP.800-56Ar3]
               National Institute of Standards and Technology (NIST),
@@ -1330,6 +1318,14 @@ Internet-Draft              PQ Composite Keys                 March 2023
               <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
               hybrid-design-04>.
 
+   [I-D.ounsworth-cfrg-kem-combiners]
+              Ounsworth, M., Wussler, A., and S. Kousidis, "Combiner
+              function for hybrid key encapsulation mechanisms (Hybrid
+              KEMs)", Work in Progress, Internet-Draft, draft-ounsworth-
+              cfrg-kem-combiners-02, 12 March 2023,
+              <https://datatracker.ietf.org/api/v1/doc/document/draft-
+              ounsworth-cfrg-kem-combiners/>.
+
    [I-D.ounsworth-pq-composite-sigs]
               Ounsworth, M. and M. Pala, "Composite Signatures For Use
               In Internet PKI", Work in Progress, Internet-Draft, draft-
@@ -1337,6 +1333,10 @@ Internet-Draft              PQ Composite Keys                 March 2023
               <https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-
               composite-sigs-07>.
 
+   [RFC5639]  Lochter, M. and J. Merkle, "Elliptic Curve Cryptography
+              (ECC) Brainpool Standard Curves and Curve Generation",
+              RFC 5639, DOI 10.17487/RFC5639, March 2010,
+              <https://www.rfc-editor.org/info/rfc5639>.
 
 
 
@@ -1345,11 +1345,6 @@ Ounsworth & Gray        Expires 13 September 2023              [Page 24]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
-
-   [RFC5639]  Lochter, M. and J. Merkle, "Elliptic Curve Cryptography
-              (ECC) Brainpool Standard Curves and Curve Generation",
-              RFC 5639, DOI 10.17487/RFC5639, March 2010,
-              <https://www.rfc-editor.org/info/rfc5639>.
 
    [RFC6090]  McGrew, D., Igoe, K., and M. Salter, "Fundamental Elliptic
               Curve Cryptography Algorithms", RFC 6090,
@@ -1395,16 +1390,17 @@ Appendix C.  Contributors and Acknowledgements
    electronic mail and VOIP traffic over the past year in pursuit of
    this document:
 
+   Serge Mister (Entrust), Ali Noman (Entrust), Scott Fluhrer (Cisco),
+   Jan Klaussner (D-Trust), Max Pala (CableLabs), and Douglas Stebila
+   (University of Waterloo).
+
+
 
 
 Ounsworth & Gray        Expires 13 September 2023              [Page 25]
 
 Internet-Draft              PQ Composite Keys                 March 2023
 
-
-   Serge Mister (Entrust), Ali Noman (Entrust), Scott Fluhrer (Cisco),
-   Jan Klaussner (D-Trust), Max Pala (CableLabs), and Douglas Stebila
-   (University of Waterloo).
 
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
@@ -1434,6 +1430,10 @@ Authors' Addresses
    John Gray
    Entrust Limited
    Email: john.gray@entrust.com
+
+
+
+
 
 
 
