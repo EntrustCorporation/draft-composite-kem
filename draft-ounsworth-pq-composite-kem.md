@@ -1,7 +1,7 @@
 ---
 title: Composite KEM For Use In Internet PKI
 abbrev: PQ Composite Keys
-docname: draft-ounsworth-pq-composite-kem-01
+docname: draft-ounsworth-pq-composite-kem-02
 
 # <!-- stand_alone: true -->
 ipr: trust200902
@@ -110,7 +110,7 @@ The migration to post-quantum cryptography is unique in the history of modern di
 Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.
 
 
-This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. The generic composite key type is also defined which allows arbitrary combinations of key types to be placed in the CompositePublicKey and CompositePrivateKey structures without needing the combination to be pre-registered or pre-agreed. For the purpose of combining KEMs, the combiner function from {{I-D.ounsworth-cfrg-kem-combiners}} is used.
+This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. For the purpose of combining KEMs, the combiner function from {{I-D.ounsworth-cfrg-kem-combiners}} is used.
 
 
 This document is intended to be coupled with the composite keys
@@ -122,11 +122,11 @@ structure define in {{I-D.ounsworth-pq-composite-keys}} and the CMS KEMRecipient
 
 --- middle
 
-# Changes in version -01
+# Changes in version -02
 
-* Sycronized terminology with I-D.draft-driscoll-pqt-hybrid-terminology-01.
-* Changed CompositeCiphertextValue from BIT STRING to OCTET STRING.
-* Explicit composite combinations defined and ASN.1 module updated
+* Removed all references to generic composite.
+* Added selection criteria note about requesting new explicit combinations.
+
 
 # Introduction {#sec-intro}
 
@@ -145,17 +145,17 @@ This document provides a mechanism to address algorithm strength uncertainty by 
 This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.
 
 
-## Algorithm Selection Criteria
+## Algorithm Selection Criteria {#sec-selection-criteria}
 
 The composite algorithm combinations defined in this document were chosen according to the following guidelines:
 
 1. A single RSA combination is provided (but RSA modulus size not mandated), matched with NIST PQC Level 3 algorithms.
 1. Elliptic curve algorithms are provided with combinations on each of the NIST [RFC6090], Brainpool [RFC5639], and Edwards [RFC7748] curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.
 1. NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
-1. A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.
-1. A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.
+The authors wish to note that although all the composite structures defined in this and the companion documents {{I-D.ounsworth-pq-composite-keys}} and {{I-D.ounsworth-pq-composite-sigs}} pecifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. This also does not preclude future specification of explicit combinations with three or more components.
 
-The authors wish to note that although all the composite structures defined in this and the companion composite signatures {{I-D.ounsworth-pq-composite-sigs}} and composite signatures {{I-D.ounsworth-pq-composite-sigs}} specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite algorithm allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.
+To maximize interoperability, use of the specific algorithm combinations specified in this document is encouraged.  If other combinations are needed, a separate specification should be submitted to the IETF LAMPS working group.  To ease implementation, these specifications are encouraged to follow the construction pattern of the algorithms specified in this document.  
+
 
 <!-- End of Introduction section -->
 
@@ -296,7 +296,7 @@ CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier{
 
 The KEM's `CompositeKemParams` sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.  
 
-Generic composite algorithms must carry the list of component KEM algorithms so that the reciever knows which algorithms to use. For explicit composite algorithms, it is required in cases where one or both of the components themselves have parameters that need to be carried, however the authors have chosen to always carry it in order to simplify parsers. Implementation SHOULD NOT rely directly on the algorithmIDs contained in the `CompositeKemParams` and SHOULD verify that they match the algorithms expected from the overall composite AlgorithmIdentifier.
+For explicit composite algorithms, it is required in cases where one or both of the components themselves have parameters that need to be carried, however the authors have chosen to always carry it in order to simplify parsers. Implementation SHOULD NOT rely directly on the algorithmIDs contained in the `CompositeKemParams` and SHOULD verify that they match the algorithms expected from the overall composite AlgorithmIdentifier.
 
 
 ## Encoding Rules
@@ -392,8 +392,6 @@ The "KEM Combiner" column refers to the definitions in {{sec-kem-combiner}}.
 | id-Kyber1024-ECDH-P384-KMAC256             | &lt;CompKEM&gt;.8  | Kyber1024       | ECDH-P384     | KMAC256/512 |
 | id-Kyber1024-ECDH-brainpoolP384r1-KMAC256  | &lt;CompKEM&gt;.9  | Kyber1024       | ECDH-brainpoolP384r1 | KMAC256/512 |
 | id-Kyber1024-X448-KMAC256                  | &lt;CompKEM&gt;.10 | Kyber1024       | X448          | KMAC256/512 |
-| id-composite-kem-KMAC128                   | &lt;CompKEM&gt;.11 | Any             | Any  | KMAC128/256 |
-| id-composite-kem-KMAC256                   | &lt;CompKEM&gt;.12 | Any             | Any  | KMAC256/512 |
 {: #tab-kem-algs title="Composite KEM key types"}
 
 
@@ -454,13 +452,6 @@ EDNOTE: Since the crypto is fixed, we could omit the parameters entirely and exp
 TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?
 
 
-## Notes on Generic Composite {#sec-generic-composite-kem}
-
-The `id-alg-composite-kem-KMAC128` and `id-alg-composite-kem-KMAC256` object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use KMAC128 and KMAC256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.
-
-When the `id-alg-composite-kem-KMAC128` or `id-alg-composite-kem-KMAC256` object identifiers are used with an `AlgorithmIdentifier`, the `AlgorithmIdentifier.parameters` MUST be of type `CompositeKemParams` containing an `AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding `CompositeCiphertextValue`.
-
-
 
 # ASN.1 Module {#sec-asn1-module}
 
@@ -504,7 +495,7 @@ TODO -- we'll need security consideration analysis of whatever OR modes we choos
 
 ## KEM Combiner
 
-This document uses directly the KEM Combiner defined in {{I-D.ounsworth-cfrg-kem-combiners}} and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for both explicit and generic composites.
+This document uses directly the KEM Combiner defined in {{I-D.ounsworth-cfrg-kem-combiners}} and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for explicit composites.
 
 <!-- End of Security Considerations section -->
 

@@ -10,7 +10,7 @@
 <meta content='
        The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptalanysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs. 
        Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level. 
-       This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. The generic composite key type is also defined which allows arbitrary combinations of key types to be placed in the CompositePublicKey and CompositePrivateKey structures without needing the combination to be pre-registered or pre-agreed. For the purpose of combining KEMs, the combiner function from   is used. 
+       This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. For the purpose of combining KEMs, the combiner function from   is used. 
        This document is intended to be coupled with the composite keys
 structure define in   and the CMS KEMRecipientInfo mechanism in  . 
        
@@ -20,7 +20,7 @@ structure define in   and the CMS KEMRecipientInfo mechanism in  .
     ' name="description">
 <meta content="xml2rfc 3.12.2" name="generator">
 <meta content="Internet-Draft" name="keyword">
-<meta content="draft-ounsworth-pq-composite-kem-01" name="ietf.draft">
+<meta content="draft-ounsworth-pq-composite-kem-02" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.12.2
     Python 3.10.6
@@ -1181,11 +1181,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">PQ Composite Keys</td>
-<td class="right">March 2023</td>
+<td class="right">May 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Ounsworth &amp; Gray</td>
-<td class="center">Expires 14 September 2023</td>
+<td class="center">Expires 23 November 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1195,15 +1195,15 @@ li > p:last-of-type {
 <dt class="label-workgroup">Workgroup:</dt>
 <dd class="workgroup">LAMPS</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-ounsworth-pq-composite-kem-01</dd>
+<dd class="internet-draft">draft-ounsworth-pq-composite-kem-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-03-13" class="published">13 March 2023</time>
+<time datetime="2023-05-22" class="published">22 May 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-09-14">14 September 2023</time></dd>
+<dd class="expires"><time datetime="2023-11-23">23 November 2023</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1222,7 +1222,7 @@ li > p:last-of-type {
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">The migration to post-quantum cryptography is unique in the history of modern digital cryptography in that neither the old outgoing nor the new incoming algorithms are fully trusted to protect data for the required data lifetimes. The outgoing algorithms, such as RSA and elliptic curve, may fall to quantum cryptalanysis, while the incoming post-quantum algorithms face uncertainty about both the underlying mathematics as well as hardware and software implementations that have not had sufficient maturing time to rule out classical cryptanalytic attacks and implementation bugs.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">Cautious implementers may wish to layer cryptographic algorithms such that an attacker would need to break all of them in order to compromise the data being protected using either a Post-Quantum / Traditional Hybrid, Post-Quantum / Post-Quantum Hybrid, or combinations thereof. This document, and its companions, defines a specific instantiation of hybrid paradigm called "composite" where multiple cryptographic algorithms are combined to form a single key, signature, or key encapsulation mechanism (KEM) such that they can be treated as a single atomic object at the protocol level.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
-<p id="section-abstract-3">This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. The generic composite key type is also defined which allows arbitrary combinations of key types to be placed in the CompositePublicKey and CompositePrivateKey structures without needing the combination to be pre-registered or pre-agreed. For the purpose of combining KEMs, the combiner function from <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> is used.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
+<p id="section-abstract-3">This document defines the structure CompositeCiphertextValue which is a sequence of the respective ciphertexts for each component algorithm. Explicit pairings of algorithms are defined which should meet most Internet needs. For the purpose of combining KEMs, the combiner function from <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> is used.<a href="#section-abstract-3" class="pilcrow">¶</a></p>
 <p id="section-abstract-4">This document is intended to be coupled with the composite keys
 structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and the CMS KEMRecipientInfo mechanism in <span>[<a href="#I-D.housley-lamps-cms-kemri" class="xref">I-D.housley-lamps-cms-kemri</a>]</span>.<a href="#section-abstract-4" class="pilcrow">¶</a></p>
 </section>
@@ -1245,7 +1245,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 14 September 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 23 November 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1275,7 +1275,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
         </h2>
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-changes-in-version-01-2" class="xref">Changes in version -01</a></p>
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-changes-in-version-02-2" class="xref">Changes in version -02</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-introduction-2" class="xref">Introduction</a></p>
@@ -1324,9 +1324,6 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-notes-on-id-kyber768-rsa-kma" class="xref">Notes on id-Kyber768-RSA-KMAC256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
-                <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-notes-on-generic-composite-2" class="xref">Notes on Generic Composite</a></p>
 </li>
             </ul>
 </li>
@@ -1398,17 +1395,15 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
 </nav>
 </section>
 </div>
-<div id="changes-in-version-01">
+<div id="changes-in-version-02">
 <section id="section-1">
-      <h2 id="name-changes-in-version-01-2">
-<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-01-2" class="section-name selfRef">Changes in version -01</a>
+      <h2 id="name-changes-in-version-02-2">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-changes-in-version-02-2" class="section-name selfRef">Changes in version -02</a>
       </h2>
 <ul class="normal">
-<li class="normal" id="section-1-1.1">Sycronized terminology with I-D.draft-driscoll-pqt-hybrid-terminology-01.<a href="#section-1-1.1" class="pilcrow">¶</a>
+<li class="normal" id="section-1-1.1">Removed all references to generic composite.<a href="#section-1-1.1" class="pilcrow">¶</a>
 </li>
-        <li class="normal" id="section-1-1.2">Changed CompositeCiphertextValue from BIT STRING to OCTET STRING.<a href="#section-1-1.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-1-1.3">Explicit composite combinations defined and ASN.1 module updated<a href="#section-1-1.3" class="pilcrow">¶</a>
+        <li class="normal" id="section-1-1.2">Added selection criteria note about requesting new explicit combinations.<a href="#section-1-1.2" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
@@ -1428,7 +1423,7 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
       </ul>
 <p id="section-2-4">This document provides a mechanism to address algorithm strength uncertainty by building on <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> by providing the format and process for combining multiple cryptographic algorithms into a single key encapsulation operation. Backwards compatibility is not directly covered in this document, but is the subject of <a href="#sec-backwards-compat" class="xref">Appendix B.1</a>.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">This document is intended for general applicability anywhere that key establishment or enveloped content encryption is used within PKIX or CMS structures.<a href="#section-2-5" class="pilcrow">¶</a></p>
-<div id="algorithm-selection-criteria">
+<div id="sec-selection-criteria">
 <section id="section-2.1">
         <h3 id="name-algorithm-selection-criteria">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-algorithm-selection-criteria" class="section-name selfRef">Algorithm Selection Criteria</a>
@@ -1439,14 +1434,11 @@ structure define in <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xre
 </li>
           <li id="section-2.1-2.2">Elliptic curve algorithms are provided with combinations on each of the NIST <span>[<a href="#RFC6090" class="xref">RFC6090</a>]</span>, Brainpool <span>[<a href="#RFC5639" class="xref">RFC5639</a>]</span>, and Edwards <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span> curves. NIST PQC Levels 1 - 3 algorithms are matched with 256-bit curves, while NIST levels 4 - 5 are matched with 384-bit elliptic curves. This provides a balance between matching classical security levels of post-quantum and traditional algorithms, and also selecting elliptic curves which already have wide adoption.<a href="#section-2.1-2.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-2.1-2.3">NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.<a href="#section-2.1-2.3" class="pilcrow">¶</a>
-</li>
-          <li id="section-2.1-2.4">A single SPHINCS+ combination is provided for use cases that wish to put hash-based signatures into hybrid combination.<a href="#section-2.1-2.4" class="pilcrow">¶</a>
-</li>
-          <li id="section-2.1-2.5">A generic composite algorithm is provided for implementers who wish to use combinations not listed here, without the overhead of defining new OIDs. Caution should be exercised to avoid issues with compatibility and complex cryptographic policy mechanisms.<a href="#section-2.1-2.5" class="pilcrow">¶</a>
+          <li id="section-2.1-2.3">NIST level 1 candidates (Falcon512 and Kyber512) are provided, matched with 256-bit elliptic curves, intended for constrained use cases.
+The authors wish to note that although all the composite structures defined in this and the companion documents <span>[<a href="#I-D.ounsworth-pq-composite-keys" class="xref">I-D.ounsworth-pq-composite-keys</a>]</span> and <span>[<a href="#I-D.ounsworth-pq-composite-sigs" class="xref">I-D.ounsworth-pq-composite-sigs</a>]</span> pecifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-2.1-2.3" class="pilcrow">¶</a>
 </li>
         </ol>
-<p id="section-2.1-3">The authors wish to note that although all the composite structures defined in this and the companion composite signatures <span>[<a href="#I-D.ounsworth-pq-composite-sigs" class="xref">I-D.ounsworth-pq-composite-sigs</a>]</span> and composite signatures <span>[<a href="#I-D.ounsworth-pq-composite-sigs" class="xref">I-D.ounsworth-pq-composite-sigs</a>]</span> specifications are defined in such a way as to easily allow 3 or more component algorithms, it was decided to only specify explicit pairs. The generic composite algorithm allows for an arbitrary number of components. This also does not preclude future specification of explicit combinations with three or more components.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1-3">To maximize interoperability, use of the specific algorithm combinations specified in this document is encouraged.  If other combinations are needed, a separate specification should be submitted to the IETF LAMPS working group.  To ease implementation, these specifications are encouraged to follow the construction pattern of the algorithms specified in this document.<a href="#section-2.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="sec-terminology">
@@ -1617,7 +1609,7 @@ CompositeKemParams ::= SEQUENCE SIZE (2..MAX) OF AlgorithmIdentifier{
 </pre><a href="#section-3.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-3.5-3">The KEM's <code>CompositeKemParams</code> sequence MUST contain the same component algorithms listed in the same order as in the associated CompositePublicKey.<a href="#section-3.5-3" class="pilcrow">¶</a></p>
-<p id="section-3.5-4">Generic composite algorithms must carry the list of component KEM algorithms so that the reciever knows which algorithms to use. For explicit composite algorithms, it is required in cases where one or both of the components themselves have parameters that need to be carried, however the authors have chosen to always carry it in order to simplify parsers. Implementation SHOULD NOT rely directly on the algorithmIDs contained in the <code>CompositeKemParams</code> and SHOULD verify that they match the algorithms expected from the overall composite AlgorithmIdentifier.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
+<p id="section-3.5-4">For explicit composite algorithms, it is required in cases where one or both of the components themselves have parameters that need to be carried, however the authors have chosen to always carry it in order to simplify parsers. Implementation SHOULD NOT rely directly on the algorithmIDs contained in the <code>CompositeKemParams</code> and SHOULD verify that they match the algorithms expected from the overall composite AlgorithmIdentifier.<a href="#section-3.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="encoding-rules">
@@ -1833,20 +1825,6 @@ ss = KMAC128("id-Kyber512-ECDH-P256-KMAC128",
             <td class="text-left" rowspan="1" colspan="1">X448</td>
             <td class="text-left" rowspan="1" colspan="1">KMAC256/512</td>
           </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-composite-kem-KMAC128</td>
-            <td class="text-left" rowspan="1" colspan="1">&lt;CompKEM&gt;.11</td>
-            <td class="text-left" rowspan="1" colspan="1">Any</td>
-            <td class="text-left" rowspan="1" colspan="1">Any</td>
-            <td class="text-left" rowspan="1" colspan="1">KMAC128/256</td>
-          </tr>
-          <tr>
-            <td class="text-left" rowspan="1" colspan="1">id-composite-kem-KMAC256</td>
-            <td class="text-left" rowspan="1" colspan="1">&lt;CompKEM&gt;.12</td>
-            <td class="text-left" rowspan="1" colspan="1">Any</td>
-            <td class="text-left" rowspan="1" colspan="1">Any</td>
-            <td class="text-left" rowspan="1" colspan="1">KMAC256/512</td>
-          </tr>
         </tbody>
       </table>
 </div>
@@ -1912,15 +1890,6 @@ RsaKemParameters ::= {
 <p id="section-4.1-9">EDNOTE: I'm borrowing <code>id-sha3-384</code> from draft-turner-lamps-adding-sha3-to-pkix-00, which looks ilke was abandoned. Do we have PKIX OIDs for SHA3?<a href="#section-4.1-9" class="pilcrow">¶</a></p>
 <p id="section-4.1-10">EDNOTE: Since the crypto is fixed, we could omit the parameters entirely and expect implementations to re-constitute the params structures as necessary in order to call into lower-level crypto libraries.<a href="#section-4.1-10" class="pilcrow">¶</a></p>
 <p id="section-4.1-11">TODO: there must be a way to put all this the ASN.1 Module rather than just specifying it as text?<a href="#section-4.1-11" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="sec-generic-composite-kem">
-<section id="section-4.2">
-        <h3 id="name-notes-on-generic-composite-2">
-<a href="#section-4.2" class="section-number selfRef">4.2. </a><a href="#name-notes-on-generic-composite-2" class="section-name selfRef">Notes on Generic Composite</a>
-        </h3>
-<p id="section-4.2-1">The <code>id-alg-composite-kem-KMAC128</code> and <code>id-alg-composite-kem-KMAC256</code> object identifiers are used for identifying a generic composite KEM algorithm. This allows arbitrary combinations of component key transport, key agreement and KEM algorithms without needing the combination to be pre-registered or standardized. Thes generic KEM composite algorithms use KMAC128 and KMAC256-based KEM combiners and so are intended for use with component KEM algorithms that target the 128 bit or 256 bit security levels respectively.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
-<p id="section-4.2-2">When the <code>id-alg-composite-kem-KMAC128</code> or <code>id-alg-composite-kem-KMAC256</code> object identifiers are used with an <code>AlgorithmIdentifier</code>, the <code>AlgorithmIdentifier.parameters</code> MUST be of type <code>CompositeKemParams</code> containing an <code>AlgorithmIdentifier for each component algorithm in the same order as the ciphertexts appear in the corresponding </code>CompositeCiphertextValue`.<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2184,7 +2153,7 @@ END
         <h3 id="name-kem-combiner-4">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-kem-combiner-4" class="section-name selfRef">KEM Combiner</a>
         </h3>
-<p id="section-7.3-1">This document uses directly the KEM Combiner defined in <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for both explicit and generic composites.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-1">This document uses directly the KEM Combiner defined in <span>[<a href="#I-D.ounsworth-cfrg-kem-combiners" class="xref">I-D.ounsworth-cfrg-kem-combiners</a>]</span> and therefore inherits all of its security considerations, which the authors believe have all been addressed in the concrete choices for explicit composites.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2212,7 +2181,7 @@ END
 <dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-keys">[I-D.ounsworth-pq-composite-keys]</dt>
         <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Gray, J.</span>, <span class="refAuthor">Pala, M.</span>, and <span class="refAuthor">J. Klaussner</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-04</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-pq-composite-keys/">https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-pq-composite-keys/</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Gray, J.</span>, <span class="refAuthor">Pala, M.</span>, and <span class="refAuthor">J. Klaußner</span>, <span class="refTitle">"Composite Public and Private Keys For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-keys-04</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-04">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-keys-04</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
         <dd>
@@ -2283,11 +2252,11 @@ END
 <dd class="break"></dd>
 <dt id="I-D.ounsworth-cfrg-kem-combiners">[I-D.ounsworth-cfrg-kem-combiners]</dt>
         <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Wussler, A.</span>, and <span class="refAuthor">S. Kousidis</span>, <span class="refTitle">"Combiner function for hybrid key encapsulation mechanisms (Hybrid KEMs)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-cfrg-kem-combiners-03</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-cfrg-kem-combiners/">https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-cfrg-kem-combiners/</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Wussler, A.</span>, and <span class="refAuthor">S. Kousidis</span>, <span class="refTitle">"Combiner function for hybrid key encapsulation mechanisms (Hybrid KEMs)"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-cfrg-kem-combiners-03</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-03">https://datatracker.ietf.org/doc/html/draft-ounsworth-cfrg-kem-combiners-03</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ounsworth-pq-composite-sigs">[I-D.ounsworth-pq-composite-sigs]</dt>
         <dd>
-<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Signatures For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-sigs-08</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-pq-composite-sigs/">https://datatracker.ietf.org/api/v1/doc/document/draft-ounsworth-pq-composite-sigs/</a>&gt;</span>. </dd>
+<span class="refAuthor">Ounsworth, M.</span>, <span class="refAuthor">Gray, J.</span>, and <span class="refAuthor">M. Pala</span>, <span class="refTitle">"Composite Signatures For Use In Internet PKI"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ounsworth-pq-composite-sigs-08</span>, <time datetime="2023-03-13" class="refDate">13 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-sigs-08">https://datatracker.ietf.org/doc/html/draft-ounsworth-pq-composite-sigs-08</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC5639">[RFC5639]</dt>
         <dd>
