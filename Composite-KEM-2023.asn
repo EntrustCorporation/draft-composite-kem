@@ -32,8 +32,6 @@ id-RSASSA-PSS, RSASSA-PSS-Params
        modules(0) pkcs-1(1)
    }
 
-id-composite-key,
-pk-composite-kem,
 id-Kyber512-ECDH-P256-KMAC128,
 pk-Kyber512-ECDH-P256-KMAC128,
 id-Kyber512-ECDH-brainpoolP256r1-KMAC128,

@@ -788,8 +788,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
       }
 
-   id-composite-key,
-   pk-composite-kem,
    id-Kyber512-ECDH-P256-KMAC128,
    pk-Kyber512-ECDH-P256-KMAC128,
    id-Kyber512-ECDH-brainpoolP256r1-KMAC128,
@@ -834,6 +832,8 @@ Internet-Draft              PQ Composite Keys                   May 2023
                            { KEM-ALGORITHM, {SecondKemAlg}} }
 
 
+   kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject,
+       CompositeKemParams} KEM-ALGORITHM ::=  {
 
 
 
@@ -842,8 +842,6 @@ Ounsworth & Gray        Expires 25 November 2023               [Page 15]
 Internet-Draft              PQ Composite Keys                   May 2023
 
 
-   kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject,
-       CompositeKemParams} KEM-ALGORITHM ::=  {
             IDENTIFIER id
             VALUE CompositeCiphertextValue
             PARAMS TYPE CompositeKemParams ARE required
@@ -891,6 +889,8 @@ Internet-Draft              PQ Composite Keys                   May 2023
    --TODO: `kema-ecdh-p256` does not actually exist yet.
 
 
+   kema-Kyber512-ECDH-brainpoolP256r1-KMAC128 KEM-ALGORITHM ::=
+
 
 
 Ounsworth & Gray        Expires 25 November 2023               [Page 16]
@@ -898,7 +898,6 @@ Ounsworth & Gray        Expires 25 November 2023               [Page 16]
 Internet-Draft              PQ Composite Keys                   May 2023
 
 
-   kema-Kyber512-ECDH-brainpoolP256r1-KMAC128 KEM-ALGORITHM ::=
        kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-KMAC128,
        pk-Kyber512-ECDH-brainpoolP256r1-KMAC128,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-ecdh-brainpoolp256r1}} }
@@ -946,6 +945,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
    kema-Kyber1024-ECDH-P384-KMAC256 KEM-ALGORITHM ::=
+       kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-KMAC256,
 
 
 
@@ -954,7 +954,6 @@ Ounsworth & Gray        Expires 25 November 2023               [Page 17]
 Internet-Draft              PQ Composite Keys                   May 2023
 
 
-       kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-KMAC256,
        pk-Kyber1024-ECDH-P384-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber1024TBD}, {kema-ecdh-p384}} }
 
@@ -997,11 +996,12 @@ Internet-Draft              PQ Composite Keys                   May 2023
    deprecated (for example, RSA-512, or SHA1), it is obvious that
    structures using that algorithm are implicitly revoked.
 
-
-
-
-
-
+   In the composite model this is less obvious since implementers may
+   decide that certain cryptographic algorithms have complementary
+   security properties and are acceptable in combination even though one
+   or both algorithms are deprecated for individual use.  As such, a
+   single composite public key, certificate, signature, or ciphertext
+   may contain a mixture of deprecated and non-deprecated algorithms.
 
 
 
@@ -1009,13 +1009,6 @@ Ounsworth & Gray        Expires 25 November 2023               [Page 18]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
-
-   In the composite model this is less obvious since implementers may
-   decide that certain cryptographic algorithms have complementary
-   security properties and are acceptable in combination even though one
-   or both algorithms are deprecated for individual use.  As such, a
-   single composite public key, certificate, signature, or ciphertext
-   may contain a mixture of deprecated and non-deprecated algorithms.
 
    Specifying behaviour in these cases is beyond the scope of this
    document, but should be considered by Implementers and potentially in
@@ -1058,6 +1051,13 @@ Internet-Draft              PQ Composite Keys                   May 2023
               Internet-Draft, draft-ietf-lamps-kyber-certificates-00, 26
               September 2022, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lamps-kyber-certificates-00>.
+
+
+
+
+
+
+
 
 
 
