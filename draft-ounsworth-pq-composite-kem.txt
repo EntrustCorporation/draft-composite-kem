@@ -102,10 +102,10 @@ Table of Contents
    4.  Algorithm Identifiers . . . . . . . . . . . . . . . . . . . .  11
      4.1.  Notes on id-Kyber768-RSA-KMAC256  . . . . . . . . . . . .  13
    5.  ASN.1 Module  . . . . . . . . . . . . . . . . . . . . . . . .  14
-   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  18
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  17
    7.  Security Considerations . . . . . . . . . . . . . . . . . . .  18
      7.1.  Policy for Deprecated and Acceptable Algorithms . . . . .  18
-     7.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  19
+     7.2.  OR Modes  . . . . . . . . . . . . . . . . . . . . . . . .  18
 
 
 
@@ -114,19 +114,19 @@ Ounsworth & Gray        Expires 25 November 2023                [Page 2]
 Internet-Draft              PQ Composite Keys                   May 2023
 
 
-     7.3.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .  19
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  19
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  19
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  21
+     7.3.  KEM Combiner  . . . . . . . . . . . . . . . . . . . . . .  18
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  18
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  18
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  20
    Appendix A.  Samples  . . . . . . . . . . . . . . . . . . . . . .  22
-   Appendix B.  Implementation Considerations  . . . . . . . . . . .  23
-     B.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  23
-       B.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  24
+   Appendix B.  Implementation Considerations  . . . . . . . . . . .  22
+     B.1.  Backwards Compatibility . . . . . . . . . . . . . . . . .  22
+       B.1.1.  K-of-N modes  . . . . . . . . . . . . . . . . . . . .  23
        B.1.2.  Parallel PKIs . . . . . . . . . . . . . . . . . . . .  24
-   Appendix C.  Intellectual Property Considerations . . . . . . . .  25
-   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  25
+   Appendix C.  Intellectual Property Considerations . . . . . . . .  24
+   Appendix D.  Contributors and Acknowledgements  . . . . . . . . .  24
      D.1.  Making contributions  . . . . . . . . . . . . . . . . . .  25
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  26
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  25
 
 1.  Changes in version -02
 
@@ -849,35 +849,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-   -- Generic Composite KEM
-
-
-   -- TODO: To be replaced by IANA
-   id-composite-kem-KMAC128 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) tbd(98) }
-
-   kema-Composite-kem-KMAC128 KEM-ALGORITHM ::= {
-       IDENTIFIER id-composite-kem-KMAC128
-       VALUE CompositeCiphertextValue
-       PARAMS TYPE CompositeKemParams ARE required
-       PUBLIC-KEYS {publicKeyObject} }
-
-
-   -- TODO: To be replaced by IANA
-   id-composite-kem-KMAC256 OBJECT IDENTIFIER ::= {
-     joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-     algorithm(80) tbd(99) }
-
-   kema-Composite-kem-KMAC256 KEM-ALGORITHM ::= {
-       IDENTIFIER id-composite-kem-KMAC256
-       VALUE CompositeCiphertextValue
-       PARAMS TYPE CompositeKemParams ARE required
-       PUBLIC-KEYS {publicKeyObject} }
-
-
-
-
    -- Explicit Composite KEMs
 
 
@@ -890,14 +861,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
    kema-Kyber512-ECDH-brainpoolP256r1-KMAC128 KEM-ALGORITHM ::=
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 16]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
-
        kema-explicitCompositeKEM{id-Kyber512-ECDH-brainpoolP256r1-KMAC128,
        pk-Kyber512-ECDH-brainpoolP256r1-KMAC128,
        ExplicitCompositeKemParams{{kema-Kyber512TBD}, {kema-ecdh-brainpoolp256r1}} }
@@ -928,6 +891,13 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 16]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    kema-Kyber768-ECDH-brainpoolP256r1-KMAC256 KEM-ALGORITHM ::=
        kema-explicitCompositeKEM{id-Kyber768-ECDH-brainpoolP256r1-KMAC256,
        pk-Kyber768-ECDH-brainpoolP256r1-KMAC256,
@@ -946,14 +916,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
    kema-Kyber1024-ECDH-P384-KMAC256 KEM-ALGORITHM ::=
        kema-explicitCompositeKEM{id-Kyber1024-ECDH-P384-KMAC256,
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 17]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
-
        pk-Kyber1024-ECDH-P384-KMAC256,
        ExplicitCompositeKemParams{{kema-Kyber1024TBD}, {kema-ecdh-p384}} }
 
@@ -983,9 +945,16 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
    The following need to be assigned by IANA:
 
-   *  The OID for the ASN.1 module Composite-KEM-2023,
+   *  The OID for the ASN.1 module Composite-KEM-2023
 
-   *  OIDs for id-composite-kem-KMAC128, id-composite-kem-KMAC256
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 17]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
+   TODO
 
 7.  Security Considerations
 
@@ -1002,13 +971,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
    or both algorithms are deprecated for individual use.  As such, a
    single composite public key, certificate, signature, or ciphertext
    may contain a mixture of deprecated and non-deprecated algorithms.
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 18]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
    Specifying behaviour in these cases is beyond the scope of this
    document, but should be considered by Implementers and potentially in
@@ -1040,6 +1002,14 @@ Internet-Draft              PQ Composite Keys                   May 2023
               Housley, R., Gray, J., and T. Okubo, "Using Key
               Encapsulation Mechanism (KEM) Algorithms in the
               Cryptographic Message Syntax (CMS)", Work in Progress,
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 18]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
               Internet-Draft, draft-housley-lamps-cms-kemri-02, 20
               February 2023, <https://datatracker.ietf.org/doc/html/
               draft-housley-lamps-cms-kemri-02>.
@@ -1051,20 +1021,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
               Internet-Draft, draft-ietf-lamps-kyber-certificates-00, 26
               September 2022, <https://datatracker.ietf.org/doc/html/
               draft-ietf-lamps-kyber-certificates-00>.
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 19]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
    [I-D.ounsworth-pq-composite-keys]
               Ounsworth, M., Gray, J., Pala, M., and J. Klaußner,
@@ -1100,6 +1056,16 @@ Internet-Draft              PQ Composite Keys                   May 2023
               DOI 10.17487/RFC5990, September 2010,
               <https://www.rfc-editor.org/info/rfc5990>.
 
+
+
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 19]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    [RFC8017]  Moriarty, K., Ed., Kaliski, B., Jonsson, J., and A. Rusch,
               "PKCS #1: RSA Cryptography Specifications Version 2.2",
               RFC 8017, DOI 10.17487/RFC8017, November 2016,
@@ -1114,13 +1080,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
               X.509 Public Key Infrastructure", RFC 8410,
               DOI 10.17487/RFC8410, August 2018,
               <https://www.rfc-editor.org/info/rfc8410>.
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 20]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
    [RFC8411]  Schaad, J. and R. Andrews, "IANA Registration for the
               Cryptographic Algorithm Object Identifier Range",
@@ -1155,6 +1114,14 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 8.2.  Informative References
 
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 20]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    [I-D.driscoll-pqt-hybrid-terminology]
               D, F., "Terminology for Post-Quantum Traditional Hybrid
               Schemes", Work in Progress, Internet-Draft, draft-
@@ -1168,15 +1135,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
               draft-ietf-tls-hybrid-design-04, 11 January 2022,
               <https://datatracker.ietf.org/doc/html/draft-ietf-tls-
               hybrid-design-04>.
-
-
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 21]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
    [I-D.ounsworth-cfrg-kem-combiners]
               Ounsworth, M., Wussler, A., and S. Kousidis, "Combiner
@@ -1212,6 +1170,14 @@ Internet-Draft              PQ Composite Keys                   May 2023
               for Security", RFC 7748, DOI 10.17487/RFC7748, January
               2016, <https://www.rfc-editor.org/info/rfc7748>.
 
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 21]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
               Version 1.3", RFC 8446, DOI 10.17487/RFC8446, August 2018,
               <https://www.rfc-editor.org/info/rfc8446>.
@@ -1224,15 +1190,6 @@ Internet-Draft              PQ Composite Keys                   May 2023
 Appendix A.  Samples
 
    TBD
-
-
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 22]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
 Appendix B.  Implementation Considerations
 
@@ -1270,6 +1227,13 @@ B.1.  Backwards Compatibility
    section contains notes on how backwards compatibility may be
    obtained.
 
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 22]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    The term "ease of migration" is used here to mean that existing
    systems can be gracefully transitioned to the new technology without
    requiring large service disruptions or expensive upgrades.  The term
@@ -1282,14 +1246,6 @@ B.1.  Backwards Compatibility
    X.509 and PKIX with relation to key establishment and content
    encryption, from online negotiated protocols such as TLS 1.3
    [RFC8446] and IKEv2 [RFC7296], to non-negotiated asynchronous
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 23]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
-
    protocols such as S/MIME signed email [RFC8551], as well as myriad
    other standardized and proprietary protocols and applications that
    leverage CMS [RFC5652] encrypted structures.
@@ -1324,6 +1280,16 @@ B.1.1.  K-of-N modes
 
    ~~~ END EDNOTE ~~~
 
+
+
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 23]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
 B.1.2.  Parallel PKIs
 
    We present the term "Parallel PKI" to refer to the setup where a PKI
@@ -1338,13 +1304,6 @@ B.1.2.  Parallel PKIs
    Equipped with a set of parallel public keys in this way, a client
    would have the flexibility to choose which public key(s) or
    certificate(s) to use in a given signature operation.
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 24]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
    For negotiated protocols, the client could choose which public key(s)
    or certificate(s) to use based on the negotiated algorithms.
@@ -1379,6 +1338,14 @@ Appendix D.  Contributors and Acknowledgements
    Jan Klaussner (D-Trust), Max Pala (CableLabs), and Douglas Stebila
    (University of Waterloo).
 
+
+
+
+Ounsworth & Gray        Expires 25 November 2023               [Page 24]
+
+Internet-Draft              PQ Composite Keys                   May 2023
+
+
    We are grateful to all, including any contributors who may have been
    inadvertently omitted from this list.
 
@@ -1393,14 +1360,6 @@ D.1.  Making contributions
    working copy of this draft at, as well as open issues at:
 
    https://github.com/EntrustCorporation/draft-composite-kem/
-
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 25]
-
-Internet-Draft              PQ Composite Keys                   May 2023
-
 
 Authors' Addresses
 
@@ -1438,19 +1397,4 @@ Authors' Addresses
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Ounsworth & Gray        Expires 25 November 2023               [Page 26]
+Ounsworth & Gray        Expires 25 November 2023               [Page 25]

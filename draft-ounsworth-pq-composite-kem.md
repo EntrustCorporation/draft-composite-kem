@@ -469,8 +469,9 @@ TODO: there must be a way to put all this the ASN.1 Module rather than just spec
 # IANA Considerations {#sec-iana}
 The following need to be assigned by IANA:
 
-* The OID for the ASN.1 module `Composite-KEM-2023`,
-* OIDs for `id-composite-kem-KMAC128`, `id-composite-kem-KMAC256`
+* The OID for the ASN.1 module `Composite-KEM-2023`
+
+TODO
 
 <!-- End of IANA Considerations section -->
 

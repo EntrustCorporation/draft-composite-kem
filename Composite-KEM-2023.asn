@@ -85,35 +85,6 @@ kema-explicitCompositeKEM{OBJECT IDENTIFIER:id, PUBLIC-KEY:publicKeyObject,
 
 
 
--- Generic Composite KEM
-
-
--- TODO: To be replaced by IANA
-id-composite-kem-KMAC128 OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-  algorithm(80) tbd(98) }
-
-kema-Composite-kem-KMAC128 KEM-ALGORITHM ::= {
-    IDENTIFIER id-composite-kem-KMAC128
-    VALUE CompositeCiphertextValue
-    PARAMS TYPE CompositeKemParams ARE required
-    PUBLIC-KEYS {publicKeyObject} }
-
-
--- TODO: To be replaced by IANA
-id-composite-kem-KMAC256 OBJECT IDENTIFIER ::= {
-  joint-iso-itu-t(2) country(16) us(840) organization(1) entrust(114027)
-  algorithm(80) tbd(99) }
-
-kema-Composite-kem-KMAC256 KEM-ALGORITHM ::= {
-    IDENTIFIER id-composite-kem-KMAC256
-    VALUE CompositeCiphertextValue
-    PARAMS TYPE CompositeKemParams ARE required
-    PUBLIC-KEYS {publicKeyObject} }
-
-
-
-
 -- Explicit Composite KEMs
 
 
