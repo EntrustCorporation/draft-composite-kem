@@ -5,7 +5,7 @@
 LAMPS                                                       M. Ounsworth
 Internet-Draft                                                   J. Gray
 Intended status: Standards Track                                 Entrust
-Expires: 23 November 2023                                    22 May 2023
+Expires: 25 November 2023                                    24 May 2023
 
 
                  Composite KEM For Use In Internet PKI
@@ -53,7 +53,7 @@ Status of This Memo
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 1]
+Ounsworth & Gray        Expires 25 November 2023                [Page 1]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -68,7 +68,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 23 November 2023.
+   This Internet-Draft will expire on 25 November 2023.
 
 Copyright Notice
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 2]
+Ounsworth & Gray        Expires 25 November 2023                [Page 2]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -165,7 +165,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 3]
+Ounsworth & Gray        Expires 25 November 2023                [Page 3]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -221,7 +221,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 4]
+Ounsworth & Gray        Expires 25 November 2023                [Page 4]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -277,7 +277,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 5]
+Ounsworth & Gray        Expires 25 November 2023                [Page 5]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -333,7 +333,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 6]
+Ounsworth & Gray        Expires 25 November 2023                [Page 6]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -389,7 +389,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 7]
+Ounsworth & Gray        Expires 25 November 2023                [Page 7]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -445,7 +445,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 8]
+Ounsworth & Gray        Expires 25 November 2023                [Page 8]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -501,7 +501,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023                [Page 9]
+Ounsworth & Gray        Expires 25 November 2023                [Page 9]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -557,7 +557,7 @@ ss = KMAC128("id-Kyber512-ECDH-P256-KMAC128",
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 10]
+Ounsworth & Gray        Expires 25 November 2023               [Page 10]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -613,7 +613,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 11]
+Ounsworth & Gray        Expires 25 November 2023               [Page 11]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -669,7 +669,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 12]
+Ounsworth & Gray        Expires 25 November 2023               [Page 12]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -725,7 +725,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 13]
+Ounsworth & Gray        Expires 25 November 2023               [Page 13]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -749,7 +749,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
    Composite-KEM-2023
               {iso(1) identified-organization(3) dod(6) internet(1) security(5)
-          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-kems(999)}
+          mechanisms(5) pkix(7) id-mod(0) id-mod-composite-kems(TBD)}
 
    DEFINITIONS IMPLICIT TAGS ::= BEGIN
 
@@ -781,7 +781,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 14]
+Ounsworth & Gray        Expires 25 November 2023               [Page 14]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -837,7 +837,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 15]
+Ounsworth & Gray        Expires 25 November 2023               [Page 15]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -893,7 +893,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 16]
+Ounsworth & Gray        Expires 25 November 2023               [Page 16]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -949,7 +949,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 17]
+Ounsworth & Gray        Expires 25 November 2023               [Page 17]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1005,7 +1005,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 18]
+Ounsworth & Gray        Expires 25 November 2023               [Page 18]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1061,7 +1061,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 19]
+Ounsworth & Gray        Expires 25 November 2023               [Page 19]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1117,7 +1117,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 20]
+Ounsworth & Gray        Expires 25 November 2023               [Page 20]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1173,7 +1173,7 @@ Internet-Draft              PQ Composite Keys                   May 2023
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 21]
+Ounsworth & Gray        Expires 25 November 2023               [Page 21]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1229,7 +1229,7 @@ Appendix A.  Samples
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 22]
+Ounsworth & Gray        Expires 25 November 2023               [Page 22]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1285,7 +1285,7 @@ B.1.  Backwards Compatibility
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 23]
+Ounsworth & Gray        Expires 25 November 2023               [Page 23]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1341,7 +1341,7 @@ B.1.2.  Parallel PKIs
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 24]
+Ounsworth & Gray        Expires 25 November 2023               [Page 24]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1397,7 +1397,7 @@ D.1.  Making contributions
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 25]
+Ounsworth & Gray        Expires 25 November 2023               [Page 25]
 
 Internet-Draft              PQ Composite Keys                   May 2023
 
@@ -1453,4 +1453,4 @@ Authors' Addresses
 
 
 
-Ounsworth & Gray        Expires 23 November 2023               [Page 26]
+Ounsworth & Gray        Expires 25 November 2023               [Page 26]
