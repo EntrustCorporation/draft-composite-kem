@@ -220,7 +220,7 @@ A key transport mechanism can be transformed into a KEM.Encaps(pk) by generating
 
 A key agreement mechanism can be transformed into a KEM.Encaps(pk) by generating an ephemeral key pair (pk_e, sk_e), and performing KeyAgree(pk, sk_e) -> (ss, pk_e); and into a KEM.Decaps(sk, ct) by completing the key agreement as KeyAgree(pk_e, sk) -> ss.
 
-A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operations by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.
+A composite KEM allows two or more underlying key transport, key agreement, or KEM algorithms to be combined into a single cryptographic operation by performing each operation, transformed to a KEM as outline above, and using a specified combiner function to combine the two or more component shared secrets into a single shared secret.
 
 
 
@@ -335,7 +335,7 @@ Each registered composite KEM algorithm must specify the exact KEM combiner cons
 
 
 
-For convenience we define the following KMAC-basid intantiations of KEM combiner:
+For convenience we define the following KMAC-basid instantiations of KEM combiner:
 
 | KEM Combiner | KDF | H   | outputBits |
 | ---          | --- |---  |---         |
