@@ -1,5 +1,10 @@
 # Composite KEM
 
+THIS DRAFT HAS BEEN ADOPTED BY IETF LAMPS. As such, the repo has been moved to here:
+
+* https://github.com/lamps-wg/draft-composite-kem
+
+This fork will no longer be maintained.
 
 ## Setting up a build environment
 
